@@ -1,0 +1,172 @@
+﻿namespace Cetecean
+{
+    partial class frmCetecean
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.legend1 = new DotSpatial.Controls.Legend();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.map1 = new DotSpatial.Controls.Map();
+            this.panel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.menuStrip1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(528, 55);
+            this.panel1.TabIndex = 0;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fIleToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(528, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fIleToolStripMenuItem
+            // 
+            this.fIleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importFileToolStripMenuItem});
+            this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
+            this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fIleToolStripMenuItem.Text = "File";
+            // 
+            // importFileToolStripMenuItem
+            // 
+            this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.importFileToolStripMenuItem.Text = "Import Excel file";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.legend1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(0, 55);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(186, 295);
+            this.panel2.TabIndex = 1;
+            // 
+            // legend1
+            // 
+            this.legend1.BackColor = System.Drawing.Color.White;
+            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 186, 295);
+            this.legend1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.legend1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 103, 178);
+            this.legend1.HorizontalScrollEnabled = true;
+            this.legend1.Indentation = 30;
+            this.legend1.IsInitialized = false;
+            this.legend1.Location = new System.Drawing.Point(0, 0);
+            this.legend1.MinimumSize = new System.Drawing.Size(5, 5);
+            this.legend1.Name = "legend1";
+            this.legend1.ProgressHandler = null;
+            this.legend1.ResetOnResize = false;
+            this.legend1.SelectionFontColor = System.Drawing.Color.Black;
+            this.legend1.SelectionHighlight = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(238)))), ((int)(((byte)(252)))));
+            this.legend1.Size = new System.Drawing.Size(186, 295);
+            this.legend1.TabIndex = 0;
+            this.legend1.Text = "legend1";
+            this.legend1.VerticalScrollEnabled = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.map1);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(186, 55);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(342, 295);
+            this.panel3.TabIndex = 2;
+            // 
+            // map1
+            // 
+            this.map1.AllowDrop = true;
+            this.map1.BackColor = System.Drawing.Color.White;
+            this.map1.CollectAfterDraw = false;
+            this.map1.CollisionDetection = false;
+            this.map1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.map1.ExtendBuffer = false;
+            this.map1.FunctionMode = DotSpatial.Controls.FunctionMode.None;
+            this.map1.IsBusy = false;
+            this.map1.Legend = this.legend1;
+            this.map1.Location = new System.Drawing.Point(0, 0);
+            this.map1.Name = "map1";
+            this.map1.ProgressHandler = null;
+            this.map1.ProjectionModeDefine = DotSpatial.Controls.ActionMode.Prompt;
+            this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
+            this.map1.RedrawLayersWhileResizing = false;
+            this.map1.SelectionEnabled = true;
+            this.map1.Size = new System.Drawing.Size(342, 295);
+            this.map1.TabIndex = 0;
+            // 
+            // frmCetecean
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(528, 350);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "frmCetecean";
+            this.Text = "Cetacean";
+            this.Load += new System.EventHandler(this.frmCetecean_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fIleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importFileToolStripMenuItem;
+        private System.Windows.Forms.Panel panel2;
+        private DotSpatial.Controls.Legend legend1;
+        private System.Windows.Forms.Panel panel3;
+        private DotSpatial.Controls.Map map1;
+    }
+}
+
