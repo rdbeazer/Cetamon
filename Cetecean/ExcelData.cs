@@ -1,5 +1,7 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
@@ -305,24 +307,7 @@ namespace Cetecean
         //    convert.Import();
         //}
 
-        /// <summary>
-        /// Converts the XLS(X/B) to csv.
-        /// </summary>
-        public void Convert()
-        {
-            try
-            {
-                this.OpenConnection();
-                this.SetWorkSheets();
-                this.SetDataFromWorkSheets();
-                this.CloseConnections();
-                this.WriteCSVFiles();
-            }
-            finally
-            {
-                this.CloseConnections();
-            }
-        }
+
 
         /// <summary>
         /// Converts the XLS(X/B) to csv.
@@ -335,11 +320,17 @@ namespace Cetecean
                 this.SetWorkSheets();
                 this.SetDataFromWorkSheets();
                 this.CloseConnections();
+                
             }
             finally
             {
                 this.CloseConnections();
             }
+        }
+
+        public DataTable GetData(string type)
+        {
+          return this.GetDataTable(this.GetListOfDataTables(string.Empty),type);
         }
 
 
@@ -416,99 +407,67 @@ namespace Cetecean
             }
         }
 
-        /// <summary>
-        /// Writes the CSV Files required.
-        /// </summary>
-        private void WriteCSVFiles()
+       
+        private bool CheckNamesList(string type, string name)
         {
-            if (this.IsSaveAs == SaveAs.CombinedWorkBook)
+            
+            ArrayList pointColumnNames = new ArrayList();
+            pointColumnNames.Add("LATITUDE");
+            pointColumnNames.Add("LONGITUDE");
+
+            ArrayList trackColumnNames = new ArrayList();
+            trackColumnNames.Add("LAT_START");
+            trackColumnNames.Add("LON_START");
+            trackColumnNames.Add("LAT_END");
+            trackColumnNames.Add("LON_END");
+
+            if (type == "point")
             {
-                List<DataTable> dataTables = this.GetListOfDataTables(string.Empty);
-                string combinedFileName = this.GetTargetFileName(string.Empty);
-                this.WriteDataTablesToFile(dataTables, combinedFileName);
+
+                if (pointColumnNames.Contains(name))
+                    return true; 
             }
-            else
+            if (type == "track")
             {
-                foreach (KeyValuePair<string, DataTable> dataTable in this.workSheets)
-                {
-                    List<DataTable> dataTables = this.GetListOfDataTables(dataTable.Key);
-                    string combinedFileName = this.GetTargetFileName(dataTable.Key);
-                    this.WriteDataTablesToFile(dataTables, combinedFileName);
-                }
+                if (trackColumnNames.Contains(name))
+                    return true; 
             }
+
+            return false;
         }
 
-        /// <summary>
-        /// Writes all data the list of data tables to the filename passed in.
-        /// </summary>
-        /// <param name="dataTables">
-        /// The data tables to write.
-        /// </param>
-        /// <param name="fileName">
-        /// The full path to the targe file.
-        /// </param>
-        private void WriteDataTablesToFile(IList<DataTable> dataTables, string fileName)
+        private DataTable GetDataTable(IList<DataTable> dataTables, string type) 
         {
-            StreamWriter writer = null;
-            var builder = new StringBuilder(96 * dataTables[0].Rows.Count);
+            SortedList<string,string> columnNamesCheck = new SortedList<string,string>();
 
-            try
+            foreach (DataTable dataTable in dataTables)
             {
-                int dataNo = 0;
 
-                foreach (DataTable dataTable in dataTables)
-                {
-                    int rowNo = 0;
-                    int colNo = 0;
-                    dataNo++;
-
-                    foreach (DataRow row in dataTable.Rows)
+                DataRow row = dataTable.Rows[0];
+                //foreach (DataRow row in dataTable.Rows)
+                //{
+                    foreach (DataColumn col in dataTable.Columns)
                     {
-                        rowNo++;
-                        colNo = 0;
+                        string columnData = System.Convert.ToString(row[col]);
 
-                        if (this.IsImportHeader == ImportHeader.Yes && dataNo > 1 && rowNo == 1)
+                        if (CheckNamesList(type,columnData.ToUpper()))
                         {
-                            continue;
+                            columnNamesCheck.Add(columnData.ToUpper(),columnData);
                         }
+                    }
+                //}
 
-                        foreach (DataColumn col in dataTable.Columns)
-                        {
-                            colNo++;
-
-                            string columnData = System.Convert.ToString(row[col]);
-
-                            columnData.Replace(this.Qualifier, string.Empty);
-
-                            if (columnData.Contains(this.Delimeter))
-                            {
-                                columnData = string.Format("{0}{1}{2}", this.Qualifier, columnData, this.Qualifier);
-                            }
-
-                            if (colNo > 1)
-                            {
-                                builder.Append(this.Delimeter);
-                            }
-
-                            builder.Append(columnData);
-                        } // DataColumn Loop
-
-                        builder.AppendLine();
-                    } // DataRow Loop
-                } // DataTable Loop
-
-                writer = new StreamWriter(fileName);
-                writer.WriteLine(builder.ToString());
+                    if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4)
+                    {
+                        return dataTable;
+                    }
             }
-            finally
-            {
-                if (writer != null)
-                {
-                    writer.Close();
-                    writer.Dispose();
-                }
-            }
+
+            return null;
+        
+        
         }
+
 
         /// <summary>
         /// It might seem a little pointless but it makes WriteCSVFiles cleaner to code.
@@ -575,29 +534,6 @@ namespace Cetecean
                     command.Dispose();
                 }
             }
-        }
-
-        /// <summary>
-        /// Returns the filepath and name of the csv file to write
-        /// </summary>
-        /// <param name="workSheetName">
-        /// The work sheet name. Empty string for a combined file.
-        /// </param>
-        /// <returns>
-        /// Filepath for a csv file to be written.
-        /// </returns>
-        private string GetTargetFileName(string workSheetName)
-        {
-            var workSheetFileName = string.Empty;
-            var pathName = Path.GetDirectoryName(this.SourceFile);
-            var fileName = Path.GetFileNameWithoutExtension(this.SourceFile);
-
-            if (workSheetName != string.Empty)
-            {
-                workSheetFileName = string.Format("-{0}", workSheetName);
-            }
-
-            return string.Format("{0}{1}{2}{3}.csv", pathName, Path.DirectorySeparatorChar, fileName, workSheetFileName);
         }
 
         #endregion

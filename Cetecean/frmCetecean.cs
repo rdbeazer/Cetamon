@@ -19,11 +19,9 @@ namespace Cetecean
         private void frmCetecean_Load(object sender, EventArgs e)
         {
 
-            ExcelData convert = new ExcelData(@"G:\caroso\class\Advanced GIS\data.xls");
+            ExcelData convert = new ExcelData(@"C:\ISU\AdvGIS_P\Cetamon\Data_test\xls\points.xls");
             convert.Import();
-
-           // LoadExcelFiles Load = new LoadExcelFiles(@"G:\caroso\class\Advanced GIS\data.xls");
-         //   MessageBox.Show(Convert.ToChar(65) + "1");
+            DataTable data = convert.GetData("point");
         }
     }
 }
