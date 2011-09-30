@@ -36,6 +36,14 @@
             this.legend1 = new DotSpatial.Controls.Legend();
             this.panel3 = new System.Windows.Forms.Panel();
             this.map1 = new DotSpatial.Controls.Map();
+            this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomExtenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openShapefileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -54,7 +62,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fIleToolStripMenuItem});
+            this.fIleToolStripMenuItem,
+            this.operationsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(528, 24);
@@ -64,7 +73,8 @@
             // fIleToolStripMenuItem
             // 
             this.fIleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importFileToolStripMenuItem});
+            this.importFileToolStripMenuItem,
+            this.openShapefileToolStripMenuItem});
             this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
             this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fIleToolStripMenuItem.Text = "File";
@@ -72,8 +82,9 @@
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.importFileToolStripMenuItem.Text = "Import Excel file";
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+            this.importFileToolStripMenuItem.Text = "Conver Excel file to Point Shapefile";
+            this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
             // panel2
             // 
@@ -135,6 +146,63 @@
             this.map1.Size = new System.Drawing.Size(342, 295);
             this.map1.TabIndex = 0;
             // 
+            // operationsToolStripMenuItem
+            // 
+            this.operationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zoomInToolStripMenuItem,
+            this.zoomOutToolStripMenuItem,
+            this.zoomExtenToolStripMenuItem,
+            this.panToolStripMenuItem,
+            this.infoToolStripMenuItem});
+            this.operationsToolStripMenuItem.Name = "operationsToolStripMenuItem";
+            this.operationsToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
+            this.operationsToolStripMenuItem.Text = "Operations";
+            // 
+            // zoomInToolStripMenuItem
+            // 
+            this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomInToolStripMenuItem.Text = "Zoom In";
+            this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
+            // 
+            // zoomOutToolStripMenuItem
+            // 
+            this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomOutToolStripMenuItem.Text = "Zoom Out";
+            this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
+            // 
+            // zoomExtenToolStripMenuItem
+            // 
+            this.zoomExtenToolStripMenuItem.Name = "zoomExtenToolStripMenuItem";
+            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomExtenToolStripMenuItem.Text = "Zoom Extents";
+            // 
+            // openShapefileToolStripMenuItem
+            // 
+            this.openShapefileToolStripMenuItem.Name = "openShapefileToolStripMenuItem";
+            this.openShapefileToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.openShapefileToolStripMenuItem.Text = "Open Shapefile";
+            this.openShapefileToolStripMenuItem.Click += new System.EventHandler(this.openShapefileToolStripMenuItem_Click);
+            // 
+            // panToolStripMenuItem
+            // 
+            this.panToolStripMenuItem.Name = "panToolStripMenuItem";
+            this.panToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.panToolStripMenuItem.Text = "Pan";
+            this.panToolStripMenuItem.Click += new System.EventHandler(this.panToolStripMenuItem_Click);
+            // 
+            // infoToolStripMenuItem
+            // 
+            this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.infoToolStripMenuItem.Text = "Info";
+            this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // frmCetecean
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -167,6 +235,14 @@
         private DotSpatial.Controls.Legend legend1;
         private System.Windows.Forms.Panel panel3;
         private DotSpatial.Controls.Map map1;
+        private System.Windows.Forms.ToolStripMenuItem operationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoomInToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoomOutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoomExtenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openShapefileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem panToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

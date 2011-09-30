@@ -459,7 +459,8 @@ namespace Cetecean
 
                     if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4)
                     {
-                        return dataTable;
+                        DataTable data = dataTable;
+                        return data;
                     }
             }
 
