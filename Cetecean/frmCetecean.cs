@@ -38,11 +38,11 @@ namespace Cetecean
             FeatureSet pointFs = new FeatureSet(FeatureType.Point);
 
             System.Data.DataColumn  latField = new System.Data.DataColumn("Latitude",typeof(double));
-            System.Data.DataColumn  lonField = new System.Data.DataColumn("Longitude", typeof(double));
+            System.Data.DataColumn  longField = new System.Data.DataColumn("Longitude", typeof(double));
 
 
             pointFs.DataTable.Columns.Add(latField);
-            pointFs.DataTable.Columns.Add(lonField);
+            pointFs.DataTable.Columns.Add(longField);
 
             pointFs.Projection = map1.Projection;
             pointLayer = new MapPointLayer(pointFs);
@@ -97,8 +97,13 @@ namespace Cetecean
                 }
 
                 map1.ResetBuffer();
+                helloWorld();
           }
 
+        private void helloWorld()
+        {
+            MessageBox.Show("Hello World");
+        }
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             map1.ZoomIn();
