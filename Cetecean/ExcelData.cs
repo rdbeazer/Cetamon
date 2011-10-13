@@ -416,10 +416,10 @@ namespace Cetecean
             pointColumnNames.Add("LONGITUDE");
 
             ArrayList trackColumnNames = new ArrayList();
-            trackColumnNames.Add("LAT_START");
-            trackColumnNames.Add("LON_START");
-            trackColumnNames.Add("LAT_END");
-            trackColumnNames.Add("LON_END");
+            trackColumnNames.Add("STARTLAT");
+            trackColumnNames.Add("STARTLONG");
+            trackColumnNames.Add("ENDLAT");
+            trackColumnNames.Add("ENDLONG");
 
             if (type == "point")
             {
@@ -427,7 +427,7 @@ namespace Cetecean
                 if (pointColumnNames.Contains(name))
                     return true; 
             }
-            if (type == "track")
+            if (type == "line")
             {
                 if (trackColumnNames.Contains(name))
                     return true; 
