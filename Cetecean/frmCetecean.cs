@@ -89,20 +89,96 @@ namespace Cetecean
                        newF.DataRow["Latitude"] = latitude;
                        newF.DataRow["Longitude"] = longitude;
                        ProjectionInfo ip = map1.Projection;
-
-
                    }
                    i++;
-
                 }
-
                 map1.ResetBuffer();
-                helloWorld();
           }
 
-        private void helloWorld()
+        private void AddLineLayer(DataTable table)
         {
-            MessageBox.Show("Hello World");
+            MapLineLayer lineLayer = new MapLineLayer();
+            DotSpatial.Data.FeatureSet lineFs = new DotSpatial.Data.FeatureSet(FeatureType.Line);
+
+            System.Data.DataColumn startLatField = new System.Data.DataColumn("StartLat", typeof(double));
+            System.Data.DataColumn startLongField = new System.Data.DataColumn("StartLong", typeof(double));
+            System.Data.DataColumn endLatField = new System.Data.DataColumn("EndLat", typeof(double));
+            System.Data.DataColumn endLongField = new System.Data.DataColumn("EndLong", typeof(double));
+
+            lineFs.DataTable.Columns.Add(startLatField);
+            lineFs.DataTable.Columns.Add(startLongField);
+            lineFs.DataTable.Columns.Add(endLatField);
+            lineFs.DataTable.Columns.Add(endLongField);
+
+            lineFs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
+            lineLayer = new MapLineLayer(lineFs);
+            lineLayer.LegendText = "line";
+            lineLayer.Symbolizer.SetFillColor(Color.Red);
+            map1.Layers.Add(lineLayer);
+
+            int i = 0;
+
+            int indexStartLat = 0;
+            int indexStartLong = 0;
+            int indexEndLat = 0;
+            int indexEndLong = 0;
+
+            foreach (DataRow row in table.Rows)
+            {
+                double startLat = 0;
+                double startLong = 0;
+                double endLat = 0;
+                double endLong = 0;
+
+                if (i == 0)
+                {
+                    int searchIndex = 0;
+                    foreach (DataColumn column in table.Columns)
+                    {
+                        if (Convert.ToString(row[searchIndex]) == "StartLat" || Convert.ToString(row[searchIndex]) == "STARTLAT")
+                        {
+                            indexStartLat = searchIndex;
+                        }
+                        if (Convert.ToString(row[searchIndex]) == "StartLong" || Convert.ToString(row[searchIndex]) == "STARTLONG")
+                        {
+                            indexStartLong = searchIndex;
+                        }
+                        if (Convert.ToString(row[searchIndex]) == "EndLat" || Convert.ToString(row[searchIndex]) == "ENDLAT")
+                        {
+                            indexEndLat = searchIndex;
+                        }
+                        if (Convert.ToString(row[searchIndex]) == "EndLong" || Convert.ToString(row[searchIndex]) == "ENDLONG")
+                        {
+                            indexEndLong = searchIndex;
+                        }
+                        searchIndex++;
+                    }
+                }
+
+                else
+                {
+
+                    List<Coordinate> coordList = new List<Coordinate>();
+                    startLat = Convert.ToDouble(row[indexStartLat]);
+                    startLong = Convert.ToDouble(row[indexStartLong]);
+                    coordList.Add(new Coordinate(startLat, startLong));
+
+                    endLat = Convert.ToDouble(row[indexEndLat]);
+                    endLong = Convert.ToDouble(row[indexEndLong]);
+                    coordList.Add(new Coordinate(endLat, endLong));
+
+                    DotSpatial.Topology.LineString line = new DotSpatial.Topology.LineString(coordList);
+                    IFeature feature = lineLayer.DataSet.AddFeature(line);
+
+                    feature.DataRow["StartLat"] = startLat;
+                    feature.DataRow["StartLong"] = startLong;
+                    feature.DataRow["EndLat"] = endLat;
+                    feature.DataRow["EndLong"] = endLong;
+                }
+                i++;
+            }
+            map1.ResetBuffer();
+
         }
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -141,7 +217,6 @@ namespace Cetecean
                 convert.Import();
                 DataTable data = convert.GetData("point");
                         AddPointLayer(data);
-        
             }
                
         }
@@ -155,6 +230,31 @@ namespace Cetecean
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             map1.FunctionMode = FunctionMode.Info;
+        }
+
+        private void ExcelToLine_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            //dialog.Filter="xls files (*.xls)|*.xls";
+            //dialog.InitialDirectory=@"..\..\..\Data_set\";  
+            dialog.Title = "Select a Excel File";
+            string strFileName = String.Empty;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                strFileName = dialog.FileName;
+            }
+
+            if (strFileName == String.Empty)
+            {
+                return;
+            }
+            else
+            {
+                ExcelData convert = new ExcelData(@strFileName);
+                convert.Import();
+                DataTable data = convert.GetData("line");
+                AddLineLayer(data);
+            }
         }
         
 
