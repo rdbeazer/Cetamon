@@ -180,6 +180,109 @@ namespace Cetecean
             map1.ResetBuffer();
 
         }
+
+        //Adding the polygon layer data----------------------------------------------------------------------------------------------------
+        private void AddPolygonLayer(DataTable table)
+        {
+
+
+            //Create and add the polygon Layer
+            MapPolygonLayer polygonLayer = new MapPolygonLayer();
+            polygonLayer.LegendText = "polygon";
+            polygonLayer.Symbolizer.SetFillColor(Color.Blue);
+
+            //creating the polygon feature set
+            FeatureSet polygonFS = new FeatureSet(FeatureType.Polygon);
+
+            //set the projection 
+            polygonFS.Projection = map1.Projection;
+
+            ////Set data columns
+            //System.Data.DataColumn latField = new System.Data.DataColumn("Latitude", typeof(double));
+            //System.Data.DataColumn longField = new System.Data.DataColumn("Longitude", typeof(double));
+
+            ////Add data from excel table
+            //polygonFS.DataTable.Columns.Add(latField);
+            //polygonFS.DataTable.Columns.Add(longField);
+
+            Polygon polygon1 = null;
+            IFeature feature1 = null;
+
+            //Add to the map
+            map1.Layers.Add(polygonLayer);
+
+            int i = 0;
+            double latitude = 0;
+            double longitude = 0;
+            double startLat = 0;
+            double startLong = 0;
+            int indexLat = 0;
+            int indexLon = 0;
+
+            //Create coordinate list to hold coors
+            List<Coordinate> coordList = new List<Coordinate>();
+
+            LinearRing objRing = new LinearRing(coordList);
+
+
+
+            foreach (DataRow row in table.Rows)
+            {
+                if (i == 0)
+                {
+                    int searchIndex = 0;
+                    foreach (DataColumn col in table.Columns)
+                    {
+                        if (Convert.ToString(row[searchIndex]) == "Latitude" || Convert.ToString(row[searchIndex]) == "LATITUDE")
+                        {
+                            indexLat = searchIndex;
+                        }
+                        if (Convert.ToString(row[searchIndex]) == "Longitude" || Convert.ToString(row[searchIndex]) == "LONGITUDE")
+                        {
+                            indexLon = searchIndex;
+                        }
+                        searchIndex++;
+                    }
+
+                }
+                //Fill first set of coordinates with a startX and startY
+                else if (i == 1)
+                {
+                    startLat = Convert.ToDouble(row[indexLat]);
+                    startLong = Convert.ToDouble(row[indexLon]);
+                    coordList.Add(new Coordinate(startLat, startLong));
+                    //update the featureset
+                    //feature1.DataRow["Latitude"] = startLat;
+                    //feature1.DataRow["Longitude"] = startLong;
+
+                }
+
+                else
+                {
+                    //Add the rest of the coordinates
+                    latitude = Convert.ToDouble(row[indexLat]);
+                    longitude = Convert.ToDouble(row[indexLon]);
+                    coordList.Add(new Coordinate(latitude, longitude));
+                    //feature1.DataRow["Latitude"] = latitude;
+                    //feature1.DataRow["Longitude"] = longitude;
+                }
+                i++;
+
+            }
+
+            //Add start point to close the polygon when the loop finishes
+            coordList.Add(new Coordinate(startLat, startLong));
+            //feature1.DataRow["Latitude"] = startLat;
+            //feature1.DataRow["Longitude"] = startLong;
+
+            //create polygon feature here to be updated with foreach loop
+            polygon1 = new Polygon(coordList);
+            polygonFS.InitializeVertices();
+            feature1 = polygonFS.AddFeature(objRing);
+            map1.ResetBuffer();
+            map1.ZoomToMaxExtent();
+        }
+
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             map1.ZoomIn();
@@ -255,6 +358,34 @@ namespace Cetecean
                 DataTable data = convert.GetData("line");
                 AddLineLayer(data);
             }
+        }
+
+        private void convertExceltoPolygon_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "xls files (*.xls)|*.xls";
+            dialog.InitialDirectory = @"..\..\..\Data_set\";
+            dialog.Title = "Select a Excel File";
+            string strFileName = String.Empty;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                strFileName = dialog.FileName;
+            }
+
+            if (strFileName == String.Empty)
+            {
+                return;
+            }
+            else
+            {
+                ExcelData convert = new ExcelData(@strFileName);
+                convert.Import();
+                DataTable data = convert.GetData("point");
+                AddPolygonLayer(data);
+
+            }
+
+
         }
         
 

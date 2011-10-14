@@ -32,6 +32,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExcelToLine = new System.Windows.Forms.ToolStripMenuItem();
             this.openShapefileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +45,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.map1 = new DotSpatial.Controls.Map();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.ExcelToLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertExceltoPolygon = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -76,6 +77,7 @@
             this.fIleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importFileToolStripMenuItem,
             this.ExcelToLine,
+            this.convertExceltoPolygon,
             this.openShapefileToolStripMenuItem});
             this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
             this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -84,14 +86,21 @@
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.importFileToolStripMenuItem.Text = "Conver Excel file to Point Shapefile";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
+            // 
+            // ExcelToLine
+            // 
+            this.ExcelToLine.Name = "ExcelToLine";
+            this.ExcelToLine.Size = new System.Drawing.Size(276, 22);
+            this.ExcelToLine.Text = "Convert Excel file to Line Shapefile";
+            this.ExcelToLine.Click += new System.EventHandler(this.ExcelToLine_Click);
             // 
             // openShapefileToolStripMenuItem
             // 
             this.openShapefileToolStripMenuItem.Name = "openShapefileToolStripMenuItem";
-            this.openShapefileToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+            this.openShapefileToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.openShapefileToolStripMenuItem.Text = "Open Shapefile";
             this.openShapefileToolStripMenuItem.Click += new System.EventHandler(this.openShapefileToolStripMenuItem_Click);
             // 
@@ -205,12 +214,12 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // ExcelToLine
+            // convertExceltoPolygon
             // 
-            this.ExcelToLine.Name = "ExcelToLine";
-            this.ExcelToLine.Size = new System.Drawing.Size(256, 22);
-            this.ExcelToLine.Text = "Convert Excel file to Line Shapefile";
-            this.ExcelToLine.Click += new System.EventHandler(this.ExcelToLine_Click);
+            this.convertExceltoPolygon.Name = "convertExceltoPolygon";
+            this.convertExceltoPolygon.Size = new System.Drawing.Size(276, 22);
+            this.convertExceltoPolygon.Text = "Convert Excel file to Polygon Shapefile";
+            this.convertExceltoPolygon.Click += new System.EventHandler(this.convertExceltoPolygon_Click);
             // 
             // frmCetecean
             // 
@@ -253,6 +262,7 @@
         private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem ExcelToLine;
+        private System.Windows.Forms.ToolStripMenuItem convertExceltoPolygon;
     }
 }
 
