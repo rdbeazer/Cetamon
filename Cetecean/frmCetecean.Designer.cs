@@ -33,6 +33,7 @@
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExcelToLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertExceltoPolygon = new System.Windows.Forms.ToolStripMenuItem();
             this.openShapefileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +46,8 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.map1 = new DotSpatial.Controls.Map();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.convertExceltoPolygon = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -65,7 +67,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fIleToolStripMenuItem,
-            this.operationsToolStripMenuItem});
+            this.operationsToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(528, 24);
@@ -97,6 +100,13 @@
             this.ExcelToLine.Text = "Convert Excel file to Line Shapefile";
             this.ExcelToLine.Click += new System.EventHandler(this.ExcelToLine_Click);
             // 
+            // convertExceltoPolygon
+            // 
+            this.convertExceltoPolygon.Name = "convertExceltoPolygon";
+            this.convertExceltoPolygon.Size = new System.Drawing.Size(276, 22);
+            this.convertExceltoPolygon.Text = "Convert Excel file to Polygon Shapefile";
+            this.convertExceltoPolygon.Click += new System.EventHandler(this.convertExceltoPolygon_Click);
+            // 
             // openShapefileToolStripMenuItem
             // 
             this.openShapefileToolStripMenuItem.Name = "openShapefileToolStripMenuItem";
@@ -119,34 +129,34 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // zoomExtenToolStripMenuItem
             // 
             this.zoomExtenToolStripMenuItem.Name = "zoomExtenToolStripMenuItem";
-            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomExtenToolStripMenuItem.Text = "Zoom Extents";
             // 
             // panToolStripMenuItem
             // 
             this.panToolStripMenuItem.Name = "panToolStripMenuItem";
-            this.panToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.panToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.panToolStripMenuItem.Text = "Pan";
             this.panToolStripMenuItem.Click += new System.EventHandler(this.panToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -214,12 +224,20 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // convertExceltoPolygon
+            // toolsToolStripMenuItem
             // 
-            this.convertExceltoPolygon.Name = "convertExceltoPolygon";
-            this.convertExceltoPolygon.Size = new System.Drawing.Size(276, 22);
-            this.convertExceltoPolygon.Text = "Convert Excel file to Polygon Shapefile";
-            this.convertExceltoPolygon.Click += new System.EventHandler(this.convertExceltoPolygon_Click);
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createGridToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // createGridToolStripMenuItem
+            // 
+            this.createGridToolStripMenuItem.Name = "createGridToolStripMenuItem";
+            this.createGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createGridToolStripMenuItem.Text = "Create Grid";
+            this.createGridToolStripMenuItem.Click += new System.EventHandler(this.createGridToolStripMenuItem_Click);
             // 
             // frmCetecean
             // 
@@ -263,6 +281,8 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem ExcelToLine;
         private System.Windows.Forms.ToolStripMenuItem convertExceltoPolygon;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createGridToolStripMenuItem;
     }
 }
 

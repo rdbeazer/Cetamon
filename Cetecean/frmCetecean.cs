@@ -387,6 +387,12 @@ namespace Cetecean
 
 
         }
+
+        private void createGridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCreatePolygonGrid f = new frmCreatePolygonGrid(map1);
+            f.Show();
+        }
         
 
 
