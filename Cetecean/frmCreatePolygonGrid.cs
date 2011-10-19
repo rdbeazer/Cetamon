@@ -84,9 +84,10 @@ namespace Cetecean
 
                 if (!_activeBox)
                 {
-                    _map.FunctionMode = FunctionMode.Select;
+                   
                     _map.MouseDown += new System.Windows.Forms.MouseEventHandler(mapSelect_MouseDown);
                     _map.MouseUp += new System.Windows.Forms.MouseEventHandler(mapSelect_MouseUp);
+                    _map.FunctionMode = FunctionMode.Select;
                     _activeBox = true;
                 }
 
@@ -115,6 +116,7 @@ namespace Cetecean
 
             }
             grbParameters.Enabled = true;
+            this.Hide();
         }
 
         public bool CheckValue()
@@ -212,6 +214,7 @@ namespace Cetecean
                 _map.ResetBuffer();
                 Extent ext = poly.Envelope.ToExtent();
                 fillData(ext);
+                this.Visible = true;
 
             }
         }
@@ -274,7 +277,7 @@ namespace Cetecean
 
             _area.MinX = xy[0];
             _area.MinY = xy[1];
-
+            this.Visible = true;
          //   _map.MouseDown -= getPointMap_MouseDown;
            // Clean_selection();
         }
@@ -397,7 +400,7 @@ namespace Cetecean
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "shapefile files (*.shp)|*.shp";
             dialog.InitialDirectory = @"C:\";
-            dialog.Title = "Save area of Polygon Vector";
+            dialog.Title = "Save Polygon Grid";
             string strFileName = "";
 
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -408,11 +411,12 @@ namespace Cetecean
 
             if (strFileName == String.Empty)
             {
-                MessageBox.Show("The polygon Grid won't be saved");
+              // MessageBox.Show("The polygon Grid won't be saved");
                 return;
             }
             else
             {
+                label9.Text = strFileName;
                 _vector.GetLayer().DataSet.SaveAs(strFileName,true);
             }
         }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnl = new System.Windows.Forms.Panel();
+            this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCreateGrid = new System.Windows.Forms.Button();
             this.grbParameters = new System.Windows.Forms.GroupBox();
@@ -51,7 +52,7 @@
             this.btnCaptureArea = new System.Windows.Forms.Button();
             this.rbtBox = new System.Windows.Forms.RadioButton();
             this.rbtPointOrigin = new System.Windows.Forms.RadioButton();
-            this.btnOK = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.pnl.SuspendLayout();
             this.grbParameters.SuspendLayout();
             this.rbtPointOrign.SuspendLayout();
@@ -59,6 +60,7 @@
             // 
             // pnl
             // 
+            this.pnl.Controls.Add(this.label9);
             this.pnl.Controls.Add(this.btnOK);
             this.pnl.Controls.Add(this.btnCancel);
             this.pnl.Controls.Add(this.btnCreateGrid);
@@ -67,12 +69,22 @@
             this.pnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl.Location = new System.Drawing.Point(0, 0);
             this.pnl.Name = "pnl";
-            this.pnl.Size = new System.Drawing.Size(399, 309);
+            this.pnl.Size = new System.Drawing.Size(399, 329);
             this.pnl.TabIndex = 0;
+            // 
+            // btnOK
+            // 
+            this.btnOK.Location = new System.Drawing.Point(210, 291);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(81, 26);
+            this.btnOK.TabIndex = 4;
+            this.btnOK.Text = "Save";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(305, 276);
+            this.btnCancel.Location = new System.Drawing.Point(305, 291);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(81, 26);
             this.btnCancel.TabIndex = 3;
@@ -82,7 +94,7 @@
             // 
             // btnCreateGrid
             // 
-            this.btnCreateGrid.Location = new System.Drawing.Point(108, 276);
+            this.btnCreateGrid.Location = new System.Drawing.Point(108, 291);
             this.btnCreateGrid.Name = "btnCreateGrid";
             this.btnCreateGrid.Size = new System.Drawing.Size(81, 26);
             this.btnCreateGrid.TabIndex = 2;
@@ -297,25 +309,24 @@
             this.rbtPointOrigin.UseVisualStyleBackColor = true;
             this.rbtPointOrigin.Click += new System.EventHandler(this.rbtPointOrigin_Click);
             // 
-            // btnOK
+            // label9
             // 
-            this.btnOK.Location = new System.Drawing.Point(210, 276);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(81, 26);
-            this.btnOK.TabIndex = 4;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 273);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(0, 13);
+            this.label9.TabIndex = 5;
             // 
             // frmCreatePolygonGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 309);
+            this.ClientSize = new System.Drawing.Size(399, 329);
             this.Controls.Add(this.pnl);
             this.Name = "frmCreatePolygonGrid";
             this.Text = "Create Polygon Grid";
             this.pnl.ResumeLayout(false);
+            this.pnl.PerformLayout();
             this.grbParameters.ResumeLayout(false);
             this.grbParameters.PerformLayout();
             this.rbtPointOrign.ResumeLayout(false);
@@ -350,5 +361,6 @@
         private System.Windows.Forms.Button btnCaptureArea;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Label label9;
     }
 }
