@@ -33,7 +33,18 @@ namespace Cetecean
             return true;
         }
 
-
+       public static string GetNameFile(string file)
+        {
+            char[] v = file.ToCharArray();
+           for(int i=v.Length-1; i > 0; i--)
+            {
+                if (v[i] == '/' || v[i] == '\\')
+                {
+                   return file.Substring(i+1, file.Length-i-5);
+               }
+            }
+           return "default";
+       }
 
         public static bool IsDecimal(TextBox textBox)
         {

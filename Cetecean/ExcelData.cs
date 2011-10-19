@@ -14,12 +14,6 @@ namespace Cetecean
     /// Converts XLS, XLSM, XLSX, XLSB to CSV File.
     /// Multiple sheets can either be appeneded to the same CSV file or saved seperatly.
     /// <para>
-    /// Example of how to Run:
-    ///     var convert = new XLSToCSVConverter("c:\\temp\\source.xls", ImportHeader.Yes, SaveAs.SeperateWorkSheets, ',', '"');
-    ///     convert.Convert();
-    /// Or:
-    ///     var convert = new XLSToCSVConverter("c:\\temp\\source.xls", ImportHeader.Yes, SaveAs.CombinedWorkBook, ',', '"');
-    ///     convert.Convert();
     /// </para>
     /// </summary>
     public class ExcelData
@@ -301,13 +295,6 @@ namespace Cetecean
         /// <param name="args">
         /// CMD line args.
         ///// </param>
-        //public static void Main(string[] args)
-        //{
-        //    var convert = new ExcelData(@"G:\caroso\class\Advanced GIS\data.xls");
-        //    convert.Import();
-        //}
-
-
 
         /// <summary>
         /// Converts the XLS(X/B) to csv.
@@ -436,6 +423,64 @@ namespace Cetecean
             return false;
         }
 
+        private DataTable CopyMemory(DataTable table)
+        {
+            DataTable newTable = new DataTable();
+
+            foreach (DataColumn col in table.Columns)
+            {
+                newTable.Columns.Add(col.ColumnName, col.DataType);
+            }
+
+
+            foreach (DataRow row in table.Rows)
+            {
+                DataRow newRow = newTable.NewRow();
+                newRow.ItemArray = row.ItemArray;
+            }
+
+
+            return newTable;
+
+            //table.Columns.Add("Latitude", typeof(double));
+            //table.Columns.Add("Longitude", typeof(double));
+            //table.Rows.Add(45.253, -112.43);
+            //table.Rows.Add(45.509, -112.46091);
+
+        }
+
+
+        private Type FieldType(string name)
+        {
+
+            switch (name)
+            {
+                case "STARTLAT":
+                case "ENDLAT":
+                case "STARTLON":
+                case "ENDLON":
+                case "LATITUDE":
+                case "LONGITUDE":
+                    return typeof(double);
+                case "UNIQUE ROW NUMBER":
+                case "TRANSECTID":
+                case "SEGMENT ID":
+                case "LEFT":
+                case "RIGHT":
+                case "COURSE":
+                case "NUMBER":
+                case "SIGHTING ID":
+                    return typeof(int);
+                default:
+                    return typeof(string);
+            }
+
+
+        }
+         
+
+
+
         private DataTable GetDataTable(IList<DataTable> dataTables, string type) 
         {
             SortedList<string,string> columnNamesCheck = new SortedList<string,string>();
@@ -459,8 +504,26 @@ namespace Cetecean
 
                     if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4)
                     {
-                        DataTable data = dataTable;
-                        return data;
+                        DataTable newTable = new DataTable();
+                        foreach (DataColumn col in dataTable.Columns)
+                        {
+                            string columnData = System.Convert.ToString(row[col]);
+                            newTable.Columns.Add(columnData, FieldType(columnData.ToUpper()));
+                        }
+
+                        int i = 0;
+                        foreach (DataRow rowi in dataTable.Rows)
+                        {
+                            if (i > 0)
+                            {
+                                DataRow newRow = newTable.NewRow();
+                                newRow.ItemArray = rowi.ItemArray;
+                                newTable.Rows.Add(newRow);
+                            }
+                            i++;
+                        }
+
+                        return newTable;
                     }
             }
 

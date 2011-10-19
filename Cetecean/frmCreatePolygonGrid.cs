@@ -417,7 +417,20 @@ namespace Cetecean
             else
             {
                 label9.Text = strFileName;
-                _vector.GetLayer().DataSet.SaveAs(strFileName,true);
+                _vector.Save(strFileName);
+
+                foreach (ILayer l in _map.GetAllLayers())
+                { 
+                   if (l.LegendText== "Grid")
+                   {
+                       MapPolygonLayer p = (MapPolygonLayer)l;
+                       p.LegendText=Validator.GetNameFile(strFileName);
+                       return;
+                   }
+                
+                }
+
+
             }
         }
 

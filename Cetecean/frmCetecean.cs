@@ -32,7 +32,10 @@ namespace Cetecean
         }
 
 
-        private void AddPointLayer(DataTable table)
+
+
+
+        private void AddPointLayer(DataTable table,string name)
         {
             MapPointLayer pointLayer = new MapPointLayer();
             FeatureSet pointFs = new FeatureSet(FeatureType.Point);
@@ -46,56 +49,29 @@ namespace Cetecean
 
             pointFs.Projection = map1.Projection;
             pointLayer = new MapPointLayer(pointFs);
-            pointLayer.LegendText = "point";
+            pointLayer.LegendText = name;
             pointLayer.Symbolizer.SetFillColor(Color.Green);
             map1.Layers.Add(pointLayer);
-            int i = 0;
                 foreach (DataRow row in table.Rows)
                 {
                    double latitude=0;
                    double longitude=0;
-                   int indexLat=0;
-                   int indexLon=1;
-
-                    
-                   if (i == 0)
-                   {
-                       int searchIndex = 0;
-                       foreach (DataColumn col in table.Columns)
-                       {
-                           if (Convert.ToString(row[searchIndex]) == "Latitude" || Convert.ToString(row[searchIndex]) == "LATITUDE")
-                           {
-                               indexLat = searchIndex;
-                           }
-                           if (Convert.ToString(row[searchIndex]) == "Longitude" || Convert.ToString(row[searchIndex]) == "LONGITUDE")
-                           {
-                               indexLon = searchIndex;
-                           }
-                           searchIndex++;
-                       }
-                   }
-                   else
-
-                   {
-                       longitude = Convert.ToDouble(row[indexLon]);
-                       latitude = Convert.ToDouble(row[indexLat]);
+                       longitude = Convert.ToDouble(row["Longitude"]);
+                       latitude = Convert.ToDouble(row["Latitude"]);
                        double[] xy = new double[] { longitude, latitude };
-                       string esri = Properties.Resources.Wgs84_String;
-                       ProjectionInfo wgs84 = new ProjectionInfo();
-                       wgs84.ReadEsriString(esri);
+                       ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
                        Reproject.ReprojectPoints(xy, new double[] { 0 }, wgs84, map1.Projection, 0, 1);
                        DotSpatial.Topology.Point point = new DotSpatial.Topology.Point(xy[0], xy[1]);
                        IFeature newF = pointLayer.DataSet.AddFeature(point);
                        newF.DataRow["Latitude"] = latitude;
                        newF.DataRow["Longitude"] = longitude;
                        ProjectionInfo ip = map1.Projection;
-                   }
-                   i++;
+
                 }
                 map1.ResetBuffer();
           }
 
-        private void AddLineLayer(DataTable table)
+        private void AddLineLayer(DataTable table,string name)
         {
             MapLineLayer lineLayer = new MapLineLayer();
             DotSpatial.Data.FeatureSet lineFs = new DotSpatial.Data.FeatureSet(FeatureType.Line);
@@ -112,12 +88,11 @@ namespace Cetecean
 
             lineFs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
             lineLayer = new MapLineLayer(lineFs);
-            lineLayer.LegendText = "line";
+            lineLayer.LegendText = name;
             lineLayer.Symbolizer.SetFillColor(Color.Red);
             map1.Layers.Add(lineLayer);
 
-            int i = 0;
-
+ 
             int indexStartLat = 0;
             int indexStartLong = 0;
             int indexEndLat = 0;
@@ -129,34 +104,6 @@ namespace Cetecean
                 double startLong = 0;
                 double endLat = 0;
                 double endLong = 0;
-
-                if (i == 0)
-                {
-                    int searchIndex = 0;
-                    foreach (DataColumn column in table.Columns)
-                    {
-                        if (Convert.ToString(row[searchIndex]) == "StartLat" || Convert.ToString(row[searchIndex]) == "STARTLAT")
-                        {
-                            indexStartLat = searchIndex;
-                        }
-                        if (Convert.ToString(row[searchIndex]) == "StartLong" || Convert.ToString(row[searchIndex]) == "STARTLONG")
-                        {
-                            indexStartLong = searchIndex;
-                        }
-                        if (Convert.ToString(row[searchIndex]) == "EndLat" || Convert.ToString(row[searchIndex]) == "ENDLAT")
-                        {
-                            indexEndLat = searchIndex;
-                        }
-                        if (Convert.ToString(row[searchIndex]) == "EndLong" || Convert.ToString(row[searchIndex]) == "ENDLONG")
-                        {
-                            indexEndLong = searchIndex;
-                        }
-                        searchIndex++;
-                    }
-                }
-
-                else
-                {
 
                     List<Coordinate> coordList = new List<Coordinate>();
                     startLat = Convert.ToDouble(row[indexStartLat]);
@@ -174,21 +121,19 @@ namespace Cetecean
                     feature.DataRow["StartLong"] = startLong;
                     feature.DataRow["EndLat"] = endLat;
                     feature.DataRow["EndLong"] = endLong;
-                }
-                i++;
             }
             map1.ResetBuffer();
 
         }
 
         //Adding the polygon layer data----------------------------------------------------------------------------------------------------
-        private void AddPolygonLayer(DataTable table)
+        private void AddPolygonLayer(DataTable table, string name)
         {
 
 
             //Create and add the polygon Layer
             MapPolygonLayer polygonLayer = new MapPolygonLayer();
-            polygonLayer.LegendText = "polygon";
+            polygonLayer.LegendText = name;
             polygonLayer.Symbolizer.SetFillColor(Color.Blue);
 
             //creating the polygon feature set
@@ -197,13 +142,6 @@ namespace Cetecean
             //set the projection 
             polygonFS.Projection = map1.Projection;
 
-            ////Set data columns
-            //System.Data.DataColumn latField = new System.Data.DataColumn("Latitude", typeof(double));
-            //System.Data.DataColumn longField = new System.Data.DataColumn("Longitude", typeof(double));
-
-            ////Add data from excel table
-            //polygonFS.DataTable.Columns.Add(latField);
-            //polygonFS.DataTable.Columns.Add(longField);
 
             Polygon polygon1 = null;
             IFeature feature1 = null;
@@ -216,55 +154,33 @@ namespace Cetecean
             double longitude = 0;
             double startLat = 0;
             double startLong = 0;
-            int indexLat = 0;
-            int indexLon = 0;
+
 
             //Create coordinate list to hold coors
             List<Coordinate> coordList = new List<Coordinate>();
 
-            LinearRing objRing = new LinearRing(coordList);
+            LinearRing objRing;
 
 
 
             foreach (DataRow row in table.Rows)
             {
-                if (i == 0)
-                {
-                    int searchIndex = 0;
-                    foreach (DataColumn col in table.Columns)
-                    {
-                        if (Convert.ToString(row[searchIndex]) == "Latitude" || Convert.ToString(row[searchIndex]) == "LATITUDE")
-                        {
-                            indexLat = searchIndex;
-                        }
-                        if (Convert.ToString(row[searchIndex]) == "Longitude" || Convert.ToString(row[searchIndex]) == "LONGITUDE")
-                        {
-                            indexLon = searchIndex;
-                        }
-                        searchIndex++;
-                    }
 
-                }
-                //Fill first set of coordinates with a startX and startY
-                else if (i == 1)
+               if (i == 1)
                 {
-                    startLat = Convert.ToDouble(row[indexLat]);
-                    startLong = Convert.ToDouble(row[indexLon]);
+                    startLat = Convert.ToDouble(row["Latitude"]);
+                    startLong = Convert.ToDouble(row["Longitude"]);
                     coordList.Add(new Coordinate(startLat, startLong));
-                    //update the featureset
-                    //feature1.DataRow["Latitude"] = startLat;
-                    //feature1.DataRow["Longitude"] = startLong;
 
                 }
 
                 else
                 {
                     //Add the rest of the coordinates
-                    latitude = Convert.ToDouble(row[indexLat]);
-                    longitude = Convert.ToDouble(row[indexLon]);
+                    latitude = Convert.ToDouble(row["Latitude"]);
+                    longitude = Convert.ToDouble(row["Longitude"]);
                     coordList.Add(new Coordinate(latitude, longitude));
-                    //feature1.DataRow["Latitude"] = latitude;
-                    //feature1.DataRow["Longitude"] = longitude;
+
                 }
                 i++;
 
@@ -272,11 +188,11 @@ namespace Cetecean
 
             //Add start point to close the polygon when the loop finishes
             coordList.Add(new Coordinate(startLat, startLong));
-            //feature1.DataRow["Latitude"] = startLat;
-            //feature1.DataRow["Longitude"] = startLong;
+
 
             //create polygon feature here to be updated with foreach loop
-            polygon1 = new Polygon(coordList);
+            objRing = new LinearRing(coordList);
+            polygon1 = new Polygon(objRing);
             polygonFS.InitializeVertices();
             feature1 = polygonFS.AddFeature(objRing);
             map1.ResetBuffer();
@@ -295,7 +211,31 @@ namespace Cetecean
 
         private void openShapefileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            map1.AddLayer();
+             OpenFileDialog dialog = new OpenFileDialog();
+             dialog.Filter="Shapefile (*.shp)|*.shp";
+            dialog.InitialDirectory=@"c:\\";  
+            dialog.Title="Select a shapefile";
+            string strFileName=String.Empty;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                strFileName = dialog.FileName;
+            }
+
+            if (strFileName == String.Empty)
+            {
+                return;
+            }
+            else
+            {
+                try
+                {
+                    map1.AddLayer(strFileName);
+                }
+                catch (NullReferenceException)
+                { 
+                }
+            }
+
         }
 
         private void importFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -319,7 +259,7 @@ namespace Cetecean
                 ExcelData convert = new ExcelData(@strFileName);
                 convert.Import();
                 DataTable data = convert.GetData("point");
-                        AddPointLayer(data);
+                        AddPointLayer(data,Validator.GetNameFile(@strFileName));
             }
                
         }
@@ -356,7 +296,7 @@ namespace Cetecean
                 ExcelData convert = new ExcelData(@strFileName);
                 convert.Import();
                 DataTable data = convert.GetData("line");
-                AddLineLayer(data);
+                AddLineLayer(data,Validator.GetNameFile(@strFileName));
             }
         }
 
@@ -381,7 +321,7 @@ namespace Cetecean
                 ExcelData convert = new ExcelData(@strFileName);
                 convert.Import();
                 DataTable data = convert.GetData("point");
-                AddPolygonLayer(data);
+                AddPolygonLayer(data,Validator.GetNameFile(@strFileName));
 
             }
 

@@ -16,7 +16,7 @@ namespace Cetecean
         private AreaInterest _area = new AreaInterest();
         private AreaInterest _orgArea;
         private MapPolygonLayer _GridLayer = null;
-        private FeatureSet rectangleFs;
+        private FeatureSet rectangleFs = new FeatureSet();
         private string _name="Grid";
 
         public string Name
@@ -287,7 +287,15 @@ namespace Cetecean
 
         public void Save(string name)
         {
-            rectangleFs.SaveAs(name, true);
+
+            try
+            {
+                rectangleFs.SaveAs(@name,true);
+            }
+            catch (NullReferenceException )
+            {
+               
+            }
         }
 
         public void AddLayer()

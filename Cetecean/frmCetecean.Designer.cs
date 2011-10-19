@@ -41,13 +41,13 @@
             this.zoomExtenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.legend1 = new DotSpatial.Controls.Legend();
             this.panel3 = new System.Windows.Forms.Panel();
             this.map1 = new DotSpatial.Controls.Map();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -60,7 +60,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(528, 55);
+            this.panel1.Size = new System.Drawing.Size(807, 49);
             this.panel1.TabIndex = 0;
             // 
             // menuStrip1
@@ -71,7 +71,7 @@
             this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(528, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(807, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -129,50 +129,65 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // zoomExtenToolStripMenuItem
             // 
             this.zoomExtenToolStripMenuItem.Name = "zoomExtenToolStripMenuItem";
-            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomExtenToolStripMenuItem.Text = "Zoom Extents";
             // 
             // panToolStripMenuItem
             // 
             this.panToolStripMenuItem.Name = "panToolStripMenuItem";
-            this.panToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.panToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.panToolStripMenuItem.Text = "Pan";
             this.panToolStripMenuItem.Click += new System.EventHandler(this.panToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createGridToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // createGridToolStripMenuItem
+            // 
+            this.createGridToolStripMenuItem.Name = "createGridToolStripMenuItem";
+            this.createGridToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.createGridToolStripMenuItem.Text = "Create Grid";
+            this.createGridToolStripMenuItem.Click += new System.EventHandler(this.createGridToolStripMenuItem_Click);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.legend1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(0, 55);
+            this.panel2.Location = new System.Drawing.Point(0, 49);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(186, 295);
+            this.panel2.Size = new System.Drawing.Size(186, 512);
             this.panel2.TabIndex = 1;
             // 
             // legend1
             // 
             this.legend1.BackColor = System.Drawing.Color.White;
-            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 186, 295);
+            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 186, 512);
             this.legend1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.legend1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 103, 178);
             this.legend1.HorizontalScrollEnabled = true;
@@ -185,7 +200,7 @@
             this.legend1.ResetOnResize = false;
             this.legend1.SelectionFontColor = System.Drawing.Color.Black;
             this.legend1.SelectionHighlight = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(238)))), ((int)(((byte)(252)))));
-            this.legend1.Size = new System.Drawing.Size(186, 295);
+            this.legend1.Size = new System.Drawing.Size(186, 512);
             this.legend1.TabIndex = 0;
             this.legend1.Text = "legend1";
             this.legend1.VerticalScrollEnabled = true;
@@ -194,9 +209,9 @@
             // 
             this.panel3.Controls.Add(this.map1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(186, 55);
+            this.panel3.Location = new System.Drawing.Point(186, 49);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(342, 295);
+            this.panel3.Size = new System.Drawing.Size(621, 512);
             this.panel3.TabIndex = 2;
             // 
             // map1
@@ -217,33 +232,18 @@
             this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
             this.map1.RedrawLayersWhileResizing = false;
             this.map1.SelectionEnabled = true;
-            this.map1.Size = new System.Drawing.Size(342, 295);
+            this.map1.Size = new System.Drawing.Size(621, 512);
             this.map1.TabIndex = 0;
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createGridToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // createGridToolStripMenuItem
-            // 
-            this.createGridToolStripMenuItem.Name = "createGridToolStripMenuItem";
-            this.createGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.createGridToolStripMenuItem.Text = "Create Grid";
-            this.createGridToolStripMenuItem.Click += new System.EventHandler(this.createGridToolStripMenuItem_Click);
-            // 
             // frmCetecean
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(528, 350);
+            this.ClientSize = new System.Drawing.Size(807, 561);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -283,6 +283,7 @@
         private System.Windows.Forms.ToolStripMenuItem convertExceltoPolygon;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createGridToolStripMenuItem;
+
     }
 }
 
