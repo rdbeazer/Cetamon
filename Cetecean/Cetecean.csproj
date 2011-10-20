@@ -69,6 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaInterest.cs" />
+    <Compile Include="frmPolyEffortByGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPolyEffortByGrid.Designer.cs">
+      <DependentUpon>frmPolyEffortByGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExcelData.cs" />
     <Compile Include="frmCetecean.cs">
       <SubType>Form</SubType>
@@ -82,15 +88,27 @@
     <Compile Include="frmCreatePolygonGrid.designer.cs">
       <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSplitTrack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplitTrack.Designer.cs">
+      <DependentUpon>frmSplitTrack.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validator.cs" />
     <Compile Include="VectorGrid.cs" />
+    <EmbeddedResource Include="frmPolyEffortByGrid.resx">
+      <DependentUpon>frmPolyEffortByGrid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCetecean.resx">
       <DependentUpon>frmCetecean.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCreatePolygonGrid.resx">
       <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplitTrack.resx">
+      <DependentUpon>frmSplitTrack.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

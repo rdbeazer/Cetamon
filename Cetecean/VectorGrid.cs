@@ -244,7 +244,7 @@ namespace Cetecean
                     LinearRing shell = new LinearRing(array);
                     Polygon poly = new Polygon(shell);
                     IFeature newF = _GridLayer.DataSet.AddFeature(poly);
-                    newF.DataRow["ID"] = id;
+                    newF.DataRow["PolygonID"] = id;
                     newF.DataRow["row"] = j + 1;
                     newF.DataRow["col"] = i + 1;
                     id++;
@@ -307,7 +307,7 @@ namespace Cetecean
             else
             {
                 rectangleFs = new FeatureSet(FeatureType.Polygon);
-                rectangleFs.DataTable.Columns.Add("ID");
+                rectangleFs.DataTable.Columns.Add("PolygonID");
                 rectangleFs.DataTable.Columns.Add("row");
                 rectangleFs.DataTable.Columns.Add("col");
 
