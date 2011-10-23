@@ -35,13 +35,66 @@ namespace Cetecean
 
         List<string> layerList1 = new List<string>();
         List<string> layerList2 = new List<string>();
-        int polygonIndex = 0;
-        int lineIndex = 0;
 
         //Create output FS to hold the joined tables
         FeatureSet output = new FeatureSet();
 
         #endregion
+
+        #region Excel Conversions
+
+        private void ExcelToLine_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            //dialog.Filter="xls files (*.xls)|*.xls";
+            //dialog.InitialDirectory=@"..\..\..\Data_set\";  
+            dialog.Title = "Select a Excel File";
+            string strFileName = String.Empty;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                strFileName = dialog.FileName;
+            }
+
+            if (strFileName == String.Empty)
+            {
+                return;
+            }
+            else
+            {
+                ExcelData convert = new ExcelData(@strFileName);
+                convert.Import();
+                DataTable data = convert.GetData("line");
+                AddLineLayer(data, Validator.GetNameFile(@strFileName));
+            }
+        }
+
+        private void convertExceltoPolygon_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "xls files (*.xls)|*.xls";
+            dialog.InitialDirectory = @"..\..\..\Data_set\";
+            dialog.Title = "Select a Excel File";
+            string strFileName = String.Empty;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                strFileName = dialog.FileName;
+            }
+
+            if (strFileName == String.Empty)
+            {
+                return;
+            }
+            else
+            {
+                ExcelData convert = new ExcelData(@strFileName);
+                convert.Import();
+                DataTable data = convert.GetData("point");
+                AddPolygonLayer(data, Validator.GetNameFile(@strFileName));
+
+            }
+
+
+        }
 
         private void AddPointLayer(DataTable table, string name)
         {
@@ -80,7 +133,6 @@ namespace Cetecean
             map1.ResetBuffer();
         }
           
-        //method converts the excel data table to a line shapefile and adds a field for track length.
         private void AddLineLayer(DataTable table,string name)
         {
             //Initialize new MapLineLayer "lineLayer"
@@ -163,83 +215,6 @@ namespace Cetecean
 
         }
 
-        //Method calculates the distance between two coordinate locations.
-        private double GetDistance(double Lat1, double Lat2, double long1, double long2)
-        {
-            double distance = Double.MinValue;
-            //converts decimal degrees to radians
-            double Lat1InRad = Lat1 * (Math.PI / 180.0);
-            double Long1InRad = long1 * (Math.PI / 180.0);
-            double Lat2InRad = Lat2 * (Math.PI / 180.0);
-            double Long2InRad = long2 * (Math.PI / 180.0);
-
-            double Longitude = Long2InRad - Long1InRad;
-            double Latitude = Lat2InRad - Lat1InRad;
-
-            double a = Math.Pow(Math.Sin(Latitude / 2.0), 2.0) + Math.Cos(Lat1InRad) * Math.Cos(Lat2InRad) * Math.Pow(Math.Sin(Longitude / 2.0), 2.0);
-            double c = 2.0 * Math.Asin(Math.Sqrt(a));
-
-            const Double kEarthRadiusKms = 6376.5;
-            distance = kEarthRadiusKms * c;
-            double roundDist = Math.Round(distance, 2);
-            return roundDist;
-        }
- 
-        //REMOVE
-        //    MapLineLayer lineLayer = new MapLineLayer();
-        //    DotSpatial.Data.FeatureSet lineFs = new DotSpatial.Data.FeatureSet(FeatureType.Line);
-
-        //    System.Data.DataColumn startLatField = new System.Data.DataColumn("StartLat", typeof(double));
-        //    System.Data.DataColumn startLongField = new System.Data.DataColumn("StartLong", typeof(double));
-        //    System.Data.DataColumn endLatField = new System.Data.DataColumn("EndLat", typeof(double));
-        //    System.Data.DataColumn endLongField = new System.Data.DataColumn("EndLong", typeof(double));
-
-        //    lineFs.DataTable.Columns.Add(startLatField);
-        //    lineFs.DataTable.Columns.Add(startLongField);
-        //    lineFs.DataTable.Columns.Add(endLatField);
-        //    lineFs.DataTable.Columns.Add(endLongField);
-
-        //    lineFs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
-        //    lineLayer = new MapLineLayer(lineFs);
-        //    lineLayer.LegendText = name;
-        //    lineLayer.Symbolizer.SetFillColor(Color.Red);
-        //    map1.Layers.Add(lineLayer);
-
- 
-        //    int indexStartLat = 0;
-        //    int indexStartLong = 0;
-        //    int indexEndLat = 0;
-        //    int indexEndLong = 0;
-
-        //    foreach (DataRow row in table.Rows)
-        //    {
-        //        double startLat = 0;
-        //        double startLong = 0;
-        //        double endLat = 0;
-        //        double endLong = 0;
-
-        //            List<Coordinate> coordList = new List<Coordinate>();
-        //            startLat = Convert.ToDouble(row[indexStartLat]);
-        //            startLong = Convert.ToDouble(row[indexStartLong]);
-        //            coordList.Add(new Coordinate(startLat, startLong));
-
-        //            endLat = Convert.ToDouble(row[indexEndLat]);
-        //            endLong = Convert.ToDouble(row[indexEndLong]);
-        //            coordList.Add(new Coordinate(endLat, endLong));
-
-        //            DotSpatial.Topology.LineString line = new DotSpatial.Topology.LineString(coordList);
-        //            IFeature feature = lineLayer.DataSet.AddFeature(line);
-
-        //            feature.DataRow["StartLat"] = startLat;
-        //            feature.DataRow["StartLong"] = startLong;
-        //            feature.DataRow["EndLat"] = endLat;
-        //            feature.DataRow["EndLong"] = endLong;
-        //    }
-        //    map1.ResetBuffer();
-
-        //}
-
-        //Adding the polygon layer data----------------------------------------------------------------------------------------------------
         private void AddPolygonLayer(DataTable table, string name)
         {
 
@@ -279,7 +254,7 @@ namespace Cetecean
             foreach (DataRow row in table.Rows)
             {
 
-               if (i == 1)
+                if (i == 1)
                 {
                     startLat = Convert.ToDouble(row["Latitude"]);
                     startLong = Convert.ToDouble(row["Longitude"]);
@@ -312,6 +287,9 @@ namespace Cetecean
             map1.ZoomToMaxExtent();
         }
 
+#endregion
+       
+        #region MapWindow Functions
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             map1.ZoomIn();
@@ -324,11 +302,11 @@ namespace Cetecean
 
         private void openShapefileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             OpenFileDialog dialog = new OpenFileDialog();
-             dialog.Filter="Shapefile (*.shp)|*.shp";
-            dialog.InitialDirectory=@"c:\\";  
-            dialog.Title="Select a shapefile";
-            string strFileName=String.Empty;
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Shapefile (*.shp)|*.shp";
+            dialog.InitialDirectory = @"c:\\";
+            dialog.Title = "Select a shapefile";
+            string strFileName = String.Empty;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 strFileName = dialog.FileName;
@@ -345,75 +323,13 @@ namespace Cetecean
                     map1.AddLayer(strFileName);
                 }
                 catch (NullReferenceException)
-                { 
+                {
                 }
             }
 
         }
 
         private void importFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-             dialog.Filter="xls files (*.xls)|*.xls";
-            dialog.InitialDirectory=@"..\..\..\Data_set\";  
-            dialog.Title="Select a Excel File";
-            string strFileName=String.Empty;
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                strFileName = dialog.FileName;
-            }
-
-            if (strFileName == String.Empty)
-            {
-                return;
-            }
-            else
-            {
-                ExcelData convert = new ExcelData(@strFileName);
-                convert.Import();
-                DataTable data = convert.GetData("point");
-                        AddPointLayer(data,Validator.GetNameFile(@strFileName));
-            }
-               
-        }
-
-        private void panToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            map1.FunctionMode = FunctionMode.Pan;
-
-        }
-
-        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            map1.FunctionMode = FunctionMode.Info;
-        }
-
-        private void ExcelToLine_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            //dialog.Filter="xls files (*.xls)|*.xls";
-            //dialog.InitialDirectory=@"..\..\..\Data_set\";  
-            dialog.Title = "Select a Excel File";
-            string strFileName = String.Empty;
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                strFileName = dialog.FileName;
-            }
-
-            if (strFileName == String.Empty)
-            {
-                return;
-            }
-            else
-            {
-                ExcelData convert = new ExcelData(@strFileName);
-                convert.Import();
-                DataTable data = convert.GetData("line");
-                AddLineLayer(data,Validator.GetNameFile(@strFileName));
-            }
-        }
-
-        private void convertExceltoPolygon_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "xls files (*.xls)|*.xls";
@@ -434,12 +350,25 @@ namespace Cetecean
                 ExcelData convert = new ExcelData(@strFileName);
                 convert.Import();
                 DataTable data = convert.GetData("point");
-                AddPolygonLayer(data,Validator.GetNameFile(@strFileName));
-
+                AddPointLayer(data, Validator.GetNameFile(@strFileName));
             }
 
+        }
+
+        private void panToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            map1.FunctionMode = FunctionMode.Pan;
 
         }
+
+        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            map1.FunctionMode = FunctionMode.Info;
+        }
+
+#endregion
+
+        #region Cetecean Functionality
 
         private void createGridToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -447,7 +376,24 @@ namespace Cetecean
             f.Show();
         }
 
+        private void splitTracksByGridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSplitTrack split = new frmSplitTrack(map1);
+            split.ShowDialog();
+        }
+
+        private void calculateSurveyEffortByGridToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            frmPolyEffortByGrid effort = new frmPolyEffortByGrid(map1);
+            effort.ShowDialog();
+            
+        }
+
+
+        #endregion
+
         //Calculates the track distance for each line feature within a featureset
+
         private void calculateTrackDistance(IFeatureSet inputFeatureSet, FeatureSet outputFeatureSet)
         {
             foreach (Feature fe in inputFeatureSet.Features)
@@ -469,168 +415,27 @@ namespace Cetecean
             }
         }
 
-        //Method to get user selected variables from Split Tracks form
-        private void getLayers()
+        //Method calculates the distance between two coordinate locations.
+        private double GetDistance(double Lat1, double Lat2, double long1, double long2)
         {
-            //clears layerLists
-            layerList1.Clear();
-            layerList2.Clear();
+            double distance = Double.MinValue;
+            //converts decimal degrees to radians
+            double Lat1InRad = Lat1 * (Math.PI / 180.0);
+            double Long1InRad = long1 * (Math.PI / 180.0);
+            double Lat2InRad = Lat2 * (Math.PI / 180.0);
+            double Long2InRad = long2 * (Math.PI / 180.0);
 
-            //loops through the map layers and adds them to the layerLists.
-            //These lists will be used to populate the combo boxes.
-            if (map1.Layers.Count > 1)
-            {
-                for (int i = 0; i < map1.Layers.Count; i++)
-                {
-                    string title = map1.Layers[i].LegendText;
-                    layerList1.Insert(i, title);
-                    layerList2.Insert(i, title);
-                }
-            }
+            double Longitude = Long2InRad - Long1InRad;
+            double Latitude = Lat2InRad - Lat1InRad;
 
-            else
-            {
-                MessageBox.Show("Please add a layer to the map");
-                return;
-            }
-           
+            double a = Math.Pow(Math.Sin(Latitude / 2.0), 2.0) + Math.Cos(Lat1InRad) * Math.Cos(Lat2InRad) * Math.Pow(Math.Sin(Longitude / 2.0), 2.0);
+            double c = 2.0 * Math.Asin(Math.Sqrt(a));
+
+            const Double kEarthRadiusKms = 6376.5;
+            distance = kEarthRadiusKms * c;
+            double roundDist = Math.Round(distance, 2);
+            return roundDist;
         }
-            
-        //Split Tracks by Grid Functionality
-        private void splitTracksByGridToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Gets user input on grid and track layers
-            getLayers();
-            //initializes a new frmSplitTrack
-             frmSplitTrack splitTrack = new frmSplitTrack();
-            //passes the lists to the splitTrack form
-            splitTrack.passList1(this.layerList1);
-            splitTrack.passList2(this.layerList2);
-            //opens the dialog to select the layers.
-            splitTrack.ShowDialog();
-            //assigns indexes to the selected layers using getPolygonIndex and getLineIndex methods.
-            this.polygonIndex = splitTrack.getPolygonIndex();
-            this.lineIndex = splitTrack.getLineIndex();
-        
-
-            //Uses selected layers for functionality
-            IFeatureSet inputLine = (IFeatureSet)map1.Layers[lineIndex].DataSet;
-            IFeatureSet inputPolygon = (IFeatureSet)map1.Layers[polygonIndex].DataSet;
-
-            //Set output feature to a line
-            output.FeatureType = inputLine.FeatureType;
-
-            //Create a temporary file to hold the intersection of 
-            IFeatureSet tempOutput = inputLine.Intersection(inputPolygon, FieldJoinType.All, null);
-
-            //Create new datacolumns from the merging file to the output file 
-            foreach (DataColumn inputLineColumn in tempOutput.DataTable.Columns)
-            {
-                output.DataTable.Columns.Add(new DataColumn(inputLineColumn.ColumnName, inputLineColumn.DataType));
-            }
-
-            //Calculate each track distance and add to the table
-            calculateTrackDistance(tempOutput, output);
-
-            //Saves the output as a shapefile in designated directory.
-            //TODO:  Change this so that the user can select the directory.
-            output.SaveAs("C:\\DotSpatial\\testclip.shp", true);
-
-            //Creates a new MapLineLayer using the output featureset
-            MapLineLayer lineIntersectLayer = new MapLineLayer(output);
-
-            //Sets Legend and Symbolizer properties.
-            lineIntersectLayer.LegendText = "Split survey tracks";
-            lineIntersectLayer.Symbolizer.SetFillColor(Color.Red);
-
-            map1.Layers.Add(lineIntersectLayer);
-            map1.ResetBuffer();
-
-            //Alerts the user that the attributes have been updated.
-            MessageBox.Show("The selected track layer has been segmented by the selected grid layer", "Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
-
-    //Calculate the survey effort by grid-------------------------------------
-        private void calculateSurveyEffortByGridToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            //method gets user input on grid and track layers
-            getLayers();
-
-            //initializes a new polyEffortbyGrid form
-            frmPolyEffortByGrid polyEffort = new frmPolyEffortByGrid();
-            //passes the lists to the Polygon Effort Select form
-            polyEffort.passList1(this.layerList1);
-            polyEffort.passList2(this.layerList2);
-            //opens the dialog to select the layers.
-            polyEffort.ShowDialog();
-            //assigns indexes to the selected layers using getPolygonIndex and getLineIndex methods.
-            this.polygonIndex = polyEffort.getPolygonIndex();
-            this.lineIndex = polyEffort.getLineIndex();
-            //Uses selected layers for functionality
-            IFeatureSet inputLine = (IFeatureSet)map1.Layers[lineIndex].DataSet;
-            IFeatureSet inputPolygon = (IFeatureSet)map1.Layers[polygonIndex].DataSet;
-
-            //creates new DataColumn "lineLengthCol" and
-            //adds the column to the inputPolygon DataTable
-            System.Data.DataColumn lineLengthCol = new System.Data.DataColumn("Sum_Tracks", typeof(double));
-            inputPolygon.DataTable.Columns.Add(lineLengthCol);
-
-            //initializes a new list to hold polygonID's
-            List<int> polygonIDList = new List<int>();
-
-            //loops through the inputLine DataTable and populates the polygonIDList with unique polygonID's.
-            foreach (DataRow row in inputLine.DataTable.Rows)
-            {
-                int polygonID = Convert.ToInt32(row["polygonID"]);
-                if (!polygonIDList.Contains(polygonID))
-                {
-                    polygonIDList.Add(polygonID);
-                }
-            }
-
-
-            //loops through each ID in the polygonIDList
-            foreach (int ID in polygonIDList)
-            {
-                //initializes a new list called lineLengths
-                List<double> lineLengths = new List<double>();
-
-                //loops through each inputLine feature and if the polygonID in the feature matches the ID in the 
-                //polygonIDList, it collects the Survey Line Length for the feature and adds it to the LineLengths list.
-                foreach (Feature fe in inputLine.Features)
-                {
-                    int feID = Convert.ToInt32(fe.DataRow["polygonID"]);
-
-                    if (feID == ID)
-                    {
-                        double lineLength = Convert.ToDouble(fe.DataRow["TrackLength"]);
-                        lineLengths.Add(lineLength);
-                    }
-                }
-
-                //calculates the sum of all the lines in the lineLengths list and rounds to three decimal places.
-                double lineLengthSum = Math.Round(lineLengths.Sum(), 3);
-
-                //loops through the inputPolygon DataTable and if the "polygonID" matches the polygonID from the 
-                //inputLine feature, the lineLength Sum is added to the "Sum_Tracks" column in the inputPolygon DataTable.
-                foreach (DataRow row in inputPolygon.DataTable.Rows)
-                {
-                      int feLineID = Convert.ToInt32(row["polygonID"]);
-
-                    if (feLineID == ID)
-                    {
-                        row["Sum_Tracks"] = lineLengthSum;
-                    }
-                    else
-                    {
-                        row["Sum_Tracks"] = 0;
-                    }
-                }
-
-               
-            }
-            //Alerts the user that the attributes have been updated.
-            MessageBox.Show("The polygon grid attributes have been updated.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
+     
     }
 }

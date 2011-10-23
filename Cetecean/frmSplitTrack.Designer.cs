@@ -97,13 +97,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 157);
+            this.ClientSize = new System.Drawing.Size(268, 174);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSplit);
             this.Controls.Add(this.cmbLine);
             this.Controls.Add(this.lblLine);
             this.Controls.Add(this.cmbGrid);
             this.Controls.Add(this.lblGrid);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmSplitTrack";
             this.Text = "Split Survey Tracks by Grid";
             this.Load += new System.EventHandler(this.frmSplitTrack_Load_1);

@@ -36,22 +36,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\x86\x86\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\..\DotSpatial\x86\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\x86\x86\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\..\DotSpatial\x86\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
-      <HintPath>..\..\x86\x86\DotSpatial.Data.Forms.dll</HintPath>
+      <HintPath>..\..\DotSpatial\x86\DotSpatial.Data.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
-      <HintPath>..\..\x86\x86\DotSpatial.Projections.dll</HintPath>
+      <HintPath>..\..\DotSpatial\x86\DotSpatial.Projections.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\..\x86\x86\DotSpatial.Symbology.dll</HintPath>
+      <HintPath>..\..\DotSpatial\x86\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology">
-      <HintPath>..\..\x86\x86\DotSpatial.Topology.dll</HintPath>
+      <HintPath>..\..\DotSpatial\x86\DotSpatial.Topology.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
