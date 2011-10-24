@@ -157,7 +157,7 @@ namespace Cetecean
             lineLayer.Symbolizer.SetFillColor(Color.Green);
             map1.Layers.Add(lineLayer);
             int i = 0;
-
+            IEnvelope max= null;
             //loops through each row in the data table (from excel)
             foreach (DataRow row in table.Rows)
             {
@@ -185,6 +185,13 @@ namespace Cetecean
                     //creates a line string from the coordinates.
                     LineString li = new LineString(lista);
                     //adds the linestring to a new IFeature newF
+
+                    if (i == 0)
+                        max = li.Envelope;
+                    else
+                      max= max.Union(li.Envelope);
+
+
                     IFeature newF = lineLayer.DataSet.AddFeature(li);
 
                     //Calculates line length using GetDistance method.
@@ -192,11 +199,13 @@ namespace Cetecean
                     //Sets the value in column "Survey Line Length" to the returned lineLength.
                     newF.DataRow["TrackLength"] = lineLength;
 
+                    
+
                     foreach (DataColumn col in table.Columns)
                     {
                         newF.DataRow[col.ColumnName] = row[col.ColumnName];
                     }
-
+                    i++;
                 }
                 catch (InvalidCastException)
                 {
@@ -211,6 +220,7 @@ namespace Cetecean
                 i++;
             }
 
+            map1.ViewExtents = max.ToExtent();
             map1.ResetBuffer();
 
         }
@@ -435,6 +445,12 @@ namespace Cetecean
             distance = kEarthRadiusKms * c;
             double roundDist = Math.Round(distance, 2);
             return roundDist;
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            frmCalculateBuffer fr = new frmCalculateBuffer(map1);
+            fr.ShowDialog();
         }
      
     }

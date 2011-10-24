@@ -43,13 +43,14 @@
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitTracksByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculateSurveyEffortByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.legend1 = new DotSpatial.Controls.Legend();
             this.panel3 = new System.Windows.Forms.Panel();
             this.map1 = new DotSpatial.Controls.Map();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.splitTracksByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.calculateSurveyEffortByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -167,7 +168,8 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createGridToolStripMenuItem,
             this.splitTracksByGridToolStripMenuItem,
-            this.calculateSurveyEffortByGridToolStripMenuItem});
+            this.calculateSurveyEffortByGridToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -178,6 +180,27 @@
             this.createGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.createGridToolStripMenuItem.Text = "Create Grid";
             this.createGridToolStripMenuItem.Click += new System.EventHandler(this.createGridToolStripMenuItem_Click);
+            // 
+            // splitTracksByGridToolStripMenuItem
+            // 
+            this.splitTracksByGridToolStripMenuItem.Name = "splitTracksByGridToolStripMenuItem";
+            this.splitTracksByGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.splitTracksByGridToolStripMenuItem.Text = "Split Tracks by Grid";
+            this.splitTracksByGridToolStripMenuItem.Click += new System.EventHandler(this.splitTracksByGridToolStripMenuItem_Click);
+            // 
+            // calculateSurveyEffortByGridToolStripMenuItem
+            // 
+            this.calculateSurveyEffortByGridToolStripMenuItem.Name = "calculateSurveyEffortByGridToolStripMenuItem";
+            this.calculateSurveyEffortByGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.calculateSurveyEffortByGridToolStripMenuItem.Text = "Calculate Survey Effort by Grid";
+            this.calculateSurveyEffortByGridToolStripMenuItem.Click += new System.EventHandler(this.calculateSurveyEffortByGridToolStripMenuItem_Click_1);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(234, 22);
+            this.toolStripMenuItem1.Text = "Buffer";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // panel2
             // 
@@ -243,20 +266,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // splitTracksByGridToolStripMenuItem
-            // 
-            this.splitTracksByGridToolStripMenuItem.Name = "splitTracksByGridToolStripMenuItem";
-            this.splitTracksByGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.splitTracksByGridToolStripMenuItem.Text = "Split Tracks by Grid";
-            this.splitTracksByGridToolStripMenuItem.Click += new System.EventHandler(this.splitTracksByGridToolStripMenuItem_Click);
-            // 
-            // calculateSurveyEffortByGridToolStripMenuItem
-            // 
-            this.calculateSurveyEffortByGridToolStripMenuItem.Name = "calculateSurveyEffortByGridToolStripMenuItem";
-            this.calculateSurveyEffortByGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.calculateSurveyEffortByGridToolStripMenuItem.Text = "Calculate Survey Effort by Grid";
-            this.calculateSurveyEffortByGridToolStripMenuItem.Click += new System.EventHandler(this.calculateSurveyEffortByGridToolStripMenuItem_Click_1);
-            // 
             // frmCetecean
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -303,6 +312,7 @@
         private System.Windows.Forms.ToolStripMenuItem createGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem splitTracksByGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculateSurveyEffortByGridToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 
     }
 }

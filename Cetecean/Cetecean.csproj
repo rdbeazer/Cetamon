@@ -69,6 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaInterest.cs" />
+    <Compile Include="frmCalculateBuffer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalculateBuffer.Designer.cs">
+      <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPolyEffortByGrid.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validator.cs" />
     <Compile Include="VectorGrid.cs" />
+    <EmbeddedResource Include="frmCalculateBuffer.resx">
+      <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmPolyEffortByGrid.resx">
       <DependentUpon>frmPolyEffortByGrid.cs</DependentUpon>
     </EmbeddedResource>
