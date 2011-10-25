@@ -495,14 +495,14 @@ namespace Cetecean
                     {
                         string columnData = System.Convert.ToString(row[col]);
 
-                        if (CheckNamesList(type,columnData.ToUpper()))
+                        if (CheckNamesList(type, columnData.ToUpper()))
                         {
-                            columnNamesCheck.Add(columnData.ToUpper(),columnData);
+                            columnNamesCheck.Add(columnData.ToUpper(), columnData);
                         }
                     }
                 //}
 
-                    if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4)
+                    if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4 || columnNamesCheck.Count ==5)
                     {
                         DataTable newTable = new DataTable();
                         foreach (DataColumn col in dataTable.Columns)

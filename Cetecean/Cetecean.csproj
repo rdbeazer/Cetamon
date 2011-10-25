@@ -75,6 +75,12 @@
     <Compile Include="frmCalculateBuffer.Designer.cs">
       <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCountSpecies.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCountSpecies.Designer.cs">
+      <DependentUpon>frmCountSpecies.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPolyEffortByGrid.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +112,9 @@
     <Compile Include="VectorGrid.cs" />
     <EmbeddedResource Include="frmCalculateBuffer.resx">
       <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCountSpecies.resx">
+      <DependentUpon>frmCountSpecies.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPolyEffortByGrid.resx">
       <DependentUpon>frmPolyEffortByGrid.cs</DependentUpon>

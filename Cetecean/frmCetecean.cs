@@ -395,8 +395,7 @@ namespace Cetecean
         private void calculateSurveyEffortByGridToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             frmPolyEffortByGrid effort = new frmPolyEffortByGrid(map1);
-            effort.ShowDialog();
-            
+            effort.ShowDialog(); 
         }
 
 
@@ -451,6 +450,12 @@ namespace Cetecean
         {
             frmCalculateBuffer fr = new frmCalculateBuffer(map1);
             fr.ShowDialog();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            frmCountSpecies countSpecies = new frmCountSpecies(map1);
+            countSpecies.ShowDialog();
         }
      
     }
