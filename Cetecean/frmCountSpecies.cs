@@ -19,12 +19,16 @@ namespace Cetecean
 
         #region "Class Variables"
 
-         Map _map = null;
-         List<string> layerList1 = new List<string>(20);
-         List<string> layerList2 = new List<string>(20);
-         int input1SelectIndex = 0;
-         int input2SelectIndex = 0;
-         bool speciesCount = false;
+        Map _map = null;
+        List<string> layerList = new List<string>();
+        int input1SelectIndex = 0;
+        int input2SelectIndex = 0;
+        bool speciesCount = true;
+        string polygonIDField = null;
+        string speciesCountField = null;
+        string addedFields = null;
+        string newField1 = null;
+        string newField2 = null;
 
         #endregion
 
@@ -43,25 +47,18 @@ namespace Cetecean
         {
             cmbInput1.Items.Clear();
             cmbInput2.Items.Clear();
-
             getLayers();
-
-            cmbInput1.DataSource = layerList1;
-            cmbInput2.DataSource = layerList2;
-
         }
 
         #region Methods
 
-        //Method to get user selected variables from Split Tracks form
+        //Method to get user selected layers from CountSpecies form.
         private void getLayers()
         {
-            //clears layerLists
-            layerList1.Clear();
-            layerList2.Clear();
+            //clears layerList
+            layerList.Clear();
 
-            //loops through the map layers and adds them to the layerLists.
-            //These lists will be used to populate the combo boxes.
+            //loops through the map layers
             if (_map.Layers.Count > 1)
             {
                 for (int i = 0; i < _map.Layers.Count; i++)
@@ -71,19 +68,19 @@ namespace Cetecean
                     //Checking file types-------------------------
                     IFeatureSet checkType = (IFeatureSet)_map.Layers[i].DataSet;
 
-                    //if (checkType.FeatureType == FeatureType.Polygon)
-                    //{
-                        
-                        layerList1.Insert(i, title);
-                        
-                    //}
-                    ////Note - for some unknown reason, this else if statement ruins the functionality
-                    //if (checkType.FeatureType == FeatureType.Point)
-                    //{
-                        layerList2.Insert(i, title);
-                       
-                        //layerList2.Add(title);
-                    //}
+                    //If the Feature type is polygon, adds to cmbInput1
+                    if (checkType.FeatureType == FeatureType.Polygon)
+                    {
+                        cmbInput1.Items.Add(title);
+                    }
+                    //If the FeatureType is point, adds to cmbInput2
+                    else if (checkType.FeatureType == FeatureType.Point)
+                    {
+                        cmbInput2.Items.Add(title);
+                    }
+
+                    //Adds each layer and its index to LayerList.  **Used later to reference the layers by index.
+                    layerList.Insert(i, title);
                 }
             }
             else
@@ -93,41 +90,79 @@ namespace Cetecean
             }
         }
 
-        private void cmbInput1_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbInput1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            input1SelectIndex = cmbInput1.SelectedIndex;
+            //Creates a new string to hold the value of the selected item.
+            //The input1SelectIndex is assigned as the index of the selected item in the LayerList.
+            string selectedItem = cmbInput1.SelectedItem.ToString();
+            input1SelectIndex = layerList.IndexOf(selectedItem);
+
+            cmbField.Items.Clear();
+
+            //New IFeatureSet using the map layer at the specified index.
+            IFeatureSet polyFS = (IFeatureSet)_map.Layers[input1SelectIndex].DataSet;
+
+            //Loops through each of the columns and adds the ColumnName to the cmbField combo box.
+            foreach (DataColumn col in polyFS.DataTable.Columns)
+            {
+                cmbField.Items.Add(col.ColumnName);
+            }
         }
 
-        private void cmbInput2_SelectedIndexChanged(object sender, EventArgs e)
+        //Same methodology as cmbInput1
+        private void cmbInput2_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            input2SelectIndex = cmbInput2.SelectedIndex;
+            string selectedItem2 = cmbInput2.SelectedItem.ToString();
+            input2SelectIndex = layerList.IndexOf(selectedItem2);
+            cmbSpecies.Items.Clear();
+            IFeatureSet inputPoint = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
+            foreach (DataColumn col in inputPoint.DataTable.Columns)
+            {
+                cmbSpecies.Items.Add(col.ColumnName);
+            }
         }
 
-        private void ckbIncludeTotalSpecis_CheckedChanged(object sender, EventArgs e)
+        //Changes speciesCount to false if the box is unchecked.  The field for species count will not be added to the layer.
+        private void ckbIncludeTotalSpecis_CheckedChanged_1(object sender, EventArgs e)
         {
-            speciesCount = true;
+            speciesCount = false;
         }
 
-        private void btnCalculate_Click(object sender, EventArgs e)
+        private void cmbField_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+            //Sets the polygonIDField as the string value of the selected item in cmbField.
+            polygonIDField = cmbField.SelectedItem.ToString();
+        }
+
+        private void cmbSpecies_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            //Sets the speciesCountField as the string value of the selected item in cmbSpecies
+            speciesCountField = cmbSpecies.SelectedItem.ToString();
+        }
+
+        private void btnCalculate_Click_1(object sender, EventArgs e)
+        {
+            //Check to make sure layers are different
             if (input1SelectIndex != input2SelectIndex)
             {
-                //Uses selected layers for functionality
+
                 IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[input1SelectIndex].DataSet;
                 IFeatureSet inputPoint = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
 
-                //Creates a new column "Sightings" and adds it to the polygon grid DataTable
-                System.Data.DataColumn sightingsCol = new System.Data.DataColumn("Sightings", typeof(int));
+                //Creates a new field using the user input from the textbox and adds it to the polygon DataTable
+                newField1 = txtSightings.Text;
+                System.Data.DataColumn sightingsCol = new System.Data.DataColumn(newField1, typeof(int));
                 inputPolygon.DataTable.Columns.Add(sightingsCol);
+                addedFields = "\n\n\t" + newField1;
 
-                ////Sets the speciesCount variable from the boolean value assigned in the speciesCount Form.
-                //this.speciesCount = speciesCountForm.getCheckedValue();
-                //if the checkbox was checked, the "true" value is passed and a another new column for SpeciesCount
-                //is created and added to the polygon grid DataTable.
+                //If the checkbox remains checked, the speciesCount variable is true.
+                //The new field for species per polygon is added to the datatable.
                 if (speciesCount == true)
                 {
-                    System.Data.DataColumn speciesCountCol = new System.Data.DataColumn("SpeciesCount", typeof(int));
+                    newField2 = txtSpeciesCount.Text;
+                    System.Data.DataColumn speciesCountCol = new System.Data.DataColumn(newField2, typeof(int));
                     inputPolygon.DataTable.Columns.Add(speciesCountCol);
+                    addedFields += "\n\n\t" + newField2;
                 }
 
                 //A temporary IFeatureSet is created to hold the interesection data between the point and polygon files.
@@ -139,7 +174,7 @@ namespace Cetecean
                 //loops through the tempOutput DataTable and populates the polygonIDList with unique polygonID's.
                 foreach (DataRow row in tempOutput.DataTable.Rows)
                 {
-                    int polygonID = Convert.ToInt32(row["polygonID"]);
+                    int polygonID = Convert.ToInt32(row[polygonIDField]);
                     if (!polygonIDList.Contains(polygonID))
                     {
                         polygonIDList.Add(polygonID);
@@ -156,13 +191,13 @@ namespace Cetecean
                     foreach (Feature fe in tempOutput.Features)
                     {
                         //assigns feID the value in "polygonID" column of tempOutput.
-                        int feID = Convert.ToInt32(fe.DataRow["polygonID"]);
+                        int feID = Convert.ToInt32(fe.DataRow[polygonIDField]);
 
-                        //if the polygonID matches the ID from the polygonIDList, the value in the "Number" column is added 
-                        //to the sightingsList
+                        //if the polygonID matches the ID from the polygonIDList, the value 
+                        //  in speciesCountField is added to the sightingsList
                         if (feID == ID)
                         {
-                            int sighting = Convert.ToInt32(fe.DataRow["Number"]);
+                            int sighting = Convert.ToInt32(fe.DataRow[speciesCountField]);
                             sightingsList.Add(sighting);
                         }
                     }
@@ -175,26 +210,34 @@ namespace Cetecean
                         totalSpeciesCount = sightingsList.Sum();
                     }
 
-                    //loops through the inputPolygon DataTable and if the "polygonID" matches the polygonID from the 
-                    //tempOutput DataTable, the number of sightings are added to the polygon grid file for the associated
-                    //polygonID.  totalSpeciesCount is also added if the value is set to true.
+                    //loops through the inputPolygon DataTable 
                     foreach (DataRow row in inputPolygon.DataTable.Rows)
                     {
-                        int feLineID = Convert.ToInt32(row["polygonID"]);
+                        int feLineID = Convert.ToInt32(row[polygonIDField]);
 
+                        //If the polygonID in the feature matches the polygonID in the tempOutput
                         if (feLineID == ID)
                         {
-                            row["Sightings"] = sightingCount;
+                            //Number of sightings are added to the inputPolygon table for the associated polygonID
+                            row[newField1] = sightingCount;
+
+                            //If speciesCount is true, the totalSpeciesCount is also added to the table.
                             if (speciesCount == true)
                             {
-                                row["SpeciesCount"] = totalSpeciesCount;
+                                row[newField2] = totalSpeciesCount;
                             }
                         }
                     }
                 }
 
-                //Alerts the user that the attributes have been updated.
-                MessageBox.Show("The polygon grid attributes have been updated.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                //Alerts the user that the attributes have been updated and asks for approval to save the feature.
+                MessageBox.Show("The polygon grid attributes have been updated.\n\nNew Fields:" + addedFields
+                    + "\n\nWould you like to save the shapefile?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                if (DialogResult == DialogResult.Yes)
+                {
+                    inputPolygon.Save();
+                }
                 this.Close();
             }
             else
@@ -205,9 +248,6 @@ namespace Cetecean
                 return;
             }
         }
-                
         #endregion
-
-        
     }
 }
