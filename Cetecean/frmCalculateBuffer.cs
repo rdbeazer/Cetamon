@@ -11,6 +11,7 @@ using DotSpatial.Topology;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Projections;
+
 namespace Cetecean
 {
     public partial class frmCalculateBuffer : Form
@@ -29,11 +30,29 @@ namespace Cetecean
             InitializeComponent();
         }
 
+        private void rbtBuffer_CheckedChanged(object sender, EventArgs e)
+        {
+
+            label2.Visible = false;
+            cbxField1.Visible = false;
+            label3.Visible = false;
+            cbxField2.Visible = false;
+            txtBuffer.Visible = true;
+
+            cbxSideType.Enabled = true;
+            label4.Enabled = true;
+        }
+
         private void rbtOne_CheckedChanged(object sender, EventArgs e)
         {
             label2.Text = "Field :";
+            label2.Visible = true;
+            cbxField1.Visible = true;
             label3.Visible = false;
             cbxField2.Visible = false;
+            txtBuffer.Visible = false;
+            cbxSideType.Enabled = true;
+            label4.Enabled = true;
             
         }
 
@@ -42,12 +61,21 @@ namespace Cetecean
             label2.Text = "Field 1 (Right side)";
             label3.Visible = true;
             cbxField2.Visible = true;
-
+            label2.Visible = true;
+            cbxField1.Visible = true;
+            txtBuffer.Visible = false;
+            cbxSideType.Enabled = false;
+            label4.Enabled = false;
         }
 
         private void frmCalculateBuffer_Load(object sender, EventArgs e)
         {
             GetLayers();
+            cbxSideType.Items.Add("Full");
+            cbxSideType.Items.Add("Left");
+            cbxSideType.Items.Add("Right");
+
+
         }
 
         /// <summary>
@@ -59,7 +87,7 @@ namespace Cetecean
             {
                 foreach (IMapLayer iLa in _map.Layers)
                 {
-                    IFeatureSet fT = (IFeatureSet)iLa.DataSet;
+                    FeatureSet fT = (FeatureSet)iLa.DataSet;
                     if (fT.FeatureType == FeatureType.Line)
                         cbxLayer.Items.Add(iLa.LegendText);
                 }
@@ -67,6 +95,7 @@ namespace Cetecean
             else
             {
                 MessageBox.Show("Please add a layer to the map");
+                Close();
                 return;
             }
         }
@@ -102,14 +131,25 @@ namespace Cetecean
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            IFeatureSet fT = null;
-            IFeatureSet outp = null;
+            FeatureSet fT = null;
+            FeatureSet outp = null;
             foreach (IMapLayer iLa in _map.Layers)
             {
-                fT = (IFeatureSet)iLa.DataSet;
+                fT = (FeatureSet)iLa.DataSet;
                 if (fT.Name == cbxLayer.Text)
                     break;
             }
+
+            if (rbtBuffer.Checked)
+            {
+                if (Validator.IsPresent(txtBuffer) && Validator.IsDoublePositive(txtBuffer))
+                {
+
+                    outp = (FeatureSet)CalculateBuffer(fT,Convert.ToDouble(txtBuffer.Text),cbxSideType.Text);
+                }
+            }
+
+
 
             if (rbtOne.Checked)
             {
@@ -118,7 +158,7 @@ namespace Cetecean
                     MessageBox.Show("Please select a field");
                     return;
                 }
-                outp=CalculateBuffer(fT, cbxField1.Text);
+                outp = CalculateBuffer(fT, cbxField1.Text, cbxSideType.Text);
             }
 
             if (rbtTwo.Checked)
@@ -128,27 +168,35 @@ namespace Cetecean
                     MessageBox.Show("Please select a field");
                     return;
                 }
-                outp = CalculateBuffer(fT, cbxField1.Text, cbxField2.Text);
+                outp = CalculateBuffer(fT, cbxField1, cbxField2);
 
             }
 
             if (chkDissolve.Checked)
             { 
-            
-            
+                 if (cbxDissolve.Text == "")
+                 {
+                     MessageBox.Show("Please select a field");
+                    return;
+                 }
+
+                 outp = (FeatureSet)outp.Dissolve(cbxDissolve.Text);
             }
+
+            Validator.SaveShapefile("Buffer", outp);
             IMapPolygonLayer Ipo = new MapPolygonLayer(outp);
             Ipo.LegendText = "Buffer";
             Ipo.Symbolizer.SetFillColor(Color.Green);
 
             _map.Layers.Add(Ipo);
+            fT = null;
             Close();
         }
 
 
-        private IFeatureSet CalculateBuffer(IFeatureSet feaS, string field)
+        private FeatureSet CalculateBuffer(FeatureSet feaS, string field, string side)
         {
-            IFeatureSet outp = new FeatureSet() ;
+            FeatureSet outp = new FeatureSet() ;
             outp.FeatureType = FeatureType.Polygon;
 
             outp.Projection = _map.Projection;
@@ -162,10 +210,32 @@ namespace Cetecean
             {
 
                 double v = Convert.ToDouble(row[field]);
-               // IFeature fea = outp.AddFeature(feaS.Features[i].Buffer(v));
-                IFeature fea = outp.AddFeature(TransfGeometry(TransfGeometry(feaS.Features[i], true).Buffer(v),false));
-                
 
+                IFeature fea1;
+                IFeature fea ;
+
+                if (side == "Full")
+                {
+                    fea1 = (TransfGeometry(feaS.Features[i], true));
+                    fea1 = fea1.Buffer(v);
+                    fea = outp.AddFeature((TransfGeometry(fea1, false)));
+                }
+                else if (side == "Left")
+                {
+                    IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
+                    LinearRing linL = new LinearRing(BufferBySide(l, v, "L"));
+                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
+                }
+                else 
+                {
+                    IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
+                    LinearRing linL = new LinearRing(BufferBySide(l, v, "R"));
+                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
+                
+                }
+
+
+              
                 foreach (DataColumn col in feaS.DataTable.Columns)
                 {
                     fea.DataRow[col.ColumnName] = row[col.ColumnName];
@@ -178,8 +248,66 @@ namespace Cetecean
 
         }
 
-        private IFeature TransfGeometry(IFeature B, bool t)
+        private FeatureSet CalculateBuffer(FeatureSet feaS, double buffer, string side)
         {
+            FeatureSet outp = new FeatureSet();
+            outp.FeatureType = FeatureType.Polygon;
+
+            outp.Projection = _map.Projection;
+
+            foreach (DataColumn col in feaS.DataTable.Columns)
+            {
+                outp.DataTable.Columns.Add(new DataColumn(col.ColumnName, col.DataType));
+            }
+
+            int i = 0;
+            foreach (DataRow row in feaS.DataTable.Rows)
+            {
+
+                IFeature fea;
+
+                if (side == "Full")
+                {
+                    fea = outp.AddFeature(TransfGeometry(TransfGeometry(feaS.Features[i], true).Buffer(buffer), false));
+                }
+                else if (side == "Left")
+                {
+                    IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
+                    LinearRing linL = new LinearRing(BufferBySide(l, buffer, "L"));
+                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
+                }
+                else
+                {
+                    IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
+                    LinearRing linL = new LinearRing(BufferBySide(l, buffer, "R"));
+                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
+
+                }
+                
+               
+                foreach (DataColumn col in feaS.DataTable.Columns)
+                {
+                    fea.DataRow[col.ColumnName] = row[col.ColumnName];
+                }
+                i++;
+            }
+
+            feaS.Projection = _map.Projection;
+            return (FeatureSet)outp;
+
+        }
+
+
+        private IFeature TransfGeometry(IFeature C, bool t)
+        {
+            IFeature B = (IFeature)C.Clone();
+
+            if (_map.Projection != KnownCoordinateSystems.Geographic.World.WGS1984)
+            {
+                return B;
+            }
+
+            MessageBox.Show(_map.Projection.Unit.Name);
 
             double[] xy = new double[B.Coordinates.Count * 2];
             double[] z = new double[B.Coordinates.Count * 2];
@@ -188,6 +316,8 @@ namespace Cetecean
                 xy[2 * i] =  B.Coordinates[i].X;
                 xy[2 * i + 1] = B.Coordinates[i].Y;
             }
+
+
             if (t)
             DotSpatial.Projections.Reproject.ReprojectPoints(xy, z, _map.Projection,
                 KnownCoordinateSystems.Projected.World.WebMercator, 0, B.Coordinates.Count);
@@ -206,8 +336,11 @@ namespace Cetecean
             return B;
         }
 
-        private IFeatureSet CalculateBuffer(IFeatureSet feaS, string fieldR, string fieldL)
+        private FeatureSet CalculateBuffer(FeatureSet feaS, ComboBox cfieldR, ComboBox cfieldL)
         {
+            string fieldR = cfieldR.Text;
+            string fieldL = cfieldL.Text;
+
             IFeatureSet outp = new FeatureSet();
             outp.FeatureType = FeatureType.Polygon;
 
@@ -223,13 +356,13 @@ namespace Cetecean
             {
                 double vR = Convert.ToDouble(row[fieldR]) ;
                 double vL = Convert.ToDouble(row[fieldL]);
-                IFeature l = TransfGeometry(feaS.Features[i], true);
+                IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
 
                 //IFeature fea = outp.AddFeature(TransfGeometry(TransfGeometry(feaS.Features[i], true).Buffer(v), false));
                 LinearRing linR= new LinearRing(BufferBySide(l,vR,"R"));
                 LinearRing linL= new LinearRing(BufferBySide(l,vL,"L"));
-                IFeature feaR = outp.AddFeature(TransfGeometry((IFeature)new Feature(new Polygon(linR)), false));
-                IFeature feaL = outp.AddFeature(TransfGeometry((IFeature)new Feature(new Polygon(linL)), false));
+                IFeature feaR = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linR)), false));
+                IFeature feaL = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
 
 
                 foreach (DataColumn col in feaS.DataTable.Columns)
@@ -240,9 +373,11 @@ namespace Cetecean
                 i++;
             }
 
-            return outp;
+            return (FeatureSet)outp;
         
         }
+
+
 
         private Coordinate AzimutDist(Coordinate ptoI, double azi, double dist)
         {
@@ -312,8 +447,6 @@ namespace Cetecean
         {
             double dx = target.X - origin.X;
             double dy = target.Y - origin.Y;
-
-            // if (dx == 0 && dy == 0) return 0;
             if (dx == 0 && dy > 0) return 0;
             if (dx == 0 && dy < 0) return Math.PI;
             if (dx > 0 && dy == 0) return Math.PI / 2;
@@ -323,7 +456,7 @@ namespace Cetecean
             if (dx < 0 && dy < 0) return (Math.PI) + Math.Atan(dx / dy);
             if (dx < 0 && dy > 0) return (2 * Math.PI) + Math.Atan(dx / dy);
             return 0;
-            //  return Math.Atan(dx / dy);
+
 
         }
 
@@ -360,6 +493,23 @@ namespace Cetecean
         {
             FillFields(cbxLayer.Text);
         }
+
+        private void cbxDissolve_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void cbxSideType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkDissolve_CheckedChanged(object sender, EventArgs e)
+        {
+            cbxDissolve.Visible = true;
+        }
+
+
 
     }
 }

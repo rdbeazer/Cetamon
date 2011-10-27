@@ -45,13 +45,14 @@
             this.createGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitTracksByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculateSurveyEffortByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.legend1 = new DotSpatial.Controls.Legend();
             this.panel3 = new System.Windows.Forms.Panel();
             this.map1 = new DotSpatial.Controls.Map();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.spatialToolStrip1 = new DotSpatial.Controls.SpatialToolStrip();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -60,6 +61,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.spatialToolStrip1);
             this.panel1.Controls.Add(this.menuStrip1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -133,34 +135,34 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // zoomExtenToolStripMenuItem
             // 
             this.zoomExtenToolStripMenuItem.Name = "zoomExtenToolStripMenuItem";
-            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomExtenToolStripMenuItem.Text = "Zoom Extents";
             // 
             // panToolStripMenuItem
             // 
             this.panToolStripMenuItem.Name = "panToolStripMenuItem";
-            this.panToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.panToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.panToolStripMenuItem.Text = "Pan";
             this.panToolStripMenuItem.Click += new System.EventHandler(this.panToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -196,6 +198,13 @@
             this.calculateSurveyEffortByGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.calculateSurveyEffortByGridToolStripMenuItem.Text = "Calculate Survey Effort by Grid";
             this.calculateSurveyEffortByGridToolStripMenuItem.Click += new System.EventHandler(this.calculateSurveyEffortByGridToolStripMenuItem_Click_1);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(234, 22);
+            this.toolStripMenuItem2.Text = "Count Species per Polygon";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -268,12 +277,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // toolStripMenuItem2
+            // spatialToolStrip1
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(234, 22);
-            this.toolStripMenuItem2.Text = "Count Species per Polygon";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            this.spatialToolStrip1.ApplicationManager = null;
+            this.spatialToolStrip1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.spatialToolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.spatialToolStrip1.Map = this.map1;
+            this.spatialToolStrip1.Name = "spatialToolStrip1";
+            this.spatialToolStrip1.Size = new System.Drawing.Size(807, 25);
+            this.spatialToolStrip1.TabIndex = 1;
+            this.spatialToolStrip1.Text = "spatialToolStrip1";
             // 
             // frmCetecean
             // 
@@ -323,6 +336,7 @@
         private System.Windows.Forms.ToolStripMenuItem calculateSurveyEffortByGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private DotSpatial.Controls.SpatialToolStrip spatialToolStrip1;
 
     }
 }

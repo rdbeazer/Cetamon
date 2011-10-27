@@ -32,6 +32,10 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.grpParameters = new System.Windows.Forms.GroupBox();
+            this.cbxSideType = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtBuffer = new System.Windows.Forms.TextBox();
+            this.rbtBuffer = new System.Windows.Forms.RadioButton();
             this.cbxDissolve = new System.Windows.Forms.ComboBox();
             this.chkDissolve = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -56,12 +60,12 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(378, 310);
+            this.panel1.Size = new System.Drawing.Size(351, 396);
             this.panel1.TabIndex = 0;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(264, 273);
+            this.btnOK.Location = new System.Drawing.Point(234, 347);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(93, 23);
             this.btnOK.TabIndex = 4;
@@ -71,7 +75,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(169, 272);
+            this.btnCancel.Location = new System.Drawing.Point(139, 346);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -80,6 +84,10 @@
             // 
             // grpParameters
             // 
+            this.grpParameters.Controls.Add(this.cbxSideType);
+            this.grpParameters.Controls.Add(this.label4);
+            this.grpParameters.Controls.Add(this.txtBuffer);
+            this.grpParameters.Controls.Add(this.rbtBuffer);
             this.grpParameters.Controls.Add(this.cbxDissolve);
             this.grpParameters.Controls.Add(this.chkDissolve);
             this.grpParameters.Controls.Add(this.label3);
@@ -90,33 +98,75 @@
             this.grpParameters.Controls.Add(this.rbtOne);
             this.grpParameters.Location = new System.Drawing.Point(22, 58);
             this.grpParameters.Name = "grpParameters";
-            this.grpParameters.Size = new System.Drawing.Size(335, 203);
+            this.grpParameters.Size = new System.Drawing.Size(305, 271);
             this.grpParameters.TabIndex = 2;
             this.grpParameters.TabStop = false;
             this.grpParameters.Text = "Define buffer ";
             // 
+            // cbxSideType
+            // 
+            this.cbxSideType.FormattingEnabled = true;
+            this.cbxSideType.Location = new System.Drawing.Point(185, 180);
+            this.cbxSideType.Name = "cbxSideType";
+            this.cbxSideType.Size = new System.Drawing.Size(65, 21);
+            this.cbxSideType.TabIndex = 11;
+            this.cbxSideType.SelectedIndexChanged += new System.EventHandler(this.cbxSideType_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(26, 184);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(58, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Side Type:";
+            // 
+            // txtBuffer
+            // 
+            this.txtBuffer.Location = new System.Drawing.Point(185, 27);
+            this.txtBuffer.Name = "txtBuffer";
+            this.txtBuffer.Size = new System.Drawing.Size(95, 20);
+            this.txtBuffer.TabIndex = 9;
+            this.txtBuffer.Tag = "Buffer ";
+            // 
+            // rbtBuffer
+            // 
+            this.rbtBuffer.AutoSize = true;
+            this.rbtBuffer.Checked = true;
+            this.rbtBuffer.Location = new System.Drawing.Point(28, 27);
+            this.rbtBuffer.Name = "rbtBuffer";
+            this.rbtBuffer.Size = new System.Drawing.Size(117, 17);
+            this.rbtBuffer.TabIndex = 8;
+            this.rbtBuffer.TabStop = true;
+            this.rbtBuffer.Text = "Linear unit  (meters)";
+            this.rbtBuffer.UseVisualStyleBackColor = true;
+            this.rbtBuffer.CheckedChanged += new System.EventHandler(this.rbtBuffer_CheckedChanged);
+            // 
             // cbxDissolve
             // 
             this.cbxDissolve.FormattingEnabled = true;
-            this.cbxDissolve.Location = new System.Drawing.Point(187, 159);
+            this.cbxDissolve.Location = new System.Drawing.Point(196, 224);
             this.cbxDissolve.Name = "cbxDissolve";
             this.cbxDissolve.Size = new System.Drawing.Size(84, 21);
             this.cbxDissolve.TabIndex = 7;
+            this.cbxDissolve.Visible = false;
+            this.cbxDissolve.SelectedIndexChanged += new System.EventHandler(this.cbxDissolve_SelectedIndexChanged);
             // 
             // chkDissolve
             // 
             this.chkDissolve.AutoSize = true;
-            this.chkDissolve.Location = new System.Drawing.Point(30, 161);
+            this.chkDissolve.Location = new System.Drawing.Point(29, 224);
             this.chkDissolve.Name = "chkDissolve";
-            this.chkDissolve.Size = new System.Drawing.Size(151, 17);
+            this.chkDissolve.Size = new System.Drawing.Size(111, 17);
             this.chkDissolve.TabIndex = 6;
-            this.chkDissolve.Text = "Dissolve polygon by a field";
+            this.chkDissolve.Text = "Dissolve by a field";
             this.chkDissolve.UseVisualStyleBackColor = true;
+            this.chkDissolve.CheckedChanged += new System.EventHandler(this.chkDissolve_CheckedChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 125);
+            this.label3.Location = new System.Drawing.Point(26, 152);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(90, 13);
             this.label3.TabIndex = 5;
@@ -126,16 +176,17 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 93);
+            this.label2.Location = new System.Drawing.Point(26, 120);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Field :";
+            this.label2.Visible = false;
             // 
             // cbxField2
             // 
             this.cbxField2.FormattingEnabled = true;
-            this.cbxField2.Location = new System.Drawing.Point(130, 122);
+            this.cbxField2.Location = new System.Drawing.Point(129, 148);
             this.cbxField2.Name = "cbxField2";
             this.cbxField2.Size = new System.Drawing.Size(121, 21);
             this.cbxField2.TabIndex = 3;
@@ -144,31 +195,30 @@
             // cbxField1
             // 
             this.cbxField1.FormattingEnabled = true;
-            this.cbxField1.Location = new System.Drawing.Point(130, 90);
+            this.cbxField1.Location = new System.Drawing.Point(129, 116);
             this.cbxField1.Name = "cbxField1";
             this.cbxField1.Size = new System.Drawing.Size(121, 21);
             this.cbxField1.TabIndex = 2;
+            this.cbxField1.Visible = false;
             // 
             // rbtTwo
             // 
             this.rbtTwo.AutoSize = true;
-            this.rbtTwo.Location = new System.Drawing.Point(30, 57);
+            this.rbtTwo.Location = new System.Drawing.Point(28, 85);
             this.rbtTwo.Name = "rbtTwo";
-            this.rbtTwo.Size = new System.Drawing.Size(155, 17);
+            this.rbtTwo.Size = new System.Drawing.Size(130, 17);
             this.rbtTwo.TabIndex = 1;
-            this.rbtTwo.Text = "Two fields (Different widths)";
+            this.rbtTwo.Text = "Two fields (Two sides)";
             this.rbtTwo.UseVisualStyleBackColor = true;
             this.rbtTwo.CheckedChanged += new System.EventHandler(this.rbtTwo_CheckedChanged);
             // 
             // rbtOne
             // 
             this.rbtOne.AutoSize = true;
-            this.rbtOne.Checked = true;
-            this.rbtOne.Location = new System.Drawing.Point(30, 29);
+            this.rbtOne.Location = new System.Drawing.Point(28, 57);
             this.rbtOne.Name = "rbtOne";
             this.rbtOne.Size = new System.Drawing.Size(182, 17);
             this.rbtOne.TabIndex = 0;
-            this.rbtOne.TabStop = true;
             this.rbtOne.Text = "One field (Same width both sides)";
             this.rbtOne.UseVisualStyleBackColor = true;
             this.rbtOne.CheckedChanged += new System.EventHandler(this.rbtOne_CheckedChanged);
@@ -195,7 +245,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 310);
+            this.ClientSize = new System.Drawing.Size(351, 396);
             this.Controls.Add(this.panel1);
             this.Name = "frmCalculateBuffer";
             this.Text = "Calculate buffer";
@@ -224,5 +274,9 @@
         private System.Windows.Forms.RadioButton rbtOne;
         private System.Windows.Forms.ComboBox cbxLayer;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtBuffer;
+        private System.Windows.Forms.RadioButton rbtBuffer;
+        private System.Windows.Forms.ComboBox cbxSideType;
+        private System.Windows.Forms.Label label4;
     }
 }

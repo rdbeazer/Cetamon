@@ -175,9 +175,8 @@ namespace Cetecean
 
                     //Creates new array and adds coordinate values.
                     double[] xy = new double[] { longitude, latitude, longitude1, latitude1 };
-                    string esri = Properties.Resources.Wgs84_String;
-                    ProjectionInfo wgs84 = new ProjectionInfo();
-                    wgs84.ReadEsriString(esri);
+
+                    ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
                     Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, wgs84, map1.Projection, 0, 2);
 
                     //stores coordinates from the array in a coordinate list.
@@ -209,7 +208,9 @@ namespace Cetecean
                 }
                 catch (InvalidCastException)
                 {
+                    map1.ViewExtents = max.ToExtent();
                     map1.ResetBuffer();
+                    Validator.SaveShapefile(name + ".xls", lineFs);
                     return;
                 }
                 catch (FormatException)
@@ -222,8 +223,12 @@ namespace Cetecean
 
             map1.ViewExtents = max.ToExtent();
             map1.ResetBuffer();
+            Validator.SaveShapefile(name+".xls",lineFs);
 
         }
+
+
+
 
         private void AddPolygonLayer(DataTable table, string name)
         {
