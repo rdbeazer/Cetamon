@@ -57,6 +57,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.joinPointsToPolygonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -192,34 +193,34 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // zoomExtenToolStripMenuItem
             // 
             this.zoomExtenToolStripMenuItem.Name = "zoomExtenToolStripMenuItem";
-            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomExtenToolStripMenuItem.Text = "Zoom Extents";
             // 
             // panToolStripMenuItem
             // 
             this.panToolStripMenuItem.Name = "panToolStripMenuItem";
-            this.panToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.panToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.panToolStripMenuItem.Text = "Pan";
             this.panToolStripMenuItem.Click += new System.EventHandler(this.panToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -232,7 +233,8 @@
             this.toolStripMenuItem2,
             this.toolStripMenuItem1,
             this.splitToolStripMenuItem,
-            this.calculateAreaToolStripMenuItem});
+            this.calculateAreaToolStripMenuItem,
+            this.joinPointsToPolygonsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -324,6 +326,13 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // joinPointsToPolygonsToolStripMenuItem
+            // 
+            this.joinPointsToPolygonsToolStripMenuItem.Name = "joinPointsToPolygonsToolStripMenuItem";
+            this.joinPointsToPolygonsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.joinPointsToPolygonsToolStripMenuItem.Text = "Join Points to Polygons";
+            this.joinPointsToPolygonsToolStripMenuItem.Click += new System.EventHandler(this.joinPointsToPolygonsToolStripMenuItem_Click);
+            // 
             // frmCetecean
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -377,6 +386,7 @@
         private System.Windows.Forms.ToolStripMenuItem surveySwathesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem splitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculateAreaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem joinPointsToPolygonsToolStripMenuItem;
 
     }
 }

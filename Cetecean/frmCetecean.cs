@@ -481,6 +481,12 @@ namespace Cetecean
             ar.Show();
         }
 
+        private void joinPointsToPolygonsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmJoinPointsToPolygons joinPtToPoly = new frmJoinPointsToPolygons(map1);
+            joinPtToPoly.Show();
+        }
+
         
      
     }

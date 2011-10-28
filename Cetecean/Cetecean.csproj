@@ -104,6 +104,12 @@
     <Compile Include="frmCreatePolygonGrid.designer.cs">
       <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmJoinPointsToPolygons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmJoinPointsToPolygons.Designer.cs">
+      <DependentUpon>frmJoinPointsToPolygons.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPolyEffortByGrid.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCreatePolygonGrid.resx">
       <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmJoinPointsToPolygons.resx">
+      <DependentUpon>frmJoinPointsToPolygons.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPolyEffortByGrid.resx">
       <DependentUpon>frmPolyEffortByGrid.cs</DependentUpon>
