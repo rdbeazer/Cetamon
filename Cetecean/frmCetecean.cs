@@ -397,12 +397,30 @@ namespace Cetecean
             split.ShowDialog();
         }
 
-        private void calculateSurveyEffortByGridToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            frmPolyEffortByGrid effort = new frmPolyEffortByGrid(map1);
-            effort.ShowDialog(); 
+            frmCalculateBuffer fr = new frmCalculateBuffer(map1);
+            fr.ShowDialog();
         }
 
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            frmCountSpecies countSpecies = new frmCountSpecies(map1);
+            countSpecies.ShowDialog();
+        }
+
+        private void surveyTracksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmPolyEffortByGrid effort = new frmPolyEffortByGrid(map1);
+            effort.ShowDialog();
+        }
+
+        private void surveySwathesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmPolyEffortBySwathe swatheEffort = new frmPolyEffortBySwathe(map1);
+            swatheEffort.ShowDialog();
+        }
+        
 
         #endregion
 
@@ -451,17 +469,7 @@ namespace Cetecean
             return roundDist;
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            frmCalculateBuffer fr = new frmCalculateBuffer(map1);
-            fr.ShowDialog();
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            frmCountSpecies countSpecies = new frmCountSpecies(map1);
-            countSpecies.ShowDialog();
-        }
+        
      
     }
 }

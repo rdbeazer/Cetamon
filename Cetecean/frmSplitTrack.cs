@@ -14,10 +14,10 @@ using DotSpatial.Projections;
 
 namespace Cetecean
 {
-  
+
     public partial class frmSplitTrack : Form
     {
-#region Class Level Variables
+        #region Class Level Variables
         Map _map = null;
         List<string> layerList1 = new List<string>();
         List<string> layerList2 = new List<string>();
@@ -27,7 +27,7 @@ namespace Cetecean
         //Create output FS to hold the joined tables
         FeatureSet output = new FeatureSet();
 
-#endregion
+        #endregion
 
 
         public frmSplitTrack()
@@ -47,51 +47,39 @@ namespace Cetecean
             cmbGrid.Items.Clear();
             cmbLine.Items.Clear();
 
-            getLayers();
-
             //Populate the comboboxes with lists from the cetacean form
+            getLayers(layerList1);
             cmbGrid.DataSource = layerList1; //Polygon
+            getLayers(layerList2);
             cmbLine.DataSource = layerList2; //Line
         }
 
         #region Methods
 
         //Method to get user selected variables from Split Tracks form
-        private void getLayers()
+        private void getLayers(List<string> layerList)
         {
             //clears layerLists
-            layerList1.Clear();
-            layerList2.Clear();
+            layerList.Clear();
 
             //loops through the map layers and adds them to the layerLists.
             //These lists will be used to populate the combo boxes.
-            if (_map.Layers.Count > 1)
+            if (_map.Layers.Count > 0)
             {
                 for (int i = 0; i < _map.Layers.Count; i++)
                 {
                     string title = _map.Layers[i].LegendText;
-
-                    //Checking file types-------------------------
-                    IFeatureSet checkType = (IFeatureSet)_map.Layers[i].DataSet;
-
-                    if (checkType.FeatureType == FeatureType.Polygon)
-                    {
-                        layerList1.Insert(i, title);
-                    }
-                    //Note - for some unknown reason, this else if statement ruins the functionality
-                    //else if (checkType.FeatureType == FeatureType.Line)
-                    //{
-                        layerList2.Insert(i, title);
-                    //}
+                    layerList.Insert(i, title);
                 }
             }
             else
             {
-                MessageBox.Show("Please add a layer to the map");
+                MessageBox.Show("Please add another layer to the map for this operation", "Not enough layers present.");
                 return;
             }
-        }      
- 
+        }
+
+
         //Get the polygon grid layer index based on the user selection
         private void cmbGrid_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -115,37 +103,38 @@ namespace Cetecean
                     //Get the input line and polygon based on the index of the user selection from the combo box
                     IFeatureSet inputLine = (IFeatureSet)_map.Layers[lineSelectIndex].DataSet;
                     IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[polygonSelectIndex].DataSet;
-                    
-                        //Set output feature to a line
-                        output.FeatureType = inputLine.FeatureType;
 
-                        //Create a temporary file to hold the intersection of 
-                        IFeatureSet tempOutput = inputLine.Intersection(inputPolygon, FieldJoinType.All, null);
+                    //Set output feature to a line
+                    output.FeatureType = inputLine.FeatureType;
 
-                        //Create new datacolumns from the merging file to the output file 
-                        foreach (DataColumn inputLineColumn in tempOutput.DataTable.Columns)
-                        {
-                            output.DataTable.Columns.Add(new DataColumn(inputLineColumn.ColumnName, inputLineColumn.DataType));
-                        }
+                    //Create a temporary file to hold the intersection of 
+                    IFeatureSet tempOutput = inputLine.Intersection(inputPolygon, FieldJoinType.All, null);
 
-                        ////Calculate each track distance and add to the table
-                        calculateTrackDistance(tempOutput, output);
+                    //Create new datacolumns from the merging file to the output file 
+                    foreach (DataColumn inputLineColumn in tempOutput.DataTable.Columns)
+                    {
+                        output.DataTable.Columns.Add(new DataColumn(inputLineColumn.ColumnName, inputLineColumn.DataType));
+                    }
 
-                        saveFile(output);
+                    ////Calculate each track distance and add to the table
+                    calculateTrackDistance(tempOutput, output);
 
-                        //Creates a new MapLineLayer using the output featureset
-                        MapLineLayer lineIntersectLayer = new MapLineLayer(output);
 
-                        //Sets Legend and Symbolizer properties.
-                        lineIntersectLayer.LegendText = "Split survey tracks";
-                        lineIntersectLayer.Symbolizer.SetFillColor(Color.Red);
 
-                        _map.Layers.Add(lineIntersectLayer);
-                        _map.ResetBuffer();
-                        //Alerts the user that the attributes have been updated.
-                        MessageBox.Show("The selected track layer has been segmented by the selected grid layer", "Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        this.Close();
-                    
+                    //Creates a new MapLineLayer using the output featureset
+                    MapLineLayer lineIntersectLayer = new MapLineLayer(output);
+
+                    //Sets Legend and Symbolizer properties.
+                    lineIntersectLayer.LegendText = "Split survey tracks";
+                    lineIntersectLayer.Symbolizer.SetFillColor(Color.Red);
+
+                    _map.Layers.Add(lineIntersectLayer);
+                    _map.ResetBuffer();
+                    //Alerts the user that the attributes have been updated.
+                    MessageBox.Show("The selected track layer has been segmented by the selected grid layer", "Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    saveFile(output);
+                    this.Close();
+
                 }
                 else
                 {
@@ -196,8 +185,8 @@ namespace Cetecean
             {
                 output.SaveAs(strFileName, true);
             }
-           
-         }
+
+        }
         //Calculates the track distance for each line feature within a featureset
         public void calculateTrackDistance(IFeatureSet inputFeatureSet, FeatureSet outputFeatureSet)
         {
@@ -250,3 +239,4 @@ namespace Cetecean
 
     }
 }
+

@@ -21,10 +21,12 @@ namespace Cetecean
         Map _map = null;
         List<string> layerList1 = new List<string>();
         List<string> layerList2 = new List<string>();
-        List<string> gridAttributeList = new List<string>();
-        List<string> trackAttributeList = new List<string>();
-        int polygonSelectIndex = 0;
-        int lineSelectIndex = 0;
+        string columnHead1Select;
+        string columnHead2Select;
+        int gridSelectIndex = 0;
+        int trackSelectIndex = 0;
+        IFeatureSet inputGrid = null;
+        IFeatureSet inputTrack = null;
         FeatureSet output = new FeatureSet();
         #endregion
 
@@ -39,128 +41,143 @@ namespace Cetecean
             InitializeComponent();
         }
 
-        private void frmSplitTrack_Load_1(object sender, EventArgs e)
+        private void frmPolyEffortByGrid_Load(object sender, EventArgs e)
         {
             //Clear the combobox items from any previous runs
             cmbGrid.Items.Clear();
-            cmbLine.Items.Clear();
-
-            getLayers();
+            cmbGridID.Items.Clear();
+            cmbTrack.Items.Clear();
+            cmbTrackID.Items.Clear();
 
             //Populate the comboboxes with lists from the cetacean form
+            getLayers(layerList1);
             cmbGrid.DataSource = layerList1;
-            cmbLine.DataSource = layerList2;
+            getLayers(layerList2);
+            cmbTrack.DataSource = layerList2;
+
         }
 
         #region Methods
         //Method to get user selected variables from Split Tracks form
-        private void getLayers()
+         private void getLayers(List<string> layerList)
         {
             //clears layerLists
-            layerList1.Clear();
-            layerList2.Clear();
+            layerList.Clear();
 
             //loops through the map layers and adds them to the layerLists.
             //These lists will be used to populate the combo boxes.
-            if (_map.Layers.Count > 1)
+            if (_map.Layers.Count > 0 )
             {
                 for (int i = 0; i < _map.Layers.Count; i++)
                 {
                     string title = _map.Layers[i].LegendText;
-
-                    //Checking file types-------------------------
-                    IFeatureSet checkType = (IFeatureSet)_map.Layers[i].DataSet;
-
-                    if (checkType.FeatureType == FeatureType.Polygon)
-                    {
-                        layerList1.Insert(i, title);
-                    }
-                    //Note - for some unknown reason, this else if statement ruins the functionality
-                    //else if (checkType.FeatureType == FeatureType.Line)
-                    //{
-                    layerList2.Insert(i, title);
-                    //}
+                    layerList.Insert(i, title);                   
                 }
             }
             else
             {
-                MessageBox.Show("Please add a layer to the map");
+                MessageBox.Show("Please add another layer to the map for this operation", "Not enough layers present.");
                 return;
             }
         }
-
+           
 
         //Select the polygon grid layer index
         private void cmbGrid_SelectedIndexChanged(object sender, EventArgs e)
         {
-            polygonSelectIndex = cmbGrid.SelectedIndex;
+            //Clear out the ID combobox to match the next selection
+            cmbGridID.Items.Clear();
+            gridSelectIndex = cmbGrid.SelectedIndex;
+            inputGrid = (IFeatureSet)_map.Layers[gridSelectIndex].DataSet;
+            //Add all column headers of the selected layer to the ID combobox
+            foreach (DataColumn col in inputGrid.DataTable.Columns)
+            {
+                string colHead = col.ColumnName;
+                cmbGridID.Items.Add(colHead);
+            }
         }
+
+        private void cmbGridID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            columnHead1Select = Convert.ToString(cmbGridID.SelectedItem);    //The selected text from the combobox
+        }
+
 
         //Select the track line layer index
         private void cmbLine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lineSelectIndex = cmbLine.SelectedIndex;
+            cmbTrackID.Items.Clear();
+            trackSelectIndex = cmbTrack.SelectedIndex;
+            inputTrack = (IFeatureSet)_map.Layers[trackSelectIndex].DataSet;
+            foreach (DataColumn col in inputTrack.DataTable.Columns)
+            {
+                string colHead = col.ColumnName;
+                cmbTrackID.Items.Add(colHead);
+            }
         }
 
+        private void cmbTrackID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            columnHead2Select = Convert.ToString(cmbTrackID.SelectedItem);
+        }
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-            if (polygonSelectIndex != lineSelectIndex)
+            if (gridSelectIndex != trackSelectIndex)
             {
                 //Uses selected layers for functionality
-                IFeatureSet inputLine = (IFeatureSet)_map.Layers[lineSelectIndex].DataSet;
-                IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[polygonSelectIndex].DataSet;
+                IFeatureSet inputTrack = (IFeatureSet)_map.Layers[trackSelectIndex].DataSet;
+                IFeatureSet inputGrid = (IFeatureSet)_map.Layers[gridSelectIndex].DataSet;
 
                 //creates new DataColumn "lineLengthCol" and
                 //adds the column to the inputPolygon DataTable
-                System.Data.DataColumn lineLengthCol = new System.Data.DataColumn("Sum_Tracks", typeof(double));
-                inputPolygon.DataTable.Columns.Add(lineLengthCol);
+                System.Data.DataColumn trackLengthCol = new System.Data.DataColumn("Sum_Tracks", typeof(double));
+                inputGrid.DataTable.Columns.Add(trackLengthCol);
 
                 //initializes a new list to hold polygonID's
-                List<int> polygonIDList = new List<int>();
+                List<string> polygonIDList = new List<string>();
 
                 //loops through the inputLine DataTable and populates the polygonIDList with unique polygonID's.
-                foreach (DataRow row in inputLine.DataTable.Rows)
+                foreach (DataRow row in inputTrack.DataTable.Rows)
                 {
-                    int polygonID = Convert.ToInt32(row["polygonID"]);
+                    string polygonID = Convert.ToString(row[columnHead2Select]);
                     if (!polygonIDList.Contains(polygonID))
                     {
                         polygonIDList.Add(polygonID);
                     }
                 }
 
-
                 //loops through each ID in the polygonIDList
-                foreach (int ID in polygonIDList)
+                foreach (string ID in polygonIDList)
                 {
                     //initializes a new list called lineLengths
-                    List<double> lineLengths = new List<double>();
+                    List<double> trackLengths = new List<double>();
 
                     //loops through each inputLine feature and if the polygonID in the feature matches the ID in the 
                     //polygonIDList, it collects the Survey Line Length for the feature and adds it to the LineLengths list.
-                    foreach (Feature fe in inputLine.Features)
+                    foreach (Feature fe in inputTrack.Features)
                     {
-                        int feID = Convert.ToInt32(fe.DataRow["polygonID"]);
+                        string feID = Convert.ToString(fe.DataRow[columnHead2Select]);
 
-                        if (feID == ID)
+                        if (String.ReferenceEquals(feID,ID))
                         {
-                            double lineLength = Convert.ToDouble(fe.DataRow["TrackLength"]);
-                            lineLengths.Add(lineLength);
+                            double trackLength = Convert.ToDouble(fe.DataRow["TrackLength"]);
+                            trackLengths.Add(trackLength);
                         }
                     }
 
                     //calculates the sum of all the lines in the lineLengths list and rounds to three decimal places.
-                    double lineLengthSum = Math.Round(lineLengths.Sum(), 3);
+                    double trackLengthSum = Math.Round(trackLengths.Sum(), 3);
 
                     //loops through the inputPolygon DataTable and if the "polygonID" matches the polygonID from the 
                     //inputLine feature, the lineLength Sum is added to the "Sum_Tracks" column in the inputPolygon DataTable.
-                    foreach (DataRow row in inputPolygon.DataTable.Rows)
+                    foreach (DataRow row in inputGrid.DataTable.Rows)
                     {
-                        int feLineID = Convert.ToInt32(row["polygonID"]);
+                        string fetrackID = Convert.ToString(row[columnHead1Select]);
 
-                        if (feLineID == ID)
+                        if (string.ReferenceEquals(fetrackID,ID))
                         {
-                            row["Sum_Tracks"] = lineLengthSum;
+                            row["Sum_Tracks"] = trackLengthSum;
                         }
                         else
                         {
@@ -183,6 +200,8 @@ namespace Cetecean
             }
         }
         #endregion
+
+        
 
     }
 }

@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.spatialToolStrip1 = new DotSpatial.Controls.SpatialToolStrip();
+            this.map1 = new DotSpatial.Controls.Map();
+            this.legend1 = new DotSpatial.Controls.Legend();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,11 +51,10 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.legend1 = new DotSpatial.Controls.Legend();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.map1 = new DotSpatial.Controls.Map();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.spatialToolStrip1 = new DotSpatial.Controls.SpatialToolStrip();
+            this.surveyTracksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.surveySwathesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -68,6 +70,59 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(807, 49);
             this.panel1.TabIndex = 0;
+            // 
+            // spatialToolStrip1
+            // 
+            this.spatialToolStrip1.ApplicationManager = null;
+            this.spatialToolStrip1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.spatialToolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.spatialToolStrip1.Map = this.map1;
+            this.spatialToolStrip1.Name = "spatialToolStrip1";
+            this.spatialToolStrip1.Size = new System.Drawing.Size(807, 25);
+            this.spatialToolStrip1.TabIndex = 1;
+            this.spatialToolStrip1.Text = "spatialToolStrip1";
+            // 
+            // map1
+            // 
+            this.map1.AllowDrop = true;
+            this.map1.BackColor = System.Drawing.Color.White;
+            this.map1.CollectAfterDraw = false;
+            this.map1.CollisionDetection = false;
+            this.map1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.map1.ExtendBuffer = false;
+            this.map1.FunctionMode = DotSpatial.Controls.FunctionMode.None;
+            this.map1.IsBusy = false;
+            this.map1.Legend = this.legend1;
+            this.map1.Location = new System.Drawing.Point(0, 0);
+            this.map1.Name = "map1";
+            this.map1.ProgressHandler = null;
+            this.map1.ProjectionModeDefine = DotSpatial.Controls.ActionMode.Prompt;
+            this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
+            this.map1.RedrawLayersWhileResizing = false;
+            this.map1.SelectionEnabled = true;
+            this.map1.Size = new System.Drawing.Size(621, 512);
+            this.map1.TabIndex = 0;
+            // 
+            // legend1
+            // 
+            this.legend1.BackColor = System.Drawing.Color.White;
+            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 186, 512);
+            this.legend1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.legend1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 103, 178);
+            this.legend1.HorizontalScrollEnabled = true;
+            this.legend1.Indentation = 30;
+            this.legend1.IsInitialized = false;
+            this.legend1.Location = new System.Drawing.Point(0, 0);
+            this.legend1.MinimumSize = new System.Drawing.Size(5, 5);
+            this.legend1.Name = "legend1";
+            this.legend1.ProgressHandler = null;
+            this.legend1.ResetOnResize = false;
+            this.legend1.SelectionFontColor = System.Drawing.Color.Black;
+            this.legend1.SelectionHighlight = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(238)))), ((int)(((byte)(252)))));
+            this.legend1.Size = new System.Drawing.Size(186, 512);
+            this.legend1.TabIndex = 0;
+            this.legend1.Text = "legend1";
+            this.legend1.VerticalScrollEnabled = true;
             // 
             // menuStrip1
             // 
@@ -135,34 +190,34 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // zoomExtenToolStripMenuItem
             // 
             this.zoomExtenToolStripMenuItem.Name = "zoomExtenToolStripMenuItem";
-            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.zoomExtenToolStripMenuItem.Text = "Zoom Extents";
             // 
             // panToolStripMenuItem
             // 
             this.panToolStripMenuItem.Name = "panToolStripMenuItem";
-            this.panToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.panToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.panToolStripMenuItem.Text = "Pan";
             this.panToolStripMenuItem.Click += new System.EventHandler(this.panToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -194,6 +249,9 @@
             // 
             // calculateSurveyEffortByGridToolStripMenuItem
             // 
+            this.calculateSurveyEffortByGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.surveyTracksToolStripMenuItem,
+            this.surveySwathesToolStripMenuItem});
             this.calculateSurveyEffortByGridToolStripMenuItem.Name = "calculateSurveyEffortByGridToolStripMenuItem";
             this.calculateSurveyEffortByGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.calculateSurveyEffortByGridToolStripMenuItem.Text = "Calculate Survey Effort by Grid";
@@ -222,27 +280,6 @@
             this.panel2.Size = new System.Drawing.Size(186, 512);
             this.panel2.TabIndex = 1;
             // 
-            // legend1
-            // 
-            this.legend1.BackColor = System.Drawing.Color.White;
-            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 186, 512);
-            this.legend1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.legend1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 103, 178);
-            this.legend1.HorizontalScrollEnabled = true;
-            this.legend1.Indentation = 30;
-            this.legend1.IsInitialized = false;
-            this.legend1.Location = new System.Drawing.Point(0, 0);
-            this.legend1.MinimumSize = new System.Drawing.Size(5, 5);
-            this.legend1.Name = "legend1";
-            this.legend1.ProgressHandler = null;
-            this.legend1.ResetOnResize = false;
-            this.legend1.SelectionFontColor = System.Drawing.Color.Black;
-            this.legend1.SelectionHighlight = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(238)))), ((int)(((byte)(252)))));
-            this.legend1.Size = new System.Drawing.Size(186, 512);
-            this.legend1.TabIndex = 0;
-            this.legend1.Text = "legend1";
-            this.legend1.VerticalScrollEnabled = true;
-            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.map1);
@@ -252,41 +289,23 @@
             this.panel3.Size = new System.Drawing.Size(621, 512);
             this.panel3.TabIndex = 2;
             // 
-            // map1
-            // 
-            this.map1.AllowDrop = true;
-            this.map1.BackColor = System.Drawing.Color.White;
-            this.map1.CollectAfterDraw = false;
-            this.map1.CollisionDetection = false;
-            this.map1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.map1.ExtendBuffer = false;
-            this.map1.FunctionMode = DotSpatial.Controls.FunctionMode.None;
-            this.map1.IsBusy = false;
-            this.map1.Legend = this.legend1;
-            this.map1.Location = new System.Drawing.Point(0, 0);
-            this.map1.Name = "map1";
-            this.map1.ProgressHandler = null;
-            this.map1.ProjectionModeDefine = DotSpatial.Controls.ActionMode.Prompt;
-            this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
-            this.map1.RedrawLayersWhileResizing = false;
-            this.map1.SelectionEnabled = true;
-            this.map1.Size = new System.Drawing.Size(621, 512);
-            this.map1.TabIndex = 0;
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // spatialToolStrip1
+            // surveyTracksToolStripMenuItem
             // 
-            this.spatialToolStrip1.ApplicationManager = null;
-            this.spatialToolStrip1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.spatialToolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.spatialToolStrip1.Map = this.map1;
-            this.spatialToolStrip1.Name = "spatialToolStrip1";
-            this.spatialToolStrip1.Size = new System.Drawing.Size(807, 25);
-            this.spatialToolStrip1.TabIndex = 1;
-            this.spatialToolStrip1.Text = "spatialToolStrip1";
+            this.surveyTracksToolStripMenuItem.Name = "surveyTracksToolStripMenuItem";
+            this.surveyTracksToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.surveyTracksToolStripMenuItem.Text = "Survey Tracks";
+            this.surveyTracksToolStripMenuItem.Click += new System.EventHandler(this.surveyTracksToolStripMenuItem_Click);
+            // 
+            // surveySwathesToolStripMenuItem
+            // 
+            this.surveySwathesToolStripMenuItem.Name = "surveySwathesToolStripMenuItem";
+            this.surveySwathesToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.surveySwathesToolStripMenuItem.Text = "Survey Swathes";
+            this.surveySwathesToolStripMenuItem.Click += new System.EventHandler(this.surveySwathesToolStripMenuItem_Click);
             // 
             // frmCetecean
             // 
@@ -337,6 +356,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private DotSpatial.Controls.SpatialToolStrip spatialToolStrip1;
+        private System.Windows.Forms.ToolStripMenuItem surveyTracksToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem surveySwathesToolStripMenuItem;
 
     }
 }

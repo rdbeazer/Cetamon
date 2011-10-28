@@ -30,10 +30,12 @@
         {
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCalculate = new System.Windows.Forms.Button();
-            this.cmbLine = new System.Windows.Forms.ComboBox();
+            this.cmbTrack = new System.Windows.Forms.ComboBox();
             this.cmbGrid = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbGridID = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbTrackID = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -41,7 +43,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(144, 175);
+            this.btnCancel.Location = new System.Drawing.Point(130, 203);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(87, 23);
             this.btnCancel.TabIndex = 11;
@@ -51,7 +53,7 @@
             // btnCalculate
             // 
             this.btnCalculate.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnCalculate.Location = new System.Drawing.Point(32, 175);
+            this.btnCalculate.Location = new System.Drawing.Point(38, 203);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(86, 23);
             this.btnCalculate.TabIndex = 9;
@@ -59,52 +61,74 @@
             this.btnCalculate.UseVisualStyleBackColor = true;
             this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
             // 
-            // cmbLine
+            // cmbTrack
             // 
-            this.cmbLine.FormattingEnabled = true;
-            this.cmbLine.Location = new System.Drawing.Point(17, 31);
-            this.cmbLine.Name = "cmbLine";
-            this.cmbLine.Size = new System.Drawing.Size(202, 21);
-            this.cmbLine.TabIndex = 10;
-            this.cmbLine.Text = "Select Track Layer";
-            this.cmbLine.SelectedIndexChanged += new System.EventHandler(this.cmbLine_SelectedIndexChanged);
+            this.cmbTrack.FormattingEnabled = true;
+            this.cmbTrack.Location = new System.Drawing.Point(17, 31);
+            this.cmbTrack.Name = "cmbTrack";
+            this.cmbTrack.Size = new System.Drawing.Size(173, 21);
+            this.cmbTrack.TabIndex = 10;
+            this.cmbTrack.Text = "Select Track Layer";
+            this.cmbTrack.SelectedIndexChanged += new System.EventHandler(this.cmbLine_SelectedIndexChanged);
             // 
             // cmbGrid
             // 
             this.cmbGrid.FormattingEnabled = true;
             this.cmbGrid.Location = new System.Drawing.Point(20, 19);
             this.cmbGrid.Name = "cmbGrid";
-            this.cmbGrid.Size = new System.Drawing.Size(199, 21);
+            this.cmbGrid.Size = new System.Drawing.Size(169, 21);
             this.cmbGrid.TabIndex = 7;
             this.cmbGrid.Text = "Select Grid Layer to Update";
             this.cmbGrid.SelectedIndexChanged += new System.EventHandler(this.cmbGrid_SelectedIndexChanged);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmbGridID);
             this.groupBox1.Controls.Add(this.cmbGrid);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.groupBox1.Location = new System.Drawing.Point(12, 7);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(242, 63);
+            this.groupBox1.Size = new System.Drawing.Size(242, 89);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Grid Selection";
             // 
+            // cmbGridID
+            // 
+            this.cmbGridID.FormattingEnabled = true;
+            this.cmbGridID.Location = new System.Drawing.Point(20, 47);
+            this.cmbGridID.Name = "cmbGridID";
+            this.cmbGridID.Size = new System.Drawing.Size(169, 21);
+            this.cmbGridID.TabIndex = 8;
+            this.cmbGridID.Text = "Select Grid ID";
+            this.cmbGridID.SelectedIndexChanged += new System.EventHandler(this.cmbGridID_SelectedIndexChanged);
+            // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.cmbLine);
-            this.groupBox2.Location = new System.Drawing.Point(12, 76);
+            this.groupBox2.Controls.Add(this.cmbTrackID);
+            this.groupBox2.Controls.Add(this.cmbTrack);
+            this.groupBox2.Location = new System.Drawing.Point(11, 102);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(242, 72);
+            this.groupBox2.Size = new System.Drawing.Size(242, 95);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Track Selection";
+            // 
+            // cmbTrackID
+            // 
+            this.cmbTrackID.FormattingEnabled = true;
+            this.cmbTrackID.Location = new System.Drawing.Point(17, 59);
+            this.cmbTrackID.Name = "cmbTrackID";
+            this.cmbTrackID.Size = new System.Drawing.Size(173, 21);
+            this.cmbTrackID.TabIndex = 11;
+            this.cmbTrackID.Text = "Select Grid ID";
+            this.cmbTrackID.SelectedIndexChanged += new System.EventHandler(this.cmbTrackID_SelectedIndexChanged);
             // 
             // frmPolyEffortByGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(265, 217);
+            this.ClientSize = new System.Drawing.Size(265, 248);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
@@ -113,7 +137,7 @@
             this.MinimizeBox = false;
             this.Name = "frmPolyEffortByGrid";
             this.Text = "Calculate Survey Effort by Grid";
-            this.Load += new System.EventHandler(this.frmSplitTrack_Load_1);
+            this.Load += new System.EventHandler(this.frmPolyEffortByGrid_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -124,9 +148,11 @@
 
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnCalculate;
-        private System.Windows.Forms.ComboBox cmbLine;
+        private System.Windows.Forms.ComboBox cmbTrack;
         private System.Windows.Forms.ComboBox cmbGrid;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox cmbGridID;
+        private System.Windows.Forms.ComboBox cmbTrackID;
     }
 }
