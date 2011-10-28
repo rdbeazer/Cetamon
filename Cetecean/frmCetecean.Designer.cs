@@ -48,13 +48,15 @@
             this.createGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitTracksByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculateSurveyEffortByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.surveyTracksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.surveySwathesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculateAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.surveyTracksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.surveySwathesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -190,34 +192,34 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // zoomExtenToolStripMenuItem
             // 
             this.zoomExtenToolStripMenuItem.Name = "zoomExtenToolStripMenuItem";
-            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.zoomExtenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomExtenToolStripMenuItem.Text = "Zoom Extents";
             // 
             // panToolStripMenuItem
             // 
             this.panToolStripMenuItem.Name = "panToolStripMenuItem";
-            this.panToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.panToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.panToolStripMenuItem.Text = "Pan";
             this.panToolStripMenuItem.Click += new System.EventHandler(this.panToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -228,7 +230,9 @@
             this.splitTracksByGridToolStripMenuItem,
             this.calculateSurveyEffortByGridToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.splitToolStripMenuItem,
+            this.calculateAreaToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -255,7 +259,20 @@
             this.calculateSurveyEffortByGridToolStripMenuItem.Name = "calculateSurveyEffortByGridToolStripMenuItem";
             this.calculateSurveyEffortByGridToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.calculateSurveyEffortByGridToolStripMenuItem.Text = "Calculate Survey Effort by Grid";
-            this.calculateSurveyEffortByGridToolStripMenuItem.Click += new System.EventHandler(this.calculateSurveyEffortByGridToolStripMenuItem_Click_1);
+            // 
+            // surveyTracksToolStripMenuItem
+            // 
+            this.surveyTracksToolStripMenuItem.Name = "surveyTracksToolStripMenuItem";
+            this.surveyTracksToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.surveyTracksToolStripMenuItem.Text = "Survey Tracks";
+            this.surveyTracksToolStripMenuItem.Click += new System.EventHandler(this.surveyTracksToolStripMenuItem_Click);
+            // 
+            // surveySwathesToolStripMenuItem
+            // 
+            this.surveySwathesToolStripMenuItem.Name = "surveySwathesToolStripMenuItem";
+            this.surveySwathesToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.surveySwathesToolStripMenuItem.Text = "Survey Swathes";
+            this.surveySwathesToolStripMenuItem.Click += new System.EventHandler(this.surveySwathesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -270,6 +287,20 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(234, 22);
             this.toolStripMenuItem1.Text = "Buffer";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // splitToolStripMenuItem
+            // 
+            this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
+            this.splitToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.splitToolStripMenuItem.Text = "Split Swathe by polygon";
+            this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
+            // 
+            // calculateAreaToolStripMenuItem
+            // 
+            this.calculateAreaToolStripMenuItem.Name = "calculateAreaToolStripMenuItem";
+            this.calculateAreaToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.calculateAreaToolStripMenuItem.Text = "Calculate area";
+            this.calculateAreaToolStripMenuItem.Click += new System.EventHandler(this.calculateAreaToolStripMenuItem_Click);
             // 
             // panel2
             // 
@@ -292,20 +323,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // surveyTracksToolStripMenuItem
-            // 
-            this.surveyTracksToolStripMenuItem.Name = "surveyTracksToolStripMenuItem";
-            this.surveyTracksToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.surveyTracksToolStripMenuItem.Text = "Survey Tracks";
-            this.surveyTracksToolStripMenuItem.Click += new System.EventHandler(this.surveyTracksToolStripMenuItem_Click);
-            // 
-            // surveySwathesToolStripMenuItem
-            // 
-            this.surveySwathesToolStripMenuItem.Name = "surveySwathesToolStripMenuItem";
-            this.surveySwathesToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.surveySwathesToolStripMenuItem.Text = "Survey Swathes";
-            this.surveySwathesToolStripMenuItem.Click += new System.EventHandler(this.surveySwathesToolStripMenuItem_Click);
             // 
             // frmCetecean
             // 
@@ -358,6 +375,8 @@
         private DotSpatial.Controls.SpatialToolStrip spatialToolStrip1;
         private System.Windows.Forms.ToolStripMenuItem surveyTracksToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem surveySwathesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem splitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calculateAreaToolStripMenuItem;
 
     }
 }

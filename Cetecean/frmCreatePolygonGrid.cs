@@ -425,6 +425,7 @@ namespace Cetecean
                    {
                        MapPolygonLayer p = (MapPolygonLayer)l;
                        p.LegendText=Validator.GetNameFile(strFileName);
+                       Close();
                        return;
                    }
                 

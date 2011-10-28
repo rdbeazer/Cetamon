@@ -23,7 +23,7 @@ namespace Cetecean
 
         private void frmCetecean_Load(object sender, EventArgs e)
         {
-
+            map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
             //DataTable table = new DataTable();
             //table.Columns.Add("Latitude", typeof(double));
             //table.Columns.Add("Longitude", typeof(double));
@@ -467,6 +467,18 @@ namespace Cetecean
             distance = kEarthRadiusKms * c;
             double roundDist = Math.Round(distance, 2);
             return roundDist;
+        }
+
+        private void splitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSplitPolygons po = new frmSplitPolygons(map1);
+            po.Show();
+        }
+
+        private void calculateAreaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCalculateArea ar = new frmCalculateArea(map1);
+            ar.Show();
         }
 
         
