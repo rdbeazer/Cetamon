@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCetecean));
             this.panel1 = new System.Windows.Forms.Panel();
             this.spatialToolStrip1 = new DotSpatial.Controls.SpatialToolStrip();
             this.map1 = new DotSpatial.Controls.Map();
@@ -60,6 +61,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.extractRasterValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.appManager1 = new DotSpatial.Controls.AppManager();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -236,7 +239,8 @@
             this.toolStripMenuItem1,
             this.splitToolStripMenuItem,
             this.calculateAreaToolStripMenuItem,
-            this.spatialJoinToolStripMenuItem});
+            this.spatialJoinToolStripMenuItem,
+            this.extractRasterValuesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -351,6 +355,32 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // extractRasterValuesToolStripMenuItem
+            // 
+            this.extractRasterValuesToolStripMenuItem.Name = "extractRasterValuesToolStripMenuItem";
+            this.extractRasterValuesToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.extractRasterValuesToolStripMenuItem.Text = "Extract Raster Values";
+            this.extractRasterValuesToolStripMenuItem.Click += new System.EventHandler(this.extractRasterValuesToolStripMenuItem_Click);
+            // 
+            // appManager1
+            // 
+            this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
+            this.appManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.DataManager.DataProviderDirectories")));
+            this.appManager1.DataManager.LoadInRam = true;
+            this.appManager1.DataManager.ProgressHandler = null;
+            this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
+            this.appManager1.HeaderControl = null;
+            this.appManager1.LayoutControl = null;
+            this.appManager1.Legend = this.legend1;
+            this.appManager1.MainMenu = null;
+            this.appManager1.MainToolStrip = null;
+            this.appManager1.Map = this.map1;
+            this.appManager1.ProgressHandler = null;
+            this.appManager1.Ribbon = null;
+            this.appManager1.TabManager = null;
+            this.appManager1.ToolManager = null;
+            this.appManager1.ToolStripContainer = null;
+            // 
             // frmCetecean
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -407,6 +437,8 @@
         private System.Windows.Forms.ToolStripMenuItem spatialJoinToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pointsToPolygonsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem polygonsToPointsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extractRasterValuesToolStripMenuItem;
+        private DotSpatial.Controls.AppManager appManager1;
 
     }
 }

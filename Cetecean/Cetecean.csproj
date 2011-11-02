@@ -104,6 +104,12 @@
     <Compile Include="frmCreatePolygonGrid.designer.cs">
       <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmExtractRasterValues.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtractRasterValues.Designer.cs">
+      <DependentUpon>frmExtractRasterValues.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmJoinPointsToPolygons.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCreatePolygonGrid.resx">
       <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtractRasterValues.resx">
+      <DependentUpon>frmExtractRasterValues.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmJoinPointsToPolygons.resx">
       <DependentUpon>frmJoinPointsToPolygons.cs</DependentUpon>

@@ -493,6 +493,12 @@ namespace Cetecean
             joinPolygonsToPoints.Show();
         }
 
+        private void extractRasterValuesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmExtractRasterValues extractRasterValues = new frmExtractRasterValues(map1);
+            extractRasterValues.Show();
+        }
+
 
         
      
