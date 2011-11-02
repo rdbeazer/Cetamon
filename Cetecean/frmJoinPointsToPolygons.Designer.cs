@@ -28,50 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.grbOutput = new System.Windows.Forms.GroupBox();
-            this.txtOutput = new System.Windows.Forms.TextBox();
             this.grbPoint = new System.Windows.Forms.GroupBox();
+            this.chbSelectAll = new System.Windows.Forms.CheckBox();
+            this.lblSelect = new System.Windows.Forms.Label();
+            this.clsFields = new System.Windows.Forms.CheckedListBox();
             this.cmbInput2 = new System.Windows.Forms.ComboBox();
-            this.grbJoin = new System.Windows.Forms.GroupBox();
-            this.lstFields = new System.Windows.Forms.ListBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCalculate = new System.Windows.Forms.Button();
             this.grbPolygon = new System.Windows.Forms.GroupBox();
             this.cmbField = new System.Windows.Forms.ComboBox();
             this.cmbInput1 = new System.Windows.Forms.ComboBox();
             this.lblPoint = new System.Windows.Forms.Label();
-            this.grbOutput.SuspendLayout();
+            this.grbSaveOptions = new System.Windows.Forms.GroupBox();
+            this.chkSaveAs = new System.Windows.Forms.CheckBox();
+            this.chkSave = new System.Windows.Forms.CheckBox();
             this.grbPoint.SuspendLayout();
-            this.grbJoin.SuspendLayout();
             this.grbPolygon.SuspendLayout();
+            this.grbSaveOptions.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // grbOutput
-            // 
-            this.grbOutput.Controls.Add(this.txtOutput);
-            this.grbOutput.Location = new System.Drawing.Point(12, 378);
-            this.grbOutput.Name = "grbOutput";
-            this.grbOutput.Size = new System.Drawing.Size(269, 59);
-            this.grbOutput.TabIndex = 54;
-            this.grbOutput.TabStop = false;
-            this.grbOutput.Text = "Output Name";
-            // 
-            // txtOutput
-            // 
-            this.txtOutput.Location = new System.Drawing.Point(16, 19);
-            this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(224, 20);
-            this.txtOutput.TabIndex = 0;
             // 
             // grbPoint
             // 
+            this.grbPoint.Controls.Add(this.chbSelectAll);
+            this.grbPoint.Controls.Add(this.lblSelect);
+            this.grbPoint.Controls.Add(this.clsFields);
             this.grbPoint.Controls.Add(this.cmbInput2);
-            this.grbPoint.Location = new System.Drawing.Point(12, 126);
+            this.grbPoint.Location = new System.Drawing.Point(12, 103);
             this.grbPoint.Name = "grbPoint";
-            this.grbPoint.Size = new System.Drawing.Size(269, 57);
+            this.grbPoint.Size = new System.Drawing.Size(269, 202);
             this.grbPoint.TabIndex = 52;
             this.grbPoint.TabStop = false;
             this.grbPoint.Text = "Point Selection";
+            // 
+            // chbSelectAll
+            // 
+            this.chbSelectAll.AutoSize = true;
+            this.chbSelectAll.Location = new System.Drawing.Point(9, 76);
+            this.chbSelectAll.Name = "chbSelectAll";
+            this.chbSelectAll.Size = new System.Drawing.Size(70, 17);
+            this.chbSelectAll.TabIndex = 29;
+            this.chbSelectAll.Text = "Select All";
+            this.chbSelectAll.UseVisualStyleBackColor = true;
+            this.chbSelectAll.CheckedChanged += new System.EventHandler(this.chbSelectAll_CheckedChanged);
+            // 
+            // lblSelect
+            // 
+            this.lblSelect.AutoSize = true;
+            this.lblSelect.Location = new System.Drawing.Point(6, 59);
+            this.lblSelect.Name = "lblSelect";
+            this.lblSelect.Size = new System.Drawing.Size(89, 13);
+            this.lblSelect.TabIndex = 28;
+            this.lblSelect.Text = "Select Join Fields";
+            // 
+            // clsFields
+            // 
+            this.clsFields.Location = new System.Drawing.Point(21, 99);
+            this.clsFields.Name = "clsFields";
+            this.clsFields.Size = new System.Drawing.Size(228, 94);
+            this.clsFields.TabIndex = 27;
             // 
             // cmbInput2
             // 
@@ -83,39 +97,21 @@
             this.cmbInput2.Text = "{ select point layer }";
             this.cmbInput2.SelectedIndexChanged += new System.EventHandler(this.cmbInput2_SelectedIndexChanged);
             // 
-            // grbJoin
-            // 
-            this.grbJoin.Controls.Add(this.lstFields);
-            this.grbJoin.Location = new System.Drawing.Point(12, 189);
-            this.grbJoin.Name = "grbJoin";
-            this.grbJoin.Size = new System.Drawing.Size(231, 183);
-            this.grbJoin.TabIndex = 53;
-            this.grbJoin.TabStop = false;
-            this.grbJoin.Text = "Select Join Fields";
-            // 
-            // lstFields
-            // 
-            this.lstFields.FormattingEnabled = true;
-            this.lstFields.Location = new System.Drawing.Point(20, 29);
-            this.lstFields.Name = "lstFields";
-            this.lstFields.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lstFields.Size = new System.Drawing.Size(188, 134);
-            this.lstFields.TabIndex = 0;
-            // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(145, 465);
+            this.btnCancel.Location = new System.Drawing.Point(148, 431);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(86, 23);
             this.btnCancel.TabIndex = 50;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnCalculate
             // 
             this.btnCalculate.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnCalculate.Location = new System.Drawing.Point(53, 465);
+            this.btnCalculate.Location = new System.Drawing.Point(56, 431);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(85, 23);
             this.btnCalculate.TabIndex = 49;
@@ -138,11 +134,11 @@
             // 
             this.cmbField.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbField.FormattingEnabled = true;
-            this.cmbField.Location = new System.Drawing.Point(21, 46);
+            this.cmbField.Location = new System.Drawing.Point(65, 46);
             this.cmbField.Name = "cmbField";
-            this.cmbField.Size = new System.Drawing.Size(228, 21);
+            this.cmbField.Size = new System.Drawing.Size(184, 21);
             this.cmbField.TabIndex = 28;
-            this.cmbField.Text = "{ select the field with a unique polygon ID }";
+            this.cmbField.Text = "{ select unique polygon ID field }";
             this.cmbField.SelectedIndexChanged += new System.EventHandler(this.cmbField_SelectedIndexChanged);
             // 
             // cmbInput1
@@ -163,26 +159,57 @@
             this.lblPoint.Size = new System.Drawing.Size(0, 13);
             this.lblPoint.TabIndex = 48;
             // 
+            // grbSaveOptions
+            // 
+            this.grbSaveOptions.Controls.Add(this.chkSaveAs);
+            this.grbSaveOptions.Controls.Add(this.chkSave);
+            this.grbSaveOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.grbSaveOptions.Location = new System.Drawing.Point(12, 311);
+            this.grbSaveOptions.Name = "grbSaveOptions";
+            this.grbSaveOptions.Size = new System.Drawing.Size(269, 95);
+            this.grbSaveOptions.TabIndex = 65;
+            this.grbSaveOptions.TabStop = false;
+            this.grbSaveOptions.Text = "Save Options";
+            // 
+            // chkSaveAs
+            // 
+            this.chkSaveAs.AutoSize = true;
+            this.chkSaveAs.Location = new System.Drawing.Point(21, 55);
+            this.chkSaveAs.Name = "chkSaveAs";
+            this.chkSaveAs.Size = new System.Drawing.Size(230, 30);
+            this.chkSaveAs.TabIndex = 1;
+            this.chkSaveAs.Text = "Save the updated attributes to a new point \r\nshapefile.";
+            this.chkSaveAs.UseVisualStyleBackColor = true;
+            // 
+            // chkSave
+            // 
+            this.chkSave.AutoSize = true;
+            this.chkSave.Location = new System.Drawing.Point(21, 19);
+            this.chkSave.Name = "chkSave";
+            this.chkSave.Size = new System.Drawing.Size(226, 30);
+            this.chkSave.TabIndex = 0;
+            this.chkSave.Text = "Save the updated attributes to the original \r\npoint shapefile.";
+            this.chkSave.UseVisualStyleBackColor = true;
+            // 
             // frmJoinPointsToPolygons
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(297, 512);
-            this.Controls.Add(this.grbOutput);
+            this.ClientSize = new System.Drawing.Size(296, 477);
+            this.Controls.Add(this.grbSaveOptions);
             this.Controls.Add(this.grbPoint);
-            this.Controls.Add(this.grbJoin);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.grbPolygon);
             this.Controls.Add(this.lblPoint);
             this.Name = "frmJoinPointsToPolygons";
-            this.Text = "frmJoinPointsToPolygons";
+            this.Text = "Join Points to Polygons";
             this.Load += new System.EventHandler(this.frmJoinPointsToPolygons_Load);
-            this.grbOutput.ResumeLayout(false);
-            this.grbOutput.PerformLayout();
             this.grbPoint.ResumeLayout(false);
-            this.grbJoin.ResumeLayout(false);
+            this.grbPoint.PerformLayout();
             this.grbPolygon.ResumeLayout(false);
+            this.grbSaveOptions.ResumeLayout(false);
+            this.grbSaveOptions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -190,17 +217,19 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox grbOutput;
-        private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.GroupBox grbPoint;
         private System.Windows.Forms.ComboBox cmbInput2;
-        private System.Windows.Forms.GroupBox grbJoin;
-        private System.Windows.Forms.ListBox lstFields;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnCalculate;
         private System.Windows.Forms.GroupBox grbPolygon;
         private System.Windows.Forms.ComboBox cmbField;
         private System.Windows.Forms.ComboBox cmbInput1;
         private System.Windows.Forms.Label lblPoint;
+        private System.Windows.Forms.CheckBox chbSelectAll;
+        private System.Windows.Forms.Label lblSelect;
+        private System.Windows.Forms.CheckedListBox clsFields;
+        private System.Windows.Forms.GroupBox grbSaveOptions;
+        private System.Windows.Forms.CheckBox chkSaveAs;
+        private System.Windows.Forms.CheckBox chkSave;
     }
 }
