@@ -54,10 +54,12 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculateAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spatialJoinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pointsToPolygonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.polygonsToPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.joinPointsToPolygonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -71,7 +73,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(807, 49);
+            this.panel1.Size = new System.Drawing.Size(847, 49);
             this.panel1.TabIndex = 0;
             // 
             // spatialToolStrip1
@@ -81,7 +83,7 @@
             this.spatialToolStrip1.Location = new System.Drawing.Point(0, 24);
             this.spatialToolStrip1.Map = this.map1;
             this.spatialToolStrip1.Name = "spatialToolStrip1";
-            this.spatialToolStrip1.Size = new System.Drawing.Size(807, 25);
+            this.spatialToolStrip1.Size = new System.Drawing.Size(847, 25);
             this.spatialToolStrip1.TabIndex = 1;
             this.spatialToolStrip1.Text = "spatialToolStrip1";
             // 
@@ -103,13 +105,13 @@
             this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
             this.map1.RedrawLayersWhileResizing = false;
             this.map1.SelectionEnabled = true;
-            this.map1.Size = new System.Drawing.Size(621, 512);
+            this.map1.Size = new System.Drawing.Size(661, 526);
             this.map1.TabIndex = 0;
             // 
             // legend1
             // 
             this.legend1.BackColor = System.Drawing.Color.White;
-            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 186, 512);
+            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 186, 526);
             this.legend1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.legend1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 103, 178);
             this.legend1.HorizontalScrollEnabled = true;
@@ -122,7 +124,7 @@
             this.legend1.ResetOnResize = false;
             this.legend1.SelectionFontColor = System.Drawing.Color.Black;
             this.legend1.SelectionHighlight = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(238)))), ((int)(((byte)(252)))));
-            this.legend1.Size = new System.Drawing.Size(186, 512);
+            this.legend1.Size = new System.Drawing.Size(186, 526);
             this.legend1.TabIndex = 0;
             this.legend1.Text = "legend1";
             this.legend1.VerticalScrollEnabled = true;
@@ -135,7 +137,7 @@
             this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(807, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(847, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -234,7 +236,7 @@
             this.toolStripMenuItem1,
             this.splitToolStripMenuItem,
             this.calculateAreaToolStripMenuItem,
-            this.joinPointsToPolygonsToolStripMenuItem});
+            this.spatialJoinToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -304,13 +306,36 @@
             this.calculateAreaToolStripMenuItem.Text = "Calculate area";
             this.calculateAreaToolStripMenuItem.Click += new System.EventHandler(this.calculateAreaToolStripMenuItem_Click);
             // 
+            // spatialJoinToolStripMenuItem
+            // 
+            this.spatialJoinToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pointsToPolygonsToolStripMenuItem,
+            this.polygonsToPointsToolStripMenuItem});
+            this.spatialJoinToolStripMenuItem.Name = "spatialJoinToolStripMenuItem";
+            this.spatialJoinToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.spatialJoinToolStripMenuItem.Text = "Spatial Join";
+            // 
+            // pointsToPolygonsToolStripMenuItem
+            // 
+            this.pointsToPolygonsToolStripMenuItem.Name = "pointsToPolygonsToolStripMenuItem";
+            this.pointsToPolygonsToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.pointsToPolygonsToolStripMenuItem.Text = "Points to Polygons";
+            this.pointsToPolygonsToolStripMenuItem.Click += new System.EventHandler(this.pointsToPolygonsToolStripMenuItem_Click);
+            // 
+            // polygonsToPointsToolStripMenuItem
+            // 
+            this.polygonsToPointsToolStripMenuItem.Name = "polygonsToPointsToolStripMenuItem";
+            this.polygonsToPointsToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.polygonsToPointsToolStripMenuItem.Text = "Polygons to Points";
+            this.polygonsToPointsToolStripMenuItem.Click += new System.EventHandler(this.polygonsToPointsToolStripMenuItem_Click);
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.legend1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 49);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(186, 512);
+            this.panel2.Size = new System.Drawing.Size(186, 526);
             this.panel2.TabIndex = 1;
             // 
             // panel3
@@ -319,25 +344,18 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(186, 49);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(621, 512);
+            this.panel3.Size = new System.Drawing.Size(661, 526);
             this.panel3.TabIndex = 2;
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // joinPointsToPolygonsToolStripMenuItem
-            // 
-            this.joinPointsToPolygonsToolStripMenuItem.Name = "joinPointsToPolygonsToolStripMenuItem";
-            this.joinPointsToPolygonsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.joinPointsToPolygonsToolStripMenuItem.Text = "Join Points to Polygons";
-            this.joinPointsToPolygonsToolStripMenuItem.Click += new System.EventHandler(this.joinPointsToPolygonsToolStripMenuItem_Click);
-            // 
             // frmCetecean
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(807, 561);
+            this.ClientSize = new System.Drawing.Size(847, 575);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -386,7 +404,9 @@
         private System.Windows.Forms.ToolStripMenuItem surveySwathesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem splitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculateAreaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem joinPointsToPolygonsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem spatialJoinToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pointsToPolygonsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem polygonsToPointsToolStripMenuItem;
 
     }
 }

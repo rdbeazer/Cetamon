@@ -481,11 +481,18 @@ namespace Cetecean
             ar.Show();
         }
 
-        private void joinPointsToPolygonsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void pointsToPolygonsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmJoinPointsToPolygons joinPtToPoly = new frmJoinPointsToPolygons(map1);
-            joinPtToPoly.Show();
+            frmJoinPointsToPolygons joinPtToPolygon = new frmJoinPointsToPolygons(map1);
+            joinPtToPolygon.Show();
         }
+
+        private void polygonsToPointsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmJoinPolygonsToPoints joinPolygonsToPoints = new frmJoinPolygonsToPoints(map1);
+            joinPolygonsToPoints.Show();
+        }
+
 
         
      

@@ -43,7 +43,7 @@ namespace Cetecean
             getLayers();
         }
 
-        #region Methods
+    #region Methods
 
         //Method to get the map layers and populate the user selection controls in the form.
         private void getLayers()
@@ -162,13 +162,16 @@ namespace Cetecean
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
+            //  Initializes new List to hold the selectedFields from clsFields.
             List<string> selectedFields = new List<string>();
-
-            foreach (string field in clsFields.CheckedItems)
+            foreach (string field in clsFields.CheckedItems)  //  loops through the checked fields
             {
-                selectedFields.Add(field);
+                selectedFields.Add(field);  //  adds the checked fields to the selectedFields list.
             }
-            
+
+            //  Creates two new input FeatureSets.
+            //  The FeatureSets are populated with the data sets from the specified map layer index.
+            //  The map layer index is set using the layerList and the user selected layers.
             IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[input1SelectIndex].DataSet;
             IFeatureSet inputPoint = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
 
@@ -190,7 +193,7 @@ namespace Cetecean
             //} 
             #endregion
 
-            //Create a temporary file to hold the intersection of 
+            //  Temporary IFeatureSet created to hold the intersection of the inputPoint and inputPolygon FeatureSets
             IFeatureSet tempOutput = inputPoint.Intersection(inputPolygon, FieldJoinType.All, null);
 
             //Create new datacolumns with the selected join fields
@@ -201,6 +204,7 @@ namespace Cetecean
                     //  Checks to make sure there is not already a DataColumn in the table with that name.
                     if (inputPolygon.DataTable.Columns.Contains(column.ColumnName))
                     {
+                        //  Alerts the user if the column name already exists
                         MessageBox.Show("The data table already contains a column with the name" + " '" + column.ColumnName +
                             "'.\n\nThe column will not be added to the data table.", "Input Error");
                         return;
@@ -377,7 +381,8 @@ namespace Cetecean
                 }
             }
         }
-        #endregion
+        
+    #endregion
 
     }
 }
