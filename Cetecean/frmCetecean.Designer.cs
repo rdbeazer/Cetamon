@@ -58,11 +58,12 @@
             this.spatialJoinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pointsToPolygonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.polygonsToPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extractRasterValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.extractRasterValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.appManager1 = new DotSpatial.Controls.AppManager();
+            this.convertGridToPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -240,7 +241,8 @@
             this.splitToolStripMenuItem,
             this.calculateAreaToolStripMenuItem,
             this.spatialJoinToolStripMenuItem,
-            this.extractRasterValuesToolStripMenuItem});
+            this.extractRasterValuesToolStripMenuItem,
+            this.convertGridToPointsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -333,6 +335,13 @@
             this.polygonsToPointsToolStripMenuItem.Text = "Polygons to Points";
             this.polygonsToPointsToolStripMenuItem.Click += new System.EventHandler(this.polygonsToPointsToolStripMenuItem_Click);
             // 
+            // extractRasterValuesToolStripMenuItem
+            // 
+            this.extractRasterValuesToolStripMenuItem.Name = "extractRasterValuesToolStripMenuItem";
+            this.extractRasterValuesToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.extractRasterValuesToolStripMenuItem.Text = "Extract Raster Values";
+            this.extractRasterValuesToolStripMenuItem.Click += new System.EventHandler(this.extractRasterValuesToolStripMenuItem_Click);
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.legend1);
@@ -355,13 +364,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // extractRasterValuesToolStripMenuItem
-            // 
-            this.extractRasterValuesToolStripMenuItem.Name = "extractRasterValuesToolStripMenuItem";
-            this.extractRasterValuesToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.extractRasterValuesToolStripMenuItem.Text = "Extract Raster Values";
-            this.extractRasterValuesToolStripMenuItem.Click += new System.EventHandler(this.extractRasterValuesToolStripMenuItem_Click);
-            // 
             // appManager1
             // 
             this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
@@ -380,6 +382,13 @@
             this.appManager1.TabManager = null;
             this.appManager1.ToolManager = null;
             this.appManager1.ToolStripContainer = null;
+            // 
+            // convertGridToPointsToolStripMenuItem
+            // 
+            this.convertGridToPointsToolStripMenuItem.Name = "convertGridToPointsToolStripMenuItem";
+            this.convertGridToPointsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.convertGridToPointsToolStripMenuItem.Text = "Convert Grid to Points";
+            this.convertGridToPointsToolStripMenuItem.Click += new System.EventHandler(this.convertGridToPointsToolStripMenuItem_Click);
             // 
             // frmCetecean
             // 
@@ -439,6 +448,7 @@
         private System.Windows.Forms.ToolStripMenuItem polygonsToPointsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extractRasterValuesToolStripMenuItem;
         private DotSpatial.Controls.AppManager appManager1;
+        private System.Windows.Forms.ToolStripMenuItem convertGridToPointsToolStripMenuItem;
 
     }
 }

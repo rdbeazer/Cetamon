@@ -499,6 +499,12 @@ namespace Cetecean
             extractRasterValues.Show();
         }
 
+        private void convertGridToPointsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmGridToPoint gtp = new frmGridToPoint(map1);
+            gtp.Show();
+        }
+
 
         
      

@@ -110,6 +110,12 @@
     <Compile Include="frmExtractRasterValues.Designer.cs">
       <DependentUpon>frmExtractRasterValues.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmGridToPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGridToPoint.designer.cs">
+      <DependentUpon>frmGridToPoint.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmJoinPointsToPolygons.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmExtractRasterValues.resx">
       <DependentUpon>frmExtractRasterValues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGridToPoint.resx">
+      <DependentUpon>frmGridToPoint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmJoinPointsToPolygons.resx">
       <DependentUpon>frmJoinPointsToPolygons.cs</DependentUpon>
