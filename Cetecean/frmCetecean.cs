@@ -23,7 +23,22 @@ namespace Cetecean
 
         private void frmCetecean_Load(object sender, EventArgs e)
         {
-            map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+
+            //GeoCal geo = new GeoCal(map1.Projection);
+            //double lat = 50.06639;
+            //double lon = -5.71472;
+            //double lat1 = 58.64389;
+            //double lon1 = -3.07000;
+
+            //double distance =geo.Distance(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
+            //double Azimuth = geo.GetAzimuth(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
+
+            //map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+
+            //Coordinate n = geo.AzimuthDist(new Coordinate(lon, lat), Azimuth, distance);
+
+
+            //double r = 0;
             //DataTable table = new DataTable();
             //table.Columns.Add("Latitude", typeof(double));
             //table.Columns.Add("Longitude", typeof(double));

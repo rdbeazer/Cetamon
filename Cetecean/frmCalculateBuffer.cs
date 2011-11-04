@@ -18,6 +18,7 @@ namespace Cetecean
     {
         //Global variable
         Map _map = null;
+        GeoCal _geo = null;
 
         public frmCalculateBuffer()
         {
@@ -148,6 +149,9 @@ namespace Cetecean
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            _geo=new GeoCal(_map.Projection);
+
+
             //Initialization of two featureSet
             // fT => it will have the information of the current line layer
             FeatureSet fT = null;
@@ -363,10 +367,12 @@ namespace Cetecean
         private IFeature TransfGeometry(IFeature C, bool t)
         {
             //If the current projection is different of WGS84 the transformation is not executed
-            if (_map.Projection != KnownCoordinateSystems.Geographic.World.WGS1984)
-            {
-                return C;
-            }
+            //if (_map.Projection != KnownCoordinateSystems.Geographic.World.WGS1984)
+            //{
+            //    return C;
+            //}
+            return C;
+
 
             IFeature B = (IFeature)C.Clone();
 
@@ -458,11 +464,11 @@ namespace Cetecean
         /// <param name="azi">Azimuth</param>
         /// <param name="dist">distance</param>
         /// <returns></returns>
-        private Coordinate AzimutDist(Coordinate ptoI, double azi, double dist)
-        {
-            //generate a new point
-            return new Coordinate(ptoI.X + Math.Sin(azi) * dist, ptoI.Y + Math.Cos(azi) * dist);
-        }
+        //private Coordinate AzimutDist(Coordinate ptoI, double azi, double dist)
+        //{
+        //    //generate a new point
+        //    return new Coordinate(ptoI.X + Math.Sin(azi) * dist, ptoI.Y + Math.Cos(azi) * dist);
+        //}
 
         private List<Coordinate> Curv(Coordinate ptoi, double azi, double dis, double parts, string side)
         {
@@ -474,14 +480,14 @@ namespace Cetecean
             {
                 for (int i = 0; i <= parts; i++)
                 {
-                    list.Add(new Coordinate(AzimutDist(ptoi, azi + dAz * i, dis)));
+                    list.Add(new Coordinate(_geo.AzimuthDist(ptoi, azi + dAz * i, dis)));
                 }
             }
             if (side == "L")
             {
                 for (int i = 0; i <= parts; i++)
                 {
-                    list.Add(new Coordinate(AzimutDist(ptoi, azi - dAz * i, dis)));
+                    list.Add(new Coordinate(_geo.AzimuthDist(ptoi, azi - dAz * i, dis)));
                 }
             }
 
@@ -493,10 +499,10 @@ namespace Cetecean
 
         }
 
-        private double Distance(Coordinate ptoI, Coordinate ptoF)
-        {
-            return Math.Sqrt(((ptoF.X - ptoI.X) * (ptoF.X - ptoI.X)) + ((ptoF.Y - ptoI.Y) * (ptoF.Y - ptoI.Y)));
-        }
+        //private double Distance(Coordinate ptoI, Coordinate ptoF)
+        //{
+        //    return Math.Sqrt(((ptoF.X - ptoI.X) * (ptoF.X - ptoI.X)) + ((ptoF.Y - ptoI.Y) * (ptoF.Y - ptoI.Y)));
+        //}
 
         /// <summary>
         /// Generate the offset line according with the direction and the side selected
@@ -509,21 +515,21 @@ namespace Cetecean
         private List<Coordinate> Offset(Coordinate ptoI, Coordinate ptoF, double disB, string side)
         {
             List<Coordinate> list = new List<Coordinate>();
-            double azi = GetAzimut(ptoI, ptoF);
+            double azi = _geo.GetAzimuth(ptoI, ptoF);
             double conAzi = azi + Math.PI;
             double aziS;
-            double dis = Distance(ptoI, ptoF);
+            double dis = _geo.Distance(ptoI, ptoF);
             if (side == "R")
             {
                 aziS = azi + (Math.PI / 2);
-                list.Add(new Coordinate(AzimutDist(ptoF, aziS, disB)));
-                list.Add(new Coordinate(AzimutDist(ptoF, conAzi, dis)));
+                list.Add(new Coordinate(_geo.AzimuthDist(ptoF, aziS, disB)));
+                list.Add(new Coordinate(_geo.AzimuthDist(ptoF, conAzi, dis)));
             }
             else
             {
                 aziS = azi - (Math.PI / 2);
-                list.Add(new Coordinate(AzimutDist(ptoF, aziS, disB)));
-                list.Add(new Coordinate(AzimutDist(ptoF, conAzi, dis)));
+                list.Add(new Coordinate(_geo.AzimuthDist(ptoF, aziS, disB)));
+                list.Add(new Coordinate(_geo.AzimuthDist(ptoF, conAzi, dis)));
             }
             return list;
 
@@ -536,21 +542,21 @@ namespace Cetecean
         /// <param name="origin"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        private double GetAzimut(Coordinate origin, Coordinate target)
-        {
-            double dx = target.X - origin.X;
-            double dy = target.Y - origin.Y;
-            if (dx == 0 && dy > 0) return 0;
-            if (dx == 0 && dy < 0) return Math.PI;
-            if (dx > 0 && dy == 0) return Math.PI / 2;
-            if (dx < 0 && dy == 0) return 3 * Math.PI / 2;
-            if (dx > 0 && dy > 0) return Math.Atan(dx / dy);
-            if (dx > 0 && dy < 0) return Math.PI + Math.Atan(dx / dy);
-            if (dx < 0 && dy < 0) return (Math.PI) + Math.Atan(dx / dy);
-            if (dx < 0 && dy > 0) return (2 * Math.PI) + Math.Atan(dx / dy);
-            return 0;
+        //private double GetAzimut(Coordinate origin, Coordinate target)
+        //{
+        //    double dx = target.X - origin.X;
+        //    double dy = target.Y - origin.Y;
+        //    if (dx == 0 && dy > 0) return 0;
+        //    if (dx == 0 && dy < 0) return Math.PI;
+        //    if (dx > 0 && dy == 0) return Math.PI / 2;
+        //    if (dx < 0 && dy == 0) return 3 * Math.PI / 2;
+        //    if (dx > 0 && dy > 0) return Math.Atan(dx / dy);
+        //    if (dx > 0 && dy < 0) return Math.PI + Math.Atan(dx / dy);
+        //    if (dx < 0 && dy < 0) return (Math.PI) + Math.Atan(dx / dy);
+        //    if (dx < 0 && dy > 0) return (2 * Math.PI) + Math.Atan(dx / dy);
+        //    return 0;
 
-        }
+        //}
 
         /// <summary>
         /// Generate the list of point of a buffer according with the side
@@ -570,7 +576,7 @@ namespace Cetecean
             list.Add(ini);
             list.Add(end);
             //get azimuth
-            double az = GetAzimut(ini, end);
+            double az = _geo.GetAzimuth(ini, end);
 
             //Calculate the point in the initial curve of the buffer.. 
             // the number of point using to create the curve is 10..

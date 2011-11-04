@@ -65,6 +65,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -162,6 +163,7 @@
     <Compile Include="frmSplitTrack.Designer.cs">
       <DependentUpon>frmSplitTrack.cs</DependentUpon>
     </Compile>
+    <Compile Include="GeoCal.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validator.cs" />
