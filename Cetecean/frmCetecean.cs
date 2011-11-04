@@ -505,6 +505,12 @@ namespace Cetecean
             gtp.Show();
         }
 
+        private void calculatorFieldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCalculateField cal = new frmCalculateField(map1);
+            cal.Show();
+        }
+
 
         
      

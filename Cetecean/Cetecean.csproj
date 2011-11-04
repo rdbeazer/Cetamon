@@ -54,6 +54,10 @@
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Symbology.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\x86\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Topology">
       <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Topology.dll</HintPath>
     </Reference>
@@ -84,6 +88,12 @@
     </Compile>
     <Compile Include="frmCalculateBuffer.Designer.cs">
       <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCalculateField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalculateField.Designer.cs">
+      <DependentUpon>frmCalculateField.cs</DependentUpon>
     </Compile>
     <Compile Include="frmCountSpecies.cs">
       <SubType>Form</SubType>
@@ -161,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCalculateBuffer.resx">
       <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalculateField.resx">
+      <DependentUpon>frmCalculateField.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCountSpecies.resx">
       <DependentUpon>frmCountSpecies.cs</DependentUpon>

@@ -59,11 +59,12 @@
             this.pointsToPolygonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.polygonsToPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractRasterValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertGridToPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculatorFieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.appManager1 = new DotSpatial.Controls.AppManager();
-            this.convertGridToPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -242,7 +243,8 @@
             this.calculateAreaToolStripMenuItem,
             this.spatialJoinToolStripMenuItem,
             this.extractRasterValuesToolStripMenuItem,
-            this.convertGridToPointsToolStripMenuItem});
+            this.convertGridToPointsToolStripMenuItem,
+            this.calculatorFieldToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -342,6 +344,20 @@
             this.extractRasterValuesToolStripMenuItem.Text = "Extract Raster Values";
             this.extractRasterValuesToolStripMenuItem.Click += new System.EventHandler(this.extractRasterValuesToolStripMenuItem_Click);
             // 
+            // convertGridToPointsToolStripMenuItem
+            // 
+            this.convertGridToPointsToolStripMenuItem.Name = "convertGridToPointsToolStripMenuItem";
+            this.convertGridToPointsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.convertGridToPointsToolStripMenuItem.Text = "Convert Grid to Points";
+            this.convertGridToPointsToolStripMenuItem.Click += new System.EventHandler(this.convertGridToPointsToolStripMenuItem_Click);
+            // 
+            // calculatorFieldToolStripMenuItem
+            // 
+            this.calculatorFieldToolStripMenuItem.Name = "calculatorFieldToolStripMenuItem";
+            this.calculatorFieldToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.calculatorFieldToolStripMenuItem.Text = "Calculator Field";
+            this.calculatorFieldToolStripMenuItem.Click += new System.EventHandler(this.calculatorFieldToolStripMenuItem_Click);
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.legend1);
@@ -366,29 +382,16 @@
             // 
             // appManager1
             // 
-            this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
-            this.appManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.DataManager.DataProviderDirectories")));
             this.appManager1.DataManager.LoadInRam = true;
             this.appManager1.DataManager.ProgressHandler = null;
             this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
+            this.appManager1.DockManager = null;
             this.appManager1.HeaderControl = null;
-            this.appManager1.LayoutControl = null;
-            this.appManager1.Legend = this.legend1;
-            this.appManager1.MainMenu = null;
-            this.appManager1.MainToolStrip = null;
-            this.appManager1.Map = this.map1;
+            this.appManager1.Legend = null;
+            this.appManager1.Map = null;
             this.appManager1.ProgressHandler = null;
-            this.appManager1.Ribbon = null;
-            this.appManager1.TabManager = null;
+            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             this.appManager1.ToolManager = null;
-            this.appManager1.ToolStripContainer = null;
-            // 
-            // convertGridToPointsToolStripMenuItem
-            // 
-            this.convertGridToPointsToolStripMenuItem.Name = "convertGridToPointsToolStripMenuItem";
-            this.convertGridToPointsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.convertGridToPointsToolStripMenuItem.Text = "Convert Grid to Points";
-            this.convertGridToPointsToolStripMenuItem.Click += new System.EventHandler(this.convertGridToPointsToolStripMenuItem_Click);
             // 
             // frmCetecean
             // 
@@ -447,8 +450,10 @@
         private System.Windows.Forms.ToolStripMenuItem pointsToPolygonsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem polygonsToPointsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extractRasterValuesToolStripMenuItem;
-        private DotSpatial.Controls.AppManager appManager1;
+        //private DotSpatial.Controls.AppManager appManager1;
         private System.Windows.Forms.ToolStripMenuItem convertGridToPointsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calculatorFieldToolStripMenuItem;
+        private DotSpatial.Controls.AppManager appManager1;
 
     }
 }
