@@ -162,7 +162,7 @@ namespace Cetecean
             foreach (IMapLayer iLa in _map.Layers)
             {
                 fT = (FeatureSet)iLa.DataSet;
-                if (fT.Name == cbxLayer.Text)
+                if (iLa.LegendText == cbxLayer.Text)
                     break;
             }
 
@@ -254,17 +254,23 @@ namespace Cetecean
                 //it is used the field selected to get the buffer distance
                 double v = Convert.ToDouble(row[field]);
 
-                IFeature fea1;
                 IFeature fea;
 
                 if (side == "Full")
                 {
-                    //The features are transformed in a projected coordinate system
-                    fea1 = (TransfGeometry(feaS.Features[i], true));
-                    // Calculation of the buffer
-                    fea1 = fea1.Buffer(v);
-                    //The features are transformed  again to original coordinate system
-                    fea = outp.AddFeature((TransfGeometry(fea1, false)));
+
+
+                    IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
+                    LinearRing linL = new LinearRing(BufferComplete(l, v));
+                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
+
+
+                    ////The features are transformed in a projected coordinate system
+                    //fea1 = (TransfGeometry(feaS.Features[i], true));
+                    //// Calculation of the buffer
+                    //fea1 = fea1.Buffer(v);
+                    ////The features are transformed  again to original coordinate system
+                    //fea = outp.AddFeature((TransfGeometry(fea1, false)));
                 }
                 else if (side == "Left")
                 {
@@ -280,9 +286,9 @@ namespace Cetecean
                     //The features are transformed in a projected coordinate system
                     IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
                     //It is calculated the polygon of the left side 
-                    LinearRing linL = new LinearRing(BufferBySide(l, v, "R"));
+                    LinearRing linR = new LinearRing(BufferBySide(l, v, "R"));
                     //The features are transformed  again to original coordinate system
-                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
+                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linR)), false));
 
                 }
 
@@ -329,7 +335,11 @@ namespace Cetecean
 
                 if (side == "Full")
                 {
-                    fea = outp.AddFeature(TransfGeometry(TransfGeometry(feaS.Features[i], true).Buffer(buffer), false));
+                    IFeature l = TransfGeometry((Feature)feaS.Features[i], true);
+                    LinearRing linL = new LinearRing(BufferComplete(l, buffer));
+                    fea = outp.AddFeature(TransfGeometry(new Feature(new Polygon(linL)), false));
+
+                 //   fea = outp.AddFeature(TransfGeometry(TransfGeometry(feaS.Features[i], true).Buffer(buffer), false));
                 }
                 else if (side == "Left")
                 {
@@ -371,10 +381,12 @@ namespace Cetecean
             //{
             //    return C;
             //}
-            return C;
-
 
             IFeature B = (IFeature)C.Clone();
+            return B;
+
+
+           // IFeature B = (IFeature)C.Clone();
 
 
             //Generate an array with all coordinates
@@ -470,6 +482,15 @@ namespace Cetecean
         //    return new Coordinate(ptoI.X + Math.Sin(azi) * dist, ptoI.Y + Math.Cos(azi) * dist);
         //}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ptoi"></param>
+        /// <param name="azi"></param>
+        /// <param name="dis"></param>
+        /// <param name="parts"></param>
+        /// <param name="side"></param>
+        /// <returns></returns>
         private List<Coordinate> Curv(Coordinate ptoi, double azi, double dis, double parts, string side)
         {
 
@@ -491,10 +512,31 @@ namespace Cetecean
                 }
             }
 
+           return list;
+
+        }
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ptoi"></param>
+        /// <param name="azi"></param>
+        /// <param name="dis"></param>
+        /// <param name="parts"></param>
+        /// <returns></returns>
+        private List<Coordinate> Semi(Coordinate ptoi, double azi, double dis, double parts )
+        {
 
+            List<Coordinate> list = new List<Coordinate>();
+            double dAz =Math.PI/  parts;
+            
+                for (int i = 0; i <= parts; i++)
+                {
+                    list.Add(new Coordinate(_geo.AzimuthDist(ptoi, azi - (Math.PI/2.0) + dAz * i, dis)));
+                }
+     
             return list;
 
         }
@@ -602,6 +644,50 @@ namespace Cetecean
             return list.ToArray();
 
         }
+
+        /// <summary>
+        /// Generate the list of point of a buffer according with the side
+        /// </summary>
+        /// <param name="feaS"></param>
+        /// <param name="buffer"></param>
+        /// <param name="side"></param>
+        /// <returns></returns>
+        private Coordinate[] BufferComplete(IFeature feaS, double buffer)
+        {
+            //Get the initial point and the end point of a line
+            List<Coordinate> list = new List<Coordinate>();
+            Coordinate ini = feaS.Coordinates[0];
+            Coordinate end = feaS.Coordinates[1];
+
+            //get azimuth
+            double az = _geo.GetAzimuth(ini, end);
+
+            //Calculate the point in the initial curve of the buffer.. 
+            // the number of point using to create the curve is 10..
+            // the points are added in the list of points
+            foreach (Coordinate c in Semi(end, az, buffer, 20))
+                list.Add(c);
+
+
+            Coordinate initialPoint = list.First();
+            //the second curve should start according with the side selected
+
+                az = az + Math.PI;
+
+
+            //calculation of the second curve
+            //Add valued in the list
+            foreach (Coordinate c in Semi(ini, az, buffer, 20))
+                list.Add(c);
+
+            //the first point should be the same that the last point
+            list.Add(initialPoint);
+
+            //covert the list in an array
+            return list.ToArray();
+
+        }
+
 
         private void cbxLayer_SelectedIndexChanged(object sender, EventArgs e)
         {

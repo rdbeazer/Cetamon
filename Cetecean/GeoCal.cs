@@ -56,20 +56,20 @@ namespace Cetecean
 
                 double y=Math.Sin(dlon) * Cos_deg(target.Y);
                 double x=Cos_deg(origin.Y) *Sin_deg(target.Y) - Sin_deg(origin.Y) * Cos_deg(target.Y)*Math.Cos(dlon);
-                return (toDeg(Math.Atan2(y, x)) + 360.0) % 360.0;
+                return toRad((toDeg(Math.Atan2(y, x)) + 360.0) % 360.0);
             }
             else
             {
             double dx = target.X - origin.X;
             double dy = target.Y - origin.Y;
             if (dx == 0 && dy > 0) return 0;
-            if (dx == 0 && dy < 0) return Math.PI;
-            if (dx > 0 && dy == 0) return Math.PI / 2;
-            if (dx < 0 && dy == 0) return 3 * Math.PI / 2;
-            if (dx > 0 && dy > 0) return Math.Atan(dx / dy);
-            if (dx > 0 && dy < 0) return Math.PI + Math.Atan(dx / dy);
-            if (dx < 0 && dy < 0) return (Math.PI) + Math.Atan(dx / dy);
-            if (dx < 0 && dy > 0) return (2 * Math.PI) + Math.Atan(dx / dy);
+            if (dx == 0 && dy < 0) return (Math.PI);
+            if (dx > 0 && dy == 0) return (Math.PI / 2);
+            if (dx < 0 && dy == 0) return (3 * Math.PI / 2);
+            if (dx > 0 && dy > 0) return (Math.Atan(dx / dy));
+            if (dx > 0 && dy < 0) return (Math.PI + Math.Atan(dx / dy));
+            if (dx < 0 && dy < 0) return ((Math.PI) + Math.Atan(dx / dy));
+            if (dx < 0 && dy > 0) return ((2 * Math.PI) + Math.Atan(dx / dy));
             return 0;
             }
 
@@ -104,15 +104,15 @@ namespace Cetecean
          {
              double r=_proj.GeographicInfo.Datum.Spheroid.EquatorialRadius;
 
-             double lat2= Math.Asin(Sin_deg(ptoI.Y)*Math.Cos(dist/r) +   Cos_deg(ptoI.Y)*Math.Sin(dist/r)*Math.Cos(toRad(azi)));
-             double lon2 = toRad(ptoI.X) + Math.Atan2(Sin_deg(azi)*Math.Sin(dist/r)*Cos_deg(ptoI.Y), Math.Cos(dist/r) - (Sin_deg(ptoI.Y) * Math.Sin(lat2)));
+             double lat2= Math.Asin(Sin_deg(ptoI.Y)*Math.Cos(dist/r) +   Cos_deg(ptoI.Y)*Math.Sin(dist/r)*Math.Cos(azi));
+             double lon2 = toRad(ptoI.X) + Math.Atan2(Math.Sin(azi)*Math.Sin(dist/r)*Cos_deg(ptoI.Y), Math.Cos(dist/r) - (Sin_deg(ptoI.Y) * Math.Sin(lat2)));
              
              return new Coordinate(toDeg(lon2),toDeg(lat2));
  	        
          }
          else
          {
-            return new Coordinate(ptoI.X + Math.Sin(azi) * dist, ptoI.Y + Math.Cos(azi) * dist);
+             return new Coordinate(ptoI.X + Math.Sin(azi) * dist, ptoI.Y + Math.Cos(azi) * dist);
          }
         
         }

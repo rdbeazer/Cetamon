@@ -33,7 +33,7 @@ namespace Cetecean
             //double distance =geo.Distance(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
             //double Azimuth = geo.GetAzimuth(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
 
-            //map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+            map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
 
             //Coordinate n = geo.AzimuthDist(new Coordinate(lon, lat), Azimuth, distance);
 
