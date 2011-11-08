@@ -10,6 +10,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using DotSpatial.Projections;
+using System.Reflection;
 namespace Cetecean
 {
     public partial class frmCetecean : Form
@@ -19,11 +20,11 @@ namespace Cetecean
         public frmCetecean()
         {
             InitializeComponent();
+            this.Text = "Cetacean Monitoring System " + Assembly.GetCallingAssembly().GetName().Version.ToString(); 
         }
 
         private void frmCetecean_Load(object sender, EventArgs e)
         {
-
             //GeoCal geo = new GeoCal(map1.Projection);
             //double lat = 50.06639;
             //double lon = -5.71472;
@@ -524,6 +525,17 @@ namespace Cetecean
         {
             frmCalculateField cal = new frmCalculateField(map1);
             cal.Show();
+        }
+
+        private void tsmAbout_Click(object sender, EventArgs e)
+        {
+            frmAbout1 frmAbout = new frmAbout1();
+            frmAbout.ShowDialog();
+        }
+
+        private void tsmExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
 
