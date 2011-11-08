@@ -115,38 +115,58 @@ namespace Cetecean
         private void AddPointLayer(DataTable table, string name)
         {
 
-            MapPointLayer pointLayer = new MapPointLayer();
-            FeatureSet pointFs = new FeatureSet(FeatureType.Point);
+            //try
+            //{
+                MapPointLayer pointLayer = new MapPointLayer();
+                FeatureSet pointFs = new FeatureSet(FeatureType.Point);
+                
+                System.Data.DataColumn latField = new System.Data.DataColumn("Latitude", typeof(double));
+                System.Data.DataColumn longField = new System.Data.DataColumn("Longitude", typeof(double));
 
-            System.Data.DataColumn latField = new System.Data.DataColumn("Latitude", typeof(double));
-            System.Data.DataColumn longField = new System.Data.DataColumn("Longitude", typeof(double));
+
+                //loops through each DataColumn in the data table (from excel sheet) and adds the column name and data type.
+                //to the FeatureSet lineFs.
+                foreach (DataColumn col in table.Columns)
+                {
+                    pointFs.DataTable.Columns.Add(new DataColumn(col.ColumnName, col.DataType));
+                }
+
+                //pointFs.DataTable.Columns.Add(latField);
+                //pointFs.DataTable.Columns.Add(longField);
+
+                pointFs.Projection = map1.Projection;
+                pointLayer = new MapPointLayer(pointFs);
+                pointLayer.LegendText = name;
+                pointLayer.Symbolizer.SetFillColor(Color.Green);
+                map1.Layers.Add(pointLayer);
+                foreach (DataRow row in table.Rows)
+                {
+                    double latitude = 0;
+                    double longitude = 0;
+                    longitude = Convert.ToDouble(row["Longitude"]);
+                    latitude = Convert.ToDouble(row["Latitude"]);
+                    double[] xy = new double[] { longitude, latitude };
+                    ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
+                    Reproject.ReprojectPoints(xy, new double[] { 0 }, wgs84, map1.Projection, 0, 1);
+                    DotSpatial.Topology.Point point = new DotSpatial.Topology.Point(xy[0], xy[1]);
+                    IFeature newF = pointLayer.DataSet.AddFeature(point);
+                    newF.DataRow["Latitude"] = latitude;
+                    newF.DataRow["Longitude"] = longitude;
+                    ProjectionInfo ip = map1.Projection;
 
 
-            pointFs.DataTable.Columns.Add(latField);
-            pointFs.DataTable.Columns.Add(longField);
+                    foreach (DataColumn col in table.Columns)
+                    {
+                        newF.DataRow[col.ColumnName] = row[col.ColumnName];
+                    }
+                }
+                map1.ResetBuffer();
+            //}
 
-            pointFs.Projection = map1.Projection;
-            pointLayer = new MapPointLayer(pointFs);
-            pointLayer.LegendText = name;
-            pointLayer.Symbolizer.SetFillColor(Color.Green);
-            map1.Layers.Add(pointLayer);
-            foreach (DataRow row in table.Rows)
-            {
-                double latitude = 0;
-                double longitude = 0;
-                longitude = Convert.ToDouble(row["Longitude"]);
-                latitude = Convert.ToDouble(row["Latitude"]);
-                double[] xy = new double[] { longitude, latitude };
-                ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
-                Reproject.ReprojectPoints(xy, new double[] { 0 }, wgs84, map1.Projection, 0, 1);
-                DotSpatial.Topology.Point point = new DotSpatial.Topology.Point(xy[0], xy[1]);
-                IFeature newF = pointLayer.DataSet.AddFeature(point);
-                newF.DataRow["Latitude"] = latitude;
-                newF.DataRow["Longitude"] = longitude;
-                ProjectionInfo ip = map1.Projection;
-
-            }
-            map1.ResetBuffer();
+            //catch (NullReferenceException nre) 
+            //{
+            //    MessageBox.Show("Please check the import data.  An error has occured.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
           
         private void AddLineLayer(DataTable table,string name)
@@ -381,6 +401,11 @@ namespace Cetecean
                 ExcelData convert = new ExcelData(@strFileName);
                 convert.Import();
                 DataTable data = convert.GetData("point");
+                if (data == null)
+                {
+                    MessageBox.Show("Invalid Excel attribute configuration.  Please choose a different file or correct the current file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 AddPointLayer(data, Validator.GetNameFile(@strFileName));
             }
 
