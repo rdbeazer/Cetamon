@@ -19,15 +19,16 @@ namespace Cetecean
 
 #region Class Level Variables
         Map _map = null;
-        List<string> layerList1 = new List<string>();
-        List<string> layerList2 = new List<string>();
-        int gridSelectIndex;
+        List<string> layerList = new List<string>();
         int swatheSelectIndex;
-        string columnHead1Select;
-        string columnHead2Select;
+        int gridSelectIndex;
+        string polygonIDSelect;
+        string swatheAreaSelect;
         IFeatureSet inputSwathe = null;
         IFeatureSet inputGrid = null;
         FeatureSet output = new FeatureSet();
+        decimal swatheAreaSum;
+               
 
 
 #endregion
@@ -45,68 +46,60 @@ namespace Cetecean
         private void polyEffortBySwathe_Load(object sender, EventArgs e)
         {
             //Clear the combobox items from any previous runs
-            cmbGrid.Items.Clear();
-            cmbGridID.Items.Clear();
             cmbSwathe.Items.Clear();
-            cmbSwatheID.Items.Clear();
+            cmbInputGrid.Items.Clear();
+            cmbSwatheArea.Items.Clear();
 
             //Get the layers from the map
-            getLayers(layerList1);
-            cmbGrid.DataSource = layerList1;
-            getLayers(layerList2);
-            cmbSwathe.DataSource = layerList2;
+            getLayers();
+            //Old code ----------------------------------
+            //radUpdateSwathe.Checked = true;
 
         }
 
         #region Methods
 
         //Method to get user selected variables from Split Tracks form
-        private void getLayers(List<string> layerList)
+        private void getLayers()
         {
-            //clears layerLists
-            layerList.Clear();
+            layerList.Clear();  //  clears layerList
 
-            //loops through the map layers and adds them to the layerLists.
-            //These lists will be used to populate the combo boxes.
-            if (_map.Layers.Count > 0 )
+            //  Gets the collection of polygon and point layers from the map
+            IMapPolygonLayer[] polygonLayers = _map.GetPolygonLayers();   
+
+            //  Gets a count for each type of layer
+            int polygonCount = polygonLayers.Count();
+
+            //  Checks to make sure at least 2 polygon layers have been added.
+            if (polygonCount > 1)
             {
-                for (int i = 0; i < _map.Layers.Count; i++)
+                for (int i = 0; i < _map.Layers.Count; i++)  //  Loops through each map layer
                 {
-                    string title = _map.Layers[i].LegendText;
-                    layerList.Insert(i, title);                   
+                    IMapLayer layer = _map.Layers[i];
+
+                    if (polygonLayers.Contains(layer))  //  If layer is a polygon layer
+                    {
+                        cmbSwathe.Items.Add(layer.LegendText);
+                        cmbInputGrid.Items.Add(layer.LegendText);//  adds the legendText of the layer to the combobox for user polygon selection
+                    }
+
+                                       //*********IMPORTANT**********
+                    //  It is imporant to add each map layer to the layerList.  The layer list holds the map index and legend text for each of the 
+                    //  map layers.  This is how the user selected items in the comboboxes (referred to by their legendText) can be associated with the 
+                    //  correct map layer (by index)
+                    layerList.Insert(i, layer.LegendText);
                 }
             }
             else
             {
-                MessageBox.Show("Please add another layer to the map for this operation", "Not enough layers present.");
-                return;
+                //  Alerts the user and closes the form if there are no polygon or point layers in the map.
+                MessageBox.Show("An Input Swathe layer and an Input Grid layer must be selected.");
+                this.Close();
             }
         }
 
 //Getting user selections-----------------------------------------
-        //Select the polygon grid layer index
-        private void cmbGrid_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            //Clear out the ID combobox to match the next selection
-            cmbGridID.Items.Clear();
-            //gets the user selected index from the combobox populated with layers
-            gridSelectIndex = cmbGrid.SelectedIndex;
-            //selects the input layer based on the index
-            inputGrid = (IFeatureSet)_map.Layers[gridSelectIndex].DataSet;
-            //Add all column headers of the selected layer to the ID combobox
-            foreach (DataColumn col in inputGrid.DataTable.Columns)
-            {
-                string colHead = col.ColumnName;
-                cmbGridID.Items.Add(colHead);
-            }
-        }
-            
-        //Takes the user selected ID string for use later in the join
-        private void cmbGridID_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            columnHead1Select = Convert.ToString(cmbGridID.SelectedItem);    //The selected text from the combobox
-        }
-      
+     
         //Same functionality as above
         private void cmbSwathe_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -115,42 +108,51 @@ namespace Cetecean
             inputSwathe = (IFeatureSet)_map.Layers[swatheSelectIndex].DataSet;
             foreach (DataColumn col in inputSwathe.DataTable.Columns)
             {
-                string colHead = col.ColumnName;
-                cmbSwatheID.Items.Add(colHead);
+                cmbSwatheID.Items.Add(col.ColumnName);
+                cmbSwatheArea.Items.Add(col.ColumnName);
+
             }
         }
-           
-        
+
+        private void cmbInputGrid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            gridSelectIndex = cmbInputGrid.SelectedIndex;
+            inputGrid = (IFeatureSet)_map.Layers[gridSelectIndex].DataSet;
+        }     
         private void cmbSwatheID_SelectedIndexChanged(object sender, EventArgs e)
         {
             
-            columnHead2Select = Convert.ToString(cmbSwatheID.SelectedItem);
+            polygonIDSelect = Convert.ToString(cmbSwatheID.SelectedItem);
              
         }
 
+        private void cmbSwatheArea_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            swatheAreaSelect = Convert.ToString(cmbSwatheArea.SelectedItem);
+        }
 
-        #endregion
+       
+        
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-            //Requirement #10 Functionality-------------------------------------------------------------
-            if (gridSelectIndex != swatheSelectIndex)
-            {   
+            try
+            {
+                //Requirement #10 Functionality-------------------------------------------------------------
                 //Create and add new column to the swathe attribute table to hold the swathe effort value
-                System.Data.DataColumn swatheEffort = new System.Data.DataColumn("Swathe Effort", typeof(double));
-                inputSwathe.DataTable.Columns.Add(swatheEffort);
+                System.Data.DataColumn swatheEffort = new System.Data.DataColumn(txtSwathe.Text, typeof(decimal));
+                inputGrid.DataTable.Columns.Add(swatheEffort);
 
                 //initializes a new list to hold polygonID's
                 //Uses string so ID can hold letters and numbers
                 List<string> polygonIDList = new List<string>();
 
-                //loops through the Swathe DataTable and populates the polygonIDList with unique polygonID's.
-                //This functionality comes from requirement #8 - split survey swathes by polygons.  
+                //loops through the Swathe DataTable and populates the polygonIDList with unique polygonID's.  
                 foreach (DataRow row in inputSwathe.DataTable.Rows)
                 {
                     //Gets the selected column from the user for the polygon ID
-                   string polygonID = Convert.ToString(row[columnHead2Select]);
-                    
+                    string polygonID = Convert.ToString(row[polygonIDSelect]);
+                    //If the polygonIDList doesn't have the ID loaded, add it now
                     if (!polygonIDList.Contains(polygonID))
                     {
                         polygonIDList.Add(polygonID);
@@ -158,41 +160,42 @@ namespace Cetecean
                 }
 
                 //loops through the list to find matches
-                foreach (string ID in polygonIDList) 
+                foreach (string ID in polygonIDList)
                 {
-                    //initializes a new list called swatheAreas
-                    List<double> swatheAreas = new List<double>();
-
-                    //loops through each inputSwathe feature and if the polygonID in the feature matches the ID in the 
-                    //polygonIDList, it collects the Survey Line Length for the feature and adds it to the LineLengths list.
+                    //Look in the inputSwathe DataTable
                     foreach (Feature fe in inputSwathe.Features)
                     {
-                        string feID = Convert.ToString(fe.DataRow[columnHead2Select]);
+                        string feID = Convert.ToString(fe.DataRow[polygonIDSelect]);
 
-                        if (String.ReferenceEquals(ID, feID))
+                        if (ID == feID)
                         {
-                            double polygonSwatheArea = Convert.ToDouble(fe.DataRow["Swathe_Area"]);
-                            swatheAreas.Add(polygonSwatheArea);
+                            decimal polygonSwatheArea = Convert.ToDecimal(fe.DataRow[swatheAreaSelect]);
+                            swatheAreaSum += polygonSwatheArea;
                         }
+
                     }
 
-                    //calculates the sum of all the swathes
-                    double swatheAreaSum = Math.Round(swatheAreas.Sum(), 3);
-
-                    //loops through the inputPolygon DataTable and if the "polygonID" matches the polygonID from the 
-                    //polygonSwatheArea feature, the swathe area sum is added to the swathe area sum
-                    foreach (DataRow row in inputGrid.DataTable.Rows)
+                    foreach (Feature grid in inputGrid.Features)
                     {
-                        string feSwatheID = Convert.ToString(row[columnHead1Select]);
+                        string polygonID = Convert.ToString(grid.DataRow[polygonIDSelect]);
 
-                        if (String.ReferenceEquals(feSwatheID, ID))
+                        if (polygonID == ID)
                         {
-                            row["Swathe_area_sum"] = swatheAreaSum;
+                            grid.DataRow[txtSwathe.Text] = swatheAreaSum;
                         }
 
                     }
+                    swatheAreaSum = 0;
                 }
             }
+            catch
+            {
+                MessageBox.Show("Entry Error.  Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+                   
+            this.Close();
+            MessageBox.Show("The input grid attributes have been updated with the swathe area data.", "Update Successful");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -200,9 +203,37 @@ namespace Cetecean
             this.Close();
         }
 
-        
+        private void saveFile(FeatureSet output, String name, String fileType)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "shapefile files (*.shp)|*.shp";
+            dialog.InitialDirectory = @"C:\";
+            dialog.Title = "Save " + fileType;
+            string strFileName = name;
 
-       
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                strFileName = dialog.FileName;
+            }
 
-     }
+            if (strFileName == String.Empty)
+            {
+                MessageBox.Show("The "+ name + "file won't be saved");
+                return;
+            }
+            else
+            {
+                output.SaveAs(strFileName, true);
+            }
+        }
+
+        private void btnInputSwathe_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This is the input swathe that has been segmented by a grid layer and the area of all swathes calculated.", "Input Swathe Help");
+        }
+
+        #endregion
+
+
+    }
 }
