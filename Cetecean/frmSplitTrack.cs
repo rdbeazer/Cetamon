@@ -17,18 +17,13 @@ namespace Cetecean
 
     public partial class frmSplitTrack : Form
     {
-        #region Class Level Variables
         Map _map = null;
-        List<string> layerList1 = new List<string>();
-        List<string> layerList2 = new List<string>();
-        int polygonSelectIndex = 0;
-        int lineSelectIndex = 0;
-
-        //Create output FS to hold the joined tables
+        List<string> layerList = new List<string>();
+        int polygonSelectIndex;
+        int lineSelectIndex;
+        IFeatureSet inputPolygon = null;
+        IFeatureSet inputLine = null;
         FeatureSet output = new FeatureSet();
-
-        #endregion
-
 
         public frmSplitTrack()
         {
@@ -48,48 +43,70 @@ namespace Cetecean
             cmbLine.Items.Clear();
 
             //Populate the comboboxes with lists from the cetacean form
-            getLayers(layerList1);
-            cmbGrid.DataSource = layerList1; //Polygon
-            getLayers(layerList2);
-            cmbLine.DataSource = layerList2; //Line
+            getLayers();
         }
 
         #region Methods
 
         //Method to get user selected variables from Split Tracks form
-        private void getLayers(List<string> layerList)
+       private void getLayers()
         {
-            //clears layerLists
-            layerList.Clear();
+            layerList.Clear();  //  clears layerList
 
-            //loops through the map layers and adds them to the layerLists.
-            //These lists will be used to populate the combo boxes.
-            if (_map.Layers.Count > 0)
+            //  Gets the collection of polygon and line layers from the map
+            IMapPolygonLayer[] polygonLayers = _map.GetPolygonLayers();
+            IMapLineLayer[] lineLayers = _map.GetLineLayers();
+
+            //  Gets a count for each type of layer
+            int polygonCount = polygonLayers.Count();
+            int lineCount = lineLayers.Count();
+
+
+            if (polygonCount > 0 && lineCount > 0)
             {
-                for (int i = 0; i < _map.Layers.Count; i++)
+                for (int i = 0; i < _map.Layers.Count; i++)  //  Loops through each map layer
                 {
-                    string title = _map.Layers[i].LegendText;
-                    layerList.Insert(i, title);
+                    IMapLayer layer = _map.Layers[i];
+
+                    if (polygonLayers.Contains(layer))  //  If layer is a polygon layer
+                    {
+                        cmbGrid.Items.Add(layer.LegendText);//  adds the legendText of the layer to the combobox for user polygon selection
+                    }
+
+                    if (lineLayers.Contains(layer))
+                    {
+                        cmbLine.Items.Add(layer.LegendText);
+                    }
+
+                    //*********IMPORTANT**********
+                    //  It is imporant to add each map layer to the layerList.  The layer list holds the map index and legend text for each of the 
+                    //  map layers.  This is how the user selected items in the comboboxes (referred to by their legendText) can be associated with the 
+                    //  correct map layer (by index)
+                    layerList.Insert(i, layer.LegendText);
                 }
             }
             else
             {
-                MessageBox.Show("Please add another layer to the map for this operation", "Not enough layers present.");
-                return;
+                //  Alerts the user and closes the form if there are no polygon or point layers in the map.
+                MessageBox.Show("For this operation, a track and a grid shapefile must be loaded into the map.", "Entry Error");
+                this.Close();
             }
         }
-
 
         //Get the polygon grid layer index based on the user selection
         private void cmbGrid_SelectedIndexChanged(object sender, EventArgs e)
         {
-            polygonSelectIndex = cmbGrid.SelectedIndex;
+            string selectedPolygonItem = cmbGrid.SelectedItem.ToString();
+            polygonSelectIndex = layerList.IndexOf(selectedPolygonItem);
+            inputPolygon = (IFeatureSet)_map.Layers[polygonSelectIndex].DataSet;
         }
 
         //Get the track line layer index based on user selection
         private void cmbLine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lineSelectIndex = cmbLine.SelectedIndex;
+            string selectedLineItem = cmbLine.SelectedItem.ToString();
+            lineSelectIndex = layerList.IndexOf(selectedLineItem);
+            inputLine = (IFeatureSet)_map.Layers[lineSelectIndex].DataSet;
         }
 
         //Split the form
@@ -98,43 +115,42 @@ namespace Cetecean
             try
             {
                 //check to make sure selections are different
-                if (polygonSelectIndex != lineSelectIndex)
-                {
-                    //Get the input line and polygon based on the index of the user selection from the combo box
-                    IFeatureSet inputLine = (IFeatureSet)_map.Layers[lineSelectIndex].DataSet;
-                    IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[polygonSelectIndex].DataSet;
-
+                if (inputPolygon.Name != inputLine.Name)
+                {   
                     //Set output feature to a line
-                    output.FeatureType = inputLine.FeatureType;
+                    //output.FeatureType = inputLine.FeatureType;
 
                     //Create a temporary file to hold the intersection of 
                     IFeatureSet tempOutput = inputLine.Intersection(inputPolygon, FieldJoinType.All, null);
-
-                    //Create new datacolumns from the merging file to the output file 
-                    foreach (DataColumn inputLineColumn in tempOutput.DataTable.Columns)
-                    {
-                        output.DataTable.Columns.Add(new DataColumn(inputLineColumn.ColumnName, inputLineColumn.DataType));
-                    }
-
-                    ////Calculate each track distance and add to the table
-                    calculateTrackDistance(tempOutput, output);
-
-
-
-                    //Creates a new MapLineLayer using the output featureset
-                    MapLineLayer lineIntersectLayer = new MapLineLayer(output);
-
+                    tempOutput.Projection = inputLine.Projection;
+               
+                    if (tempOutput == null) return;
+                    tempOutput.DataTable.Columns.Add(new DataColumn("TrackLength", typeof(double)));
+                    calculateTrackDistance(tempOutput);
+                    //Validator.SaveShapefile("splitTract", (FeatureSet)output);
+                    MapLineLayer lineIntersectLayer = new MapLineLayer(tempOutput);
+                   
                     //Sets Legend and Symbolizer properties.
                     lineIntersectLayer.LegendText = "Split survey tracks";
                     lineIntersectLayer.Symbolizer.SetFillColor(Color.Red);
 
                     _map.Layers.Add(lineIntersectLayer);
                     _map.ResetBuffer();
-                    //Alerts the user that the attributes have been updated.
-                    MessageBox.Show("The selected track layer has been segmented by the selected grid layer", "Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    saveFile(output);
+                   
+                    //saveFile(tempOutput);
                     this.Close();
 
+                    if (radNewShape.Checked)
+                    {
+                        saveFile(tempOutput);
+                        MessageBox.Show("The selected track shapefile has been split by the selected grid shapefile and saved. \n Length of each segment has also been calculated." +
+                "\n\n File Location: " + tempOutput.Filename, "Split Successful");
+                    }
+                    else
+                    {
+                        //Alerts the user that the attributes have been updated.
+                        MessageBox.Show("The selected track shapefile has been split by the selected grid shapefile, but has not been saved. \n Length of each segment has also been calculated.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
                 }
                 else
                 {
@@ -151,7 +167,6 @@ namespace Cetecean
             }
         }
 
-
         public int getPolygonIndex()
         {
             return polygonSelectIndex;
@@ -163,7 +178,7 @@ namespace Cetecean
         }
 
         //Save file dialog
-        private void saveFile(FeatureSet output)
+        private void saveFile(IFeatureSet output)
         {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "shapefile files (*.shp)|*.shp";
@@ -187,8 +202,10 @@ namespace Cetecean
             }
 
         }
+        #endregion
+        #region distance methods
         //Calculates the track distance for each line feature within a featureset
-        public void calculateTrackDistance(IFeatureSet inputFeatureSet, FeatureSet outputFeatureSet)
+        public void calculateTrackDistance(IFeatureSet inputFeatureSet)
         {
 
             foreach (Feature fe in inputFeatureSet.Features)
@@ -207,8 +224,6 @@ namespace Cetecean
                 trackDistance = GetDistance(coord[0].Y, coord[1].Y, coord[0].X, coord[1].X);
                 fe.DataRow["TrackLength"] = trackDistance;
 
-                //adds feature fe to FeatureSet output.
-                outputFeatureSet.Features.Add(fe);
             }
 
         }

@@ -52,10 +52,7 @@ namespace Cetecean
 
             //Get the layers from the map
             getLayers();
-            //Old code ----------------------------------
-            //radUpdateSwathe.Checked = true;
-
-        }
+         }
 
         #region Methods
 
@@ -195,7 +192,47 @@ namespace Cetecean
             }
                    
             this.Close();
-            MessageBox.Show("The input grid attributes have been updated with the swathe area data.", "Update Successful");
+            
+
+            //Saving Options
+
+            if(radOriginal.Checked)
+            {
+                inputGrid.Save();
+                MessageBox.Show("The input grid attributes have been updated with the swathe area data and saved." +
+                "\n|n File Location: " + inputGrid.Filename, "Update Successful");
+            }
+
+            else if (radNewShape.Checked)
+            {
+                FeatureSet output = new FeatureSet(FeatureType.Polygon);
+                output = (FeatureSet)inputGrid;
+                saveFile(output);
+                //  Alerts the user that the file has been saved.
+                //  Asks the user if they would like to add the saved file to the map.  
+                DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " +
+                    output.Filename + ".\n\nWould you like to add the new file to the map?", "File Saved",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                //  If the user clicks "Yes", the saved file is added as a new polygon layer on the map.
+                if (result == DialogResult.Yes)
+                {
+                    MapPolygonLayer newPolygonLayer = new MapPolygonLayer(output);
+                    string filename = output.Filename;
+                    //  The new polygon layer receives the name it was saved as.
+                    int index = filename.LastIndexOf("\\");
+                    string legendText = filename.Substring(index + 1);
+                    newPolygonLayer.LegendText = legendText;
+                    _map.Layers.Add(newPolygonLayer);
+                    _map.ResetBuffer();
+                }
+            }
+
+            else
+            {
+                MessageBox.Show("The input grid attributes have been updated with the swathe area data.", "Update Successful");
+            }
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -203,13 +240,13 @@ namespace Cetecean
             this.Close();
         }
 
-        private void saveFile(FeatureSet output, String name, String fileType)
+        private void saveFile(FeatureSet output)
         {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "shapefile files (*.shp)|*.shp";
             dialog.InitialDirectory = @"C:\";
-            dialog.Title = "Save " + fileType;
-            string strFileName = name;
+            dialog.Title = "Save";
+            string strFileName = "";
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -218,7 +255,7 @@ namespace Cetecean
 
             if (strFileName == String.Empty)
             {
-                MessageBox.Show("The "+ name + "file won't be saved");
+                MessageBox.Show("The file will not be saved");
                 return;
             }
             else
@@ -229,7 +266,7 @@ namespace Cetecean
 
         private void btnInputSwathe_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This is the input swathe that has been segmented by a grid layer and the area of all swathes calculated.", "Input Swathe Help");
+            MessageBox.Show("This is the input swathe that has been segmented by a grid layer and the area of all swathes calculated."  , "Input Swathe Help");
         }
 
         #endregion
