@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.chkSaveAs = new System.Windows.Forms.CheckBox();
-            this.grbSaveOptions = new System.Windows.Forms.GroupBox();
-            this.chkSave = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCalculate = new System.Windows.Forms.Button();
             this.cmbPoint = new System.Windows.Forms.ComboBox();
@@ -45,43 +42,10 @@
             this.radSession = new System.Windows.Forms.RadioButton();
             this.radNewShape = new System.Windows.Forms.RadioButton();
             this.radOriginal = new System.Windows.Forms.RadioButton();
-            this.grbSaveOptions.SuspendLayout();
             this.grbPoint.SuspendLayout();
             this.grbRaster.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // chkSaveAs
-            // 
-            this.chkSaveAs.AutoSize = true;
-            this.chkSaveAs.Location = new System.Drawing.Point(22, 55);
-            this.chkSaveAs.Name = "chkSaveAs";
-            this.chkSaveAs.Size = new System.Drawing.Size(178, 30);
-            this.chkSaveAs.TabIndex = 1;
-            this.chkSaveAs.Text = "Save the updated attributes to a\r\nnew point shapefile.";
-            this.chkSaveAs.UseVisualStyleBackColor = true;
-            // 
-            // grbSaveOptions
-            // 
-            this.grbSaveOptions.Controls.Add(this.chkSaveAs);
-            this.grbSaveOptions.Controls.Add(this.chkSave);
-            this.grbSaveOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.grbSaveOptions.Location = new System.Drawing.Point(366, 313);
-            this.grbSaveOptions.Name = "grbSaveOptions";
-            this.grbSaveOptions.Size = new System.Drawing.Size(248, 95);
-            this.grbSaveOptions.TabIndex = 10;
-            this.grbSaveOptions.TabStop = false;
-            this.grbSaveOptions.Text = "Save Options";
-            // 
-            // chkSave
-            // 
-            this.chkSave.AutoSize = true;
-            this.chkSave.Location = new System.Drawing.Point(22, 19);
-            this.chkSave.Name = "chkSave";
-            this.chkSave.Size = new System.Drawing.Size(190, 30);
-            this.chkSave.TabIndex = 0;
-            this.chkSave.Text = "Save the updated attributes to the \r\noriginal point shapefile.";
-            this.chkSave.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
@@ -230,9 +194,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(640, 481);
+            this.ClientSize = new System.Drawing.Size(294, 481);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.grbSaveOptions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.grbPoint);
@@ -240,8 +203,6 @@
             this.Name = "frmExtractRasterValues";
             this.Text = "Extract Raster Values";
             this.Load += new System.EventHandler(this.frmExtractRasterValues_Load);
-            this.grbSaveOptions.ResumeLayout(false);
-            this.grbSaveOptions.PerformLayout();
             this.grbPoint.ResumeLayout(false);
             this.grbRaster.ResumeLayout(false);
             this.grbRaster.PerformLayout();
@@ -253,9 +214,6 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox chkSaveAs;
-        private System.Windows.Forms.GroupBox grbSaveOptions;
-        private System.Windows.Forms.CheckBox chkSave;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnCalculate;
         private System.Windows.Forms.ComboBox cmbPoint;

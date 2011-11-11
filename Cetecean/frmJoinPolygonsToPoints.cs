@@ -66,13 +66,29 @@ namespace Cetecean
                     if (polygonLayers.Contains(layer))  //  If layer is a polygon layer
                     {
                         cmbInput2.Items.Add(layer.LegendText);  //  adds the legendText of the layer to the combobox for user polygon selection
+
+                        //  Checks to make sure there is a polygonID associated with each feature.  If not, assigns "polygonID"
+                        IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[i].DataSet;
+                        if (!inputPolygon.DataTable.Columns.Contains("polygonID") && !inputPolygon.DataTable.Columns.Contains("POLYGONID"))
+                        {
+                            inputPolygon.AddFid();  //  Adds FID
+                            inputPolygon.DataTable.Columns["FID"].ColumnName = "polygonID"; //  Changes FID column name.
+                        }
                     }
 
                     if (pointLayers.Contains(layer))  //  If layer is a point layer
                     {
                         cmbInput1.Items.Add(layer.LegendText);  //  adds the legendText of the layer to the combobox for user point selection
-                    }
 
+                        //  Checks to make sure there is a pointID associated with each feature.  If not, assigns "pointID".
+                        IFeatureSet inputPoint = (IFeatureSet)_map.Layers[i].DataSet;
+                        if (!inputPoint.DataTable.Columns.Contains("pointID") && !inputPoint.DataTable.Columns.Contains("POINTID"))
+                        {
+                            inputPoint.AddFid();  //  Adds FID
+                            inputPoint.DataTable.Columns["FID"].ColumnName = "pointID"; //  Changes FID column name.
+                        }
+                    }
+                    
                     //*********IMPORTANT**********
                     //  It is imporant to add each map layer to the layerList.  The layer list holds the map index and legend text for each of the 
                     //  map layers.  This is how the user selected items in the comboboxes (referred to by their legendText) can be associated with the 
@@ -96,156 +112,164 @@ namespace Cetecean
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-            //  Initializes a new list to hold the selectedFields from clsFields.
-            List<string> selectedFields = new List<string>();
-            foreach (string field in clsFields.CheckedItems)  //  Loops through each of the checked fields
+
+            try
             {
-                selectedFields.Add(field);  //  Adds the checked fields to the selectedFields list.
-            }
-
-            //  Creates two new input FeatureSets.
-            //  The FeatureSets are populated with the data sets from the specified map layer index.
-            //  The map layer index is set using the layerList and the user selected layers.
-            IFeatureSet inputPoint = (IFeatureSet)_map.Layers[input1SelectIndex].DataSet;
-            IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
-
-            //  Temporary IFeatureSet created to hold the intersection of the inputPoint and inputPolygon FeatureSets
-            IFeatureSet tempOutput = inputPoint.Intersection(inputPolygon, FieldJoinType.All, null);
-
-            string invalidColumn = null;
-
-            //  Create new DataColumns in tempOutput with the selected join fields
-            foreach (DataColumn column in tempOutput.DataTable.Columns)  //  Loops through each of the columns
-            {
-                if (selectedFields.Contains(column.ColumnName))  // if the selectedFields list contains the column name
+                //  Initializes a new list to hold the selectedFields from clsFields.
+                List<string> selectedFields = new List<string>();
+                foreach (string field in clsFields.CheckedItems)  //  Loops through each of the checked fields
                 {
-                    if (inputPoint.DataTable.Columns.Contains(column.ColumnName))  //  if the datatable already contains the column name.
-                    {
-                        invalidColumn += "\n\n" + column.ColumnName;
-                    }
-                    else
-                    {
-                        //  If the column name doesn't already exist in the inputPoint dataTable, it is added.
-                        inputPoint.DataTable.Columns.Add(new DataColumn(column.ColumnName, column.DataType));
-                    }
+                    selectedFields.Add(field);  //  Adds the checked fields to the selectedFields list.
                 }
-            }
 
-            if (invalidColumn != null)
-            {
-                //  Alerts the user that the column name already exists
-                MessageBox.Show("The data table already contains the following field name(s):\n\n" + invalidColumn +
-                    "\n\nThe attributes for these fields were not added to the data table.", "Input Error");
-            }
+                //  Creates two new input FeatureSets.
+                //  The FeatureSets are populated with the data sets from the specified map layer index.
+                //  The map layer index is set using the layerList and the user selected layers.
+                IFeatureSet inputPoint = (IFeatureSet)_map.Layers[input1SelectIndex].DataSet;
+                IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
 
-            //initializes a new list to hold pointID's
-            List<int> pointIDList = new List<int>();
+                //  Temporary IFeatureSet created to hold the intersection of the inputPoint and inputPolygon FeatureSets
+                IFeatureSet tempOutput = inputPoint.Intersection(inputPolygon, FieldJoinType.All, null);
 
-            //loops through the inputPoint DataTable and populates the pointIDList with unique pointID's.
-            foreach (DataRow row in inputPoint.DataTable.Rows)
-            {
-                int pointID = Convert.ToInt32(row[pointIDField]);
-                if (!pointIDList.Contains(pointID))  //  If the list doesn't contain the ID
+                string invalidColumn = null;
+
+                //  Create new DataColumns in tempOutput with the selected join fields
+                foreach (DataColumn column in tempOutput.DataTable.Columns)  //  Loops through each of the columns
                 {
-                    pointIDList.Add(pointID);
-                }
-            }
-
-            //  Variable to hold the value
-            double fieldValue = 0;
-
-            foreach (int ID in pointIDList)  //  Loops through each ID in the pointIDList.
-            {
-                foreach (Feature feature in tempOutput.Features)  //  Loops through each of the features in the tempOutput (joined FeatureSet)
-                {
-                    //  Sets the featureID as the int value found in the pointIDField column of the joined FeatureSet
-                    //  The pointIDField was set from the selection by the user in the cmbField combobox.
-                    int featureID = Convert.ToInt32(feature.DataRow[pointIDField]);
-                    //  If the featureID matches the ID from the pointIDList, the values for each of the fields specified by the user need to be collected.
-                    if (featureID == ID)
+                    if (selectedFields.Contains(column.ColumnName))  // if the selectedFields list contains the column name
                     {
-                        foreach (string field in selectedFields) //  Loops through each field in selectedFields
+                        if (inputPoint.DataTable.Columns.Contains(column.ColumnName))  //  if the datatable already contains the column name.
                         {
-                            fieldValue = Convert.ToDouble(feature.DataRow[field]);  //  Assigns the fieldValue as the value in the joined FeatureSet (tempOutput)
-                            //  at the specified field column.
-                            //  Loops back through the inputPoint data table and if the IDs match up, the field value is assigned to the 
-                            //  specific field column in the inputPoint data table.
-                            foreach (DataRow row in inputPoint.DataTable.Rows)
+                            invalidColumn += "\n\n" + column.ColumnName;
+                        }
+                        else
+                        {
+                            //  If the column name doesn't already exist in the inputPoint dataTable, it is added.
+                            inputPoint.DataTable.Columns.Add(new DataColumn(column.ColumnName, column.DataType));
+                        }
+                    }
+                }
+
+                if (invalidColumn != null)
+                {
+                    //  Alerts the user that the column name already exists
+                    MessageBox.Show("The data table already contains the following field name(s):\n\n" + invalidColumn +
+                        "\n\nThe attributes for these fields were not added to the data table.", "Input Error");
+                }
+
+                //initializes a new list to hold pointID's
+                List<int> pointIDList = new List<int>();
+
+                //loops through the inputPoint DataTable and populates the pointIDList with unique pointID's.
+                foreach (DataRow row in inputPoint.DataTable.Rows)
+                {
+                    int pointID = Convert.ToInt32(row[pointIDField]);
+                    if (!pointIDList.Contains(pointID))  //  If the list doesn't contain the ID
+                    {
+                        pointIDList.Add(pointID);
+                    }
+                }
+
+                //  Variable to hold the value
+                double fieldValue = 0;
+
+                foreach (int ID in pointIDList)  //  Loops through each ID in the pointIDList.
+                {
+                    foreach (Feature feature in tempOutput.Features)  //  Loops through each of the features in the tempOutput (joined FeatureSet)
+                    {
+                        //  Sets the featureID as the int value found in the pointIDField column of the joined FeatureSet
+                        //  The pointIDField was set from the selection by the user in the cmbField combobox.
+                        int featureID = Convert.ToInt32(feature.DataRow[pointIDField]);
+                        //  If the featureID matches the ID from the pointIDList, the values for each of the fields specified by the user need to be collected.
+                        if (featureID == ID)
+                        {
+                            foreach (string field in selectedFields) //  Loops through each field in selectedFields
                             {
-                                int pointID = Convert.ToInt32(row[pointIDField]);
-                                if (pointID == ID)
+                                if (feature.DataRow[field] is DBNull)
                                 {
-                                    row[field] = fieldValue;
+                                    continue;
+                                }
+
+                                else
+                                {
+                                    fieldValue = Convert.ToDouble(feature.DataRow[field]);  //  Assigns the fieldValue as the value in the joined FeatureSet (tempOutput)
+                                    //  at the specified field column.
+                                    //  Loops back through the inputPoint data table and if the IDs match up, the field value is assigned to the 
+                                    //  specific field column in the inputPoint data table.
+                                    foreach (DataRow row in inputPoint.DataTable.Rows)
+                                    {
+                                        int pointID = Convert.ToInt32(row[pointIDField]);
+                                        if (pointID == ID)
+                                        {
+                                            row[field] = fieldValue;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            this.Close();  //  Closes the form
+                this.Close();  //  Closes the form
 
-            if (chkSave.Checked) //  If user checks the box to save the attributes to the original shapefile.
-            {
-                inputPoint.Save();  //  Saves to the original file directory
-                MessageBox.Show("The updated attributes have been saved to " +  //  Alerts the user that the file has been saved.
-                    inputPoint.Filename + ".", "File Saved");
-            }
-
-            if (chkSaveAs.Checked) // If user checks the box to save the attributes to a new shapefile.
-            {
-                FeatureSet output = new FeatureSet(FeatureType.Point); // output FeatureSet is declared.
-                output = (FeatureSet)inputPoint; // output is equal to the inputPoint
-
-                //  Calls the saveFile method
-                saveFile(output);
-
-                //  Alerts the user that the file has been saved.
-                //  Asks the user if they would like to add the saved file to the map.
-                DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " +
-                    output.Filename + ".\n\nWould you like to add the new file to the map?", "File Saved",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-
-                //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
-                if (result == DialogResult.Yes)
+                if (radOriginal.Checked)  //  If user checks the box to save the attributes to the original shapefile.
                 {
-                    MapPointLayer newPointLayer = new MapPointLayer(output);
-                    string filename = output.Filename;
-                    //  The new point layer receives the name it was saved as.
-                    int index = filename.LastIndexOf("\\");
-                    string legendText = filename.Substring(index + 1);
-                    newPointLayer.LegendText = legendText;
-                    _map.Layers.Add(newPointLayer);
-                    _map.ResetBuffer();
+                    //  Checks to make sure the user wants to update the original shapefile.
+                    DialogResult result = MessageBox.Show("The attributes have been updated.\n\nAre you sure you want to save to the original shapefile?",
+                        "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        inputPoint.Save();  //  Saves to the original file directory
+
+                        MessageBox.Show("The updated attributes have been saved to the original shapefile: " +  //  Alerts the user that the file has been saved.
+                        inputPoint.Filename + ".", "File Saved");
+                    }
+                    if (result == DialogResult.No)
+                    {
+                        MessageBox.Show("The updated attributes were not saved to a file and will remain in memory.", "File Not Saved");
+                    }
+                }
+
+
+                if (radNewShape.Checked) // If user checks the box to save the attributes to a new shapefile.
+                {
+                    FeatureSet output = new FeatureSet(FeatureType.Point); // output FeatureSet is declared.
+                    output = (FeatureSet)inputPoint; // output is equal to the inputPoint
+
+                    //  Calls the saveFile method
+                    Functions saveObj = new Functions();
+                    saveObj.saveFile(output);
+
+                    if (saveObj.saved)
+                    {
+                        //  Alerts the user that the file has been saved.
+                        //  Asks the user if they would like to add the saved file to the map.
+                        DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " +
+                            output.Filename + ".\n\nWould you like to add the new file to the map?", "File Saved",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                        //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
+                        if (result == DialogResult.Yes)
+                        {
+                            MapPointLayer newPointLayer = new MapPointLayer(output);
+                            string filename = output.Filename;
+                            //  The new point layer receives the name it was saved as.
+                            int index = filename.LastIndexOf("\\");
+                            string legendText = filename.Substring(index + 1);
+                            newPointLayer.LegendText = legendText;
+                            newPointLayer.Projection = _map.Projection;
+                            _map.Layers.Add(newPointLayer);
+                            _map.ResetBuffer();
+                        }
+                    }
                 }
             }
-        }
-
-        //Save file dialog
-        private void saveFile(FeatureSet output)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "shapefile files (*.shp)|*.shp";
-            dialog.InitialDirectory = @"C:\";
-            dialog.Title = "Save";
-            string strFileName = "";
-
-            if (dialog.ShowDialog() == DialogResult.OK)
+            catch
             {
-                strFileName = dialog.FileName;
-            }
-
-            if (strFileName == String.Empty)
-            {
-                MessageBox.Show("The point file won't be saved");
-                return;
-            }
-            else
-            {
-                output.SaveAs(strFileName, true);
+                MessageBox.Show("Please check the values entered and try again", "Entry Error");
             }
         }
-
+           
         private void cmbInput1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Creates a new string to hold the value of the selected item.

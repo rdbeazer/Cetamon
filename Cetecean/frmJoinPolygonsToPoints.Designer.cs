@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.grbSaveOptions = new System.Windows.Forms.GroupBox();
-            this.chkSaveAs = new System.Windows.Forms.CheckBox();
-            this.chkSave = new System.Windows.Forms.CheckBox();
             this.chbSelectAll = new System.Windows.Forms.CheckBox();
             this.grbPoint = new System.Windows.Forms.GroupBox();
             this.cmbField = new System.Windows.Forms.ComboBox();
@@ -42,42 +39,14 @@
             this.cmbInput2 = new System.Windows.Forms.ComboBox();
             this.btnCalculate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.grbSaveOptions.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radSession = new System.Windows.Forms.RadioButton();
+            this.radNewShape = new System.Windows.Forms.RadioButton();
+            this.radOriginal = new System.Windows.Forms.RadioButton();
             this.grbPoint.SuspendLayout();
             this.grbPolygon.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // grbSaveOptions
-            // 
-            this.grbSaveOptions.Controls.Add(this.chkSaveAs);
-            this.grbSaveOptions.Controls.Add(this.chkSave);
-            this.grbSaveOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.grbSaveOptions.Location = new System.Drawing.Point(12, 302);
-            this.grbSaveOptions.Name = "grbSaveOptions";
-            this.grbSaveOptions.Size = new System.Drawing.Size(269, 95);
-            this.grbSaveOptions.TabIndex = 69;
-            this.grbSaveOptions.TabStop = false;
-            this.grbSaveOptions.Text = "Save Options";
-            // 
-            // chkSaveAs
-            // 
-            this.chkSaveAs.AutoSize = true;
-            this.chkSaveAs.Location = new System.Drawing.Point(21, 55);
-            this.chkSaveAs.Name = "chkSaveAs";
-            this.chkSaveAs.Size = new System.Drawing.Size(230, 30);
-            this.chkSaveAs.TabIndex = 1;
-            this.chkSaveAs.Text = "Save the updated attributes to a new point \r\nshapefile.";
-            this.chkSaveAs.UseVisualStyleBackColor = true;
-            // 
-            // chkSave
-            // 
-            this.chkSave.AutoSize = true;
-            this.chkSave.Location = new System.Drawing.Point(21, 19);
-            this.chkSave.Name = "chkSave";
-            this.chkSave.Size = new System.Drawing.Size(226, 30);
-            this.chkSave.TabIndex = 0;
-            this.chkSave.Text = "Save the updated attributes to the original \r\npoint shapefile.";
-            this.chkSave.UseVisualStyleBackColor = true;
             // 
             // chbSelectAll
             // 
@@ -173,7 +142,7 @@
             // btnCalculate
             // 
             this.btnCalculate.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnCalculate.Location = new System.Drawing.Point(50, 422);
+            this.btnCalculate.Location = new System.Drawing.Point(50, 439);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(82, 23);
             this.btnCalculate.TabIndex = 65;
@@ -184,7 +153,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(142, 422);
+            this.btnCancel.Location = new System.Drawing.Point(142, 439);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 23);
             this.btnCancel.TabIndex = 66;
@@ -192,12 +161,57 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radSession);
+            this.groupBox1.Controls.Add(this.radNewShape);
+            this.groupBox1.Controls.Add(this.radOriginal);
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox1.Location = new System.Drawing.Point(12, 302);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(269, 118);
+            this.groupBox1.TabIndex = 70;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Save Options";
+            // 
+            // radSession
+            // 
+            this.radSession.AutoSize = true;
+            this.radSession.Location = new System.Drawing.Point(19, 88);
+            this.radSession.Name = "radSession";
+            this.radSession.Size = new System.Drawing.Size(205, 17);
+            this.radSession.TabIndex = 69;
+            this.radSession.Text = "Update point layer for this session only";
+            this.radSession.UseVisualStyleBackColor = true;
+            // 
+            // radNewShape
+            // 
+            this.radNewShape.AutoSize = true;
+            this.radNewShape.Checked = true;
+            this.radNewShape.Location = new System.Drawing.Point(19, 52);
+            this.radNewShape.Name = "radNewShape";
+            this.radNewShape.Size = new System.Drawing.Size(209, 30);
+            this.radNewShape.TabIndex = 68;
+            this.radNewShape.TabStop = true;
+            this.radNewShape.Text = "Save the updated attributes to a NEW \r\npoint shapefile";
+            this.radNewShape.UseVisualStyleBackColor = true;
+            // 
+            // radOriginal
+            // 
+            this.radOriginal.AutoSize = true;
+            this.radOriginal.Location = new System.Drawing.Point(19, 16);
+            this.radOriginal.Name = "radOriginal";
+            this.radOriginal.Size = new System.Drawing.Size(243, 30);
+            this.radOriginal.TabIndex = 67;
+            this.radOriginal.Text = "Save the updated attributes to the ORIGINAL \r\npoint shapefile";
+            this.radOriginal.UseVisualStyleBackColor = true;
+            // 
             // frmJoinPolygonsToPoints
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(301, 474);
-            this.Controls.Add(this.grbSaveOptions);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grbPoint);
             this.Controls.Add(this.lblPoint);
             this.Controls.Add(this.grbPolygon);
@@ -206,11 +220,11 @@
             this.Name = "frmJoinPolygonsToPoints";
             this.Text = "Join Polygons To Points";
             this.Load += new System.EventHandler(this.frmJoinPolygonsToPoints_Load);
-            this.grbSaveOptions.ResumeLayout(false);
-            this.grbSaveOptions.PerformLayout();
             this.grbPoint.ResumeLayout(false);
             this.grbPolygon.ResumeLayout(false);
             this.grbPolygon.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -218,9 +232,6 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox grbSaveOptions;
-        private System.Windows.Forms.CheckBox chkSaveAs;
-        private System.Windows.Forms.CheckBox chkSave;
         private System.Windows.Forms.CheckBox chbSelectAll;
         private System.Windows.Forms.GroupBox grbPoint;
         private System.Windows.Forms.ComboBox cmbField;
@@ -232,5 +243,9 @@
         private System.Windows.Forms.ComboBox cmbInput2;
         private System.Windows.Forms.Button btnCalculate;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton radSession;
+        private System.Windows.Forms.RadioButton radNewShape;
+        private System.Windows.Forms.RadioButton radOriginal;
     }
 }
