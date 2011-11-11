@@ -200,9 +200,9 @@
             this.groupBox2.Controls.Add(this.radNewShape);
             this.groupBox2.Controls.Add(this.radOriginal);
             this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox2.Location = new System.Drawing.Point(29, 326);
+            this.groupBox2.Location = new System.Drawing.Point(12, 326);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(276, 118);
+            this.groupBox2.Size = new System.Drawing.Size(293, 118);
             this.groupBox2.TabIndex = 71;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Save Options";

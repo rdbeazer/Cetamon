@@ -63,6 +63,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.calculateAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.calculateSurveyEffortByGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.surveyTracksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.surveySwathesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -275,6 +276,7 @@
             this.toolStripMenuItem2,
             this.toolStripSeparator4,
             this.calculateAreaToolStripMenuItem,
+            this.toolStripMenuItem3,
             this.calculateSurveyEffortByGridToolStripMenuItem,
             this.calculatorFieldToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
@@ -374,6 +376,13 @@
             this.calculateAreaToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.calculateAreaToolStripMenuItem.Text = "Calculate area";
             this.calculateAreaToolStripMenuItem.Click += new System.EventHandler(this.calculateAreaToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(234, 22);
+            this.toolStripMenuItem3.Text = "Calculate Line Length";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // calculateSurveyEffortByGridToolStripMenuItem
             // 
@@ -529,6 +538,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
 
     }
 }

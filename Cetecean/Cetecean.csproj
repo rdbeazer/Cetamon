@@ -8,7 +8,7 @@
     <ProjectGuid>{EE11762E-C275-46C3-BF2E-EBF74314131E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cetacean</RootNamespace>
+    <RootNamespace>Cetecean</RootNamespace>
     <AssemblyName>Cetacean</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
@@ -102,6 +102,12 @@
     <Compile Include="frmCalculateField.Designer.cs">
       <DependentUpon>frmCalculateField.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCalculateLineLength.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalculateLineLength.Designer.cs">
+      <DependentUpon>frmCalculateLineLength.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCountSpecies.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCalculateField.resx">
       <DependentUpon>frmCalculateField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalculateLineLength.resx">
+      <DependentUpon>frmCalculateLineLength.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCountSpecies.resx">
       <DependentUpon>frmCountSpecies.cs</DependentUpon>

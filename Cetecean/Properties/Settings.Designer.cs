@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cetacean.Properties {
+namespace Cetecean.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

@@ -563,6 +563,14 @@ namespace Cetecean
             Application.Exit();
         }
 
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            frmCalculateLineLength calcLine = new frmCalculateLineLength(map1);
+            calcLine.Show();
+        }
+
+        
+
 
         
      

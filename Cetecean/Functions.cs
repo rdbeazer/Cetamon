@@ -42,5 +42,27 @@ namespace Cetecean
                 saved = true;
             }
         } 
+
+        public double GetDistance(double Lat1, double Lat2, double long1, double long2)
+        {
+            double distance = Double.MinValue;
+            //converts decimal degrees to radians
+            double Lat1InRad = Lat1 * (Math.PI / 180.0);
+            double Long1InRad = long1 * (Math.PI / 180.0);
+            double Lat2InRad = Lat2 * (Math.PI / 180.0);
+            double Long2InRad = long2 * (Math.PI / 180.0);
+
+            double Longitude = Long2InRad - Long1InRad;
+            double Latitude = Lat2InRad - Lat1InRad;
+
+            double a = Math.Pow(Math.Sin(Latitude / 2.0), 2.0) + Math.Cos(Lat1InRad) * Math.Cos(Lat2InRad) * Math.Pow(Math.Sin(Longitude / 2.0), 2.0);
+            double c = 2.0 * Math.Asin(Math.Sqrt(a));
+
+            const Double kEarthRadiusKms = 6376.5;
+            distance = kEarthRadiusKms * c;
+            double roundDist = Math.Round(distance, 2);
+            return roundDist;
+        }
     }
 }
+
