@@ -169,6 +169,7 @@
     <Compile Include="frmSplitTrack.Designer.cs">
       <DependentUpon>frmSplitTrack.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions.cs" />
     <Compile Include="GeoCal.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

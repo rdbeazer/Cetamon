@@ -41,9 +41,14 @@
             this.chbSelectAll = new System.Windows.Forms.CheckBox();
             this.clsFields = new System.Windows.Forms.CheckedListBox();
             this.lblSelect = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radSession = new System.Windows.Forms.RadioButton();
+            this.radNewShape = new System.Windows.Forms.RadioButton();
+            this.radOriginal = new System.Windows.Forms.RadioButton();
             this.grbSaveOptions.SuspendLayout();
             this.grbPoint.SuspendLayout();
             this.grbRaster.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // chkSaveAs
@@ -61,7 +66,7 @@
             this.grbSaveOptions.Controls.Add(this.chkSaveAs);
             this.grbSaveOptions.Controls.Add(this.chkSave);
             this.grbSaveOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.grbSaveOptions.Location = new System.Drawing.Point(12, 294);
+            this.grbSaveOptions.Location = new System.Drawing.Point(366, 313);
             this.grbSaveOptions.Name = "grbSaveOptions";
             this.grbSaveOptions.Size = new System.Drawing.Size(248, 95);
             this.grbSaveOptions.TabIndex = 10;
@@ -80,7 +85,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(134, 407);
+            this.btnCancel.Location = new System.Drawing.Point(125, 431);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(94, 23);
             this.btnCancel.TabIndex = 9;
@@ -90,7 +95,7 @@
             // 
             // btnCalculate
             // 
-            this.btnCalculate.Location = new System.Drawing.Point(34, 407);
+            this.btnCalculate.Location = new System.Drawing.Point(25, 431);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(94, 23);
             this.btnCalculate.TabIndex = 8;
@@ -113,7 +118,7 @@
             this.grbPoint.Controls.Add(this.cmbPoint);
             this.grbPoint.Location = new System.Drawing.Point(12, 12);
             this.grbPoint.Name = "grbPoint";
-            this.grbPoint.Size = new System.Drawing.Size(248, 52);
+            this.grbPoint.Size = new System.Drawing.Size(266, 52);
             this.grbPoint.TabIndex = 7;
             this.grbPoint.TabStop = false;
             this.grbPoint.Text = "Point Input";
@@ -144,7 +149,7 @@
             this.grbRaster.Controls.Add(this.lblSelect);
             this.grbRaster.Location = new System.Drawing.Point(12, 73);
             this.grbRaster.Name = "grbRaster";
-            this.grbRaster.Size = new System.Drawing.Size(248, 215);
+            this.grbRaster.Size = new System.Drawing.Size(266, 215);
             this.grbRaster.TabIndex = 6;
             this.grbRaster.TabStop = false;
             this.grbRaster.Text = "Raster Input";
@@ -176,24 +181,72 @@
             this.lblSelect.TabIndex = 6;
             this.lblSelect.Text = "Select rasters to extract values from:";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radSession);
+            this.groupBox1.Controls.Add(this.radNewShape);
+            this.groupBox1.Controls.Add(this.radOriginal);
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox1.Location = new System.Drawing.Point(12, 294);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(266, 118);
+            this.groupBox1.TabIndex = 68;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Save Options";
+            // 
+            // radSession
+            // 
+            this.radSession.AutoSize = true;
+            this.radSession.Location = new System.Drawing.Point(19, 88);
+            this.radSession.Name = "radSession";
+            this.radSession.Size = new System.Drawing.Size(199, 17);
+            this.radSession.TabIndex = 69;
+            this.radSession.Text = "Update grid layer for this session only";
+            this.radSession.UseVisualStyleBackColor = true;
+            // 
+            // radNewShape
+            // 
+            this.radNewShape.AutoSize = true;
+            this.radNewShape.Checked = true;
+            this.radNewShape.Location = new System.Drawing.Point(19, 52);
+            this.radNewShape.Name = "radNewShape";
+            this.radNewShape.Size = new System.Drawing.Size(209, 30);
+            this.radNewShape.TabIndex = 68;
+            this.radNewShape.TabStop = true;
+            this.radNewShape.Text = "Save the updated attributes to a NEW \r\ngrid shapefile";
+            this.radNewShape.UseVisualStyleBackColor = true;
+            // 
+            // radOriginal
+            // 
+            this.radOriginal.AutoSize = true;
+            this.radOriginal.Location = new System.Drawing.Point(19, 16);
+            this.radOriginal.Name = "radOriginal";
+            this.radOriginal.Size = new System.Drawing.Size(243, 30);
+            this.radOriginal.TabIndex = 67;
+            this.radOriginal.Text = "Save the updated attributes to the ORIGINAL \r\ngrid shapefile";
+            this.radOriginal.UseVisualStyleBackColor = true;
+            // 
             // frmExtractRasterValues
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(276, 453);
+            this.ClientSize = new System.Drawing.Size(640, 481);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grbSaveOptions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.grbPoint);
             this.Controls.Add(this.grbRaster);
             this.Name = "frmExtractRasterValues";
-            this.Text = "frmExtractRasterValues";
+            this.Text = "Extract Raster Values";
             this.Load += new System.EventHandler(this.frmExtractRasterValues_Load);
             this.grbSaveOptions.ResumeLayout(false);
             this.grbSaveOptions.PerformLayout();
             this.grbPoint.ResumeLayout(false);
             this.grbRaster.ResumeLayout(false);
             this.grbRaster.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -213,5 +266,9 @@
         private System.Windows.Forms.CheckBox chbSelectAll;
         private System.Windows.Forms.CheckedListBox clsFields;
         private System.Windows.Forms.Label lblSelect;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton radSession;
+        private System.Windows.Forms.RadioButton radNewShape;
+        private System.Windows.Forms.RadioButton radOriginal;
     }
 }

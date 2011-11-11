@@ -100,60 +100,91 @@ namespace Cetecean
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
+
+            //  Checks to make sure a point layer is selected.
+            if (Convert.ToBoolean(_map.Layers[input2SelectIndex].LegendText == cmbPoint.SelectedItem))
+            {
+
             //  IFeatureSet pointInput is declared and assigned by the map layer index that the user selected in
             //  the pointInput combobox.
             IFeatureSet pointInput = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
 
-            //  A loop for each checked item in the checked list box.
-            //  These items are the available rasters from the map layers.
-            foreach (string raster in clsFields.CheckedItems)
-            {
-                //  selectedIndex holds the index of the raster in the map. 
-                int selectedIndex = layerList.IndexOf(raster);
-                //  Declares a new raster using the DataSet at the specified map.Layers index.
-                IRaster rasterInput = (IRaster)_map.Layers[selectedIndex].DataSet;
-                //  Sets the NoDataValue of the raster to the int value of the NoDataValue textbox.
-                rasterInput.NoDataValue = Convert.ToInt32(txtNoDataValue.Text);
-                //  Creates a new DataColumn named the same as the LegendText of the raster.
-                //      The type is double because it holds raster values.
-                DataColumn rasValCol = new DataColumn(_map.Layers[selectedIndex].LegendText, typeof(double));
-                //  Checks to make sure there is not already a DataColumn in the table with that name
-                if (pointInput.DataTable.Columns.Contains(rasValCol.ColumnName))
+                //  creates a list and loops through it.  Used to make sure a raster is selected.
+                List<string> selectedRasters = new List<string>();
+                foreach (string raster in clsFields.CheckedItems)
                 {
-                    //  If the column already exists, the user is alerted.
-                    MessageBox.Show("The data table already contains a column with the name" + " '" + rasValCol.ColumnName +
-                        "'.  \nThe column will not be added to the data table.", "Input Error");
-                    return;
+                    selectedRasters.Add(raster);
+                }
+                //  Checks to make sure a raster is selected
+                if (selectedRasters.Count > 0)
+                {
+
+                    //  A loop for each checked item in the checked list box.
+                    //  These items are the available rasters from the map layers.
+                    foreach (string raster in clsFields.CheckedItems)
+                    {
+                        //  selectedIndex holds the index of the raster in the map. 
+                        int selectedIndex = layerList.IndexOf(raster);
+                        //  Declares a new raster using the DataSet at the specified map.Layers index.
+                        IRaster rasterInput = (IRaster)_map.Layers[selectedIndex].DataSet;
+                        //  Sets the NoDataValue of the raster to the int value of the NoDataValue textbox.
+                        rasterInput.NoDataValue = Convert.ToInt32(txtNoDataValue.Text);
+                        //  Creates a new DataColumn named the same as the LegendText of the raster.
+                        //      The type is double because it holds raster values.
+                        DataColumn rasValCol = new DataColumn(_map.Layers[selectedIndex].LegendText, typeof(double));
+                        //  Checks to make sure there is not already a DataColumn in the table with that name
+                        if (pointInput.DataTable.Columns.Contains(rasValCol.ColumnName))
+                        {
+                            //  If the column already exists, the user is alerted.
+                            MessageBox.Show("The data table already contains a column with the name" + " '" + rasValCol.ColumnName +
+                                "'.  \nThe column will not be added to the data table.", "Input Error");
+                            return;
+                        }
+                        else
+                        {
+                            //  If the column does not exist in the data table, it is added.
+                            pointInput.DataTable.Columns.Add(rasValCol);
+                        }
+
+                        foreach (IFeature ptFeature in pointInput.Features)  //  Loops through each feature
+                        {
+                            //  assigns the coordinates of the point to variable coord.
+                            Coordinate coord = ptFeature.Coordinates[0];
+                            //  gets the rowColumn index for the raster based on the coordinate coord.
+                            RcIndex rowColumn = rasterInput.Bounds.ProjToCell(coord);
+                            //  declares variable rasValue which holds the value of the raster cell at the rowColumn index.
+                            double rasValue = rasterInput.Value[rowColumn.Row, rowColumn.Column];
+                            //  adds the raster value to the specified column in the feature.
+                            ptFeature.DataRow[rasValCol] = rasValue;
+                        }
+                    }
                 }
                 else
                 {
-                    //  If the column does not exist in the data table, it is added.
-                    pointInput.DataTable.Columns.Add(rasValCol);
+                    MessageBox.Show("Please select at least one raster.", "Input Error");
+                    clsFields.Focus();
+                    return;
                 }
-
-                foreach (IFeature ptFeature in pointInput.Features)  //  Loops through each feature
-                {
-                    //  assigns the coordinates of the point to variable coord.
-                    Coordinate coord = ptFeature.Coordinates[0];
-                    //  gets the rowColumn index for the raster based on the coordinate coord.
-                    RcIndex rowColumn = rasterInput.Bounds.ProjToCell(coord);
-                    //  declares variable rasValue which holds the value of the raster cell at the rowColumn index.
-                    double rasValue = rasterInput.Value[rowColumn.Row, rowColumn.Column];
-                    //  adds the raster value to the specified column in the feature.
-                    ptFeature.DataRow[rasValCol] = rasValue;
-                }
-            }
 
             this.Close(); //  Closes the form
 
-            if (chkSave.Checked)  //  If user checks the box to save the attributes to the original shapefile.
+            if (radOriginal.Checked)  //  If user checks the box to save the attributes to the original shapefile.
             {
-                pointInput.Save();
-                MessageBox.Show("The updated attributes have been saved to " +
-                    pointInput.Filename + ".", "File Saved");
+                DialogResult result = MessageBox.Show("Saving the attributes to the original shapefile will modify the file.\n\nAre you sure you want to save?",
+                                          "Save Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    pointInput.Save();
+                    MessageBox.Show("The updated attributes have been saved to " +
+                        pointInput.Filename + ".", "File Saved");
+                }
+                else
+                {
+                    return;
+                }
             }
 
-            if (chkSaveAs.Checked)  // If user checks the box to save the attributes to a new shapefile.
+            if (radNewShape.Checked)  // If user checks the box to save the attributes to a new shapefile.
             {
                 //  output FeatureSet is declared
                 FeatureSet output = new FeatureSet(FeatureType.Point);
@@ -161,29 +192,39 @@ namespace Cetecean
                 output = (FeatureSet)pointInput;
 
                 //  Calls the saveFile method
-                saveFile(output);
+                Functions obj = new Functions();
+                obj.saveFile(output);
 
-                //  Alerts the user that the file has been saved.
-                //  Asks the user if they would like to add the saved file to the map.
-                DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " +
-                    output.Filename + ".\n\nWould you like to add the new file to the map?", "File Saved",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
-                //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
-                if (result == DialogResult.Yes)
+                if (obj.saved)
                 {
-                    MapPointLayer newPointLayer = new MapPointLayer(output);
-                    string filename = output.Filename;
-                    //  the new point layer receives the name it was saved as.
-                    int index = filename.LastIndexOf("\\");
-                    string legendText = filename.Substring(index + 1);
-                    newPointLayer.LegendText = legendText;
-                    _map.Layers.Add(newPointLayer);
-                    _map.ResetBuffer();
+                    //  Alerts the user that the file has been saved.
+                    //  Asks the user if they would like to add the saved file to the map.
+                    DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " + output.Filename +
+                        ".\n\nWould you like to add the new file to the map?", "File Saved", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                    //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
+                    if (result == DialogResult.Yes)
+                    {
+                        MapPointLayer newPointLayer = new MapPointLayer(output);
+                        string filename = output.Filename;
+                        //  the new point layer receives the name it was saved as.
+                        int index = filename.LastIndexOf("\\");
+                        string legendText = filename.Substring(index + 1);
+                        newPointLayer.LegendText = legendText;
+                        newPointLayer.Projection = _map.Projection;
+                        _map.Layers.Add(newPointLayer);
+                        _map.ResetBuffer();
+                    }
                 }
             }
         }
-
+        else
+        {
+            MessageBox.Show("Please select a valid point layer", "Input Error");
+            cmbPoint.Focus();
+        }
+    }
         private void cmbPoint_SelectedIndexChanged(object sender, EventArgs e)
         {
             //  Input2SelectIndex holds the map layer index of the item selected in the combobox.
@@ -216,30 +257,6 @@ namespace Cetecean
             this.Close();
         }
 
-        //Save file dialog
-        private void saveFile(FeatureSet output)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "shapefile files (*.shp)|*.shp";
-            dialog.InitialDirectory = @"C:\";
-            dialog.Title = "Save";
-            string strFileName = "";
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                strFileName = dialog.FileName;
-            }
-
-            if (strFileName == String.Empty)
-            {
-                //MessageBox.Show("The Split Tracks file won't be saved");
-                return;
-            }
-            else
-            {
-                output.SaveAs(strFileName, true);
-            }
-        } 
     #endregion
 
     }
