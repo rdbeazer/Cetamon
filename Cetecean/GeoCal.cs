@@ -48,7 +48,7 @@ namespace Cetecean
 
         public double GetAzimuth(Coordinate origin, Coordinate target) 
         {
-            if (_proj.Transform.Proj4Name == "longlat")
+            if (_proj.Transform.Proj4Name == "longlat" || (origin.X > 180.0 && origin.X < 180.0) || (origin.Y < 90 && origin.X > 90))
             {
 
                 double dlon = toRad(target.X - origin.X);
@@ -77,7 +77,7 @@ namespace Cetecean
 
         public double Distance(Coordinate pto1, Coordinate pto2)
         {
-            if (_proj.Transform.Proj4Name == "longlat")
+            if (_proj.Transform.Proj4Name == "longlat" || (pto1.X > 180.0 && pto1.X < 180.0) || (pto1.Y < 90 && pto1.X > 90))
             {
                   double r=_proj.GeographicInfo.Datum.Spheroid.EquatorialRadius;
                   double dlon = toRad(pto2.X - pto1.X);
@@ -100,8 +100,8 @@ namespace Cetecean
 
         public  Coordinate AzimuthDist(Coordinate ptoI, double azi, double dist) 
         {
-            if (_proj.Transform.Proj4Name == "longlat")
-         {
+            if (_proj.Transform.Proj4Name == "longlat" || (ptoI.X > 180.0 && ptoI.X < 180.0) || (ptoI.Y < 90 && ptoI.X > 90))
+            {
              double r=_proj.GeographicInfo.Datum.Spheroid.EquatorialRadius;
 
              double lat2= Math.Asin(Sin_deg(ptoI.Y)*Math.Cos(dist/r) +   Cos_deg(ptoI.Y)*Math.Sin(dist/r)*Math.Cos(azi));

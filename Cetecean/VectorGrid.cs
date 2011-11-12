@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Topology;
@@ -19,6 +20,7 @@ namespace Cetecean
         private FeatureSet rectangleFs = new FeatureSet();
         private string _name="Grid";
         private GeoCal geo = null;
+        private ProgressBar pro = null;
         public string Name
         {
             get { return _name;}
@@ -56,7 +58,10 @@ namespace Cetecean
 
         }
 
-
+        public void Progress(ProgressBar bar)
+        {
+            pro = bar;
+        }
 
 
         public AreaInterest Get_area()
@@ -249,31 +254,46 @@ namespace Cetecean
 
         public void AddGrid()
         {
+            if (pro != null)
+            {
+                pro.Value = 0;
+                pro.Maximum = 100;
+                pro.Visible = true;
+            }
+
             _GridLayer.DataSet.Features.Clear();
 
-            Int16 id = 0;
+            Int32 id = 0;
 
             double xini = _area.MinX;
             double yini = _area.MinY;
+
+            rectangleFs = (FeatureSet)_GridLayer.DataSet;
             for (int i = 0; i < _area.NumColumns; i++)
             {
-                xini = geo.AzimuthDist(new Coordinate(xini, yini),Math.PI/2,_area.CellSize*i).X;
+               // xini = geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), Math.PI / 2, _area.CellSize * i).X;
                 for (int j = 0; j < _area.NumRows; j++)
                 {
-                    yini = geo.AzimuthDist(new Coordinate(xini, yini), 0, _area.CellSize * j).Y;
-                    Coordinate[] array = new Coordinate[5];
-                    Coordinate ini = new Coordinate(xini, yini);
-                     array[0] = ini;
-                     array[1] = geo.AzimuthDist(array[0], 0, _area.CellSizeY);
-                     array[2] = geo.AzimuthDist(array[1], Math.PI / 2.0, _area.CellSizeX);
-                     array[3] = geo.AzimuthDist(array[2], Math.PI , _area.CellSizeY);
-                     array[4] = ini;
+                    int val =100 *id /( _area.NumColumns * _area.NumRows );
 
-                   // array[0] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
-                    //array[1] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
-                    //array[2] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
-                    //array[3] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
-                    //array[4] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    if (pro != null) {
+                        pro.Increment(val);
+                    }
+
+                //    yini = geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), 0, _area.CellSize * j).Y;
+                    Coordinate[] array = new Coordinate[5];
+
+                    //array[0] = new Coordinate(xini + i * _area.NumColumns, yini + j * _area.NumRows);
+                    //array[1] = new Coordinate(xini + i * _area.NumColumns, yini + (j+1) * _area.NumRows);
+                    //array[2] = new Coordinate(xini + (i + 1) * _area.NumColumns, yini + (j + 1) * _area.NumRows);
+                    //array[3] = new Coordinate(xini + (i + 1) * _area.NumColumns, yini + j * _area.NumRows);
+                    //array[4] = array[0];
+
+                    array[0] = (new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    array[1] = (new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    array[2] = (new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    array[3] = (new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    array[4] = (new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
                     LinearRing shell = new LinearRing(array);
                     Polygon poly = new Polygon(shell);
                     IFeature newF = _GridLayer.DataSet.AddFeature(poly);
@@ -283,8 +303,11 @@ namespace Cetecean
                     id++;
                 }
             }
-            rectangleFs = (FeatureSet)_GridLayer.DataSet;
+           
+
+           
             _mainMap.ResetBuffer();
+            if (pro != null) if (pro.Value == pro.Maximum) pro.Visible = false;
             //   OnRectangleCreated();
         }
 
@@ -443,11 +466,17 @@ namespace Cetecean
                 {
                     _area.MinX = p.MinX;
                     _area.MinY = p.MinY;
-                   _area.MaxY=geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), 0, p.CellSize * p.NumRows).Y;
-                   _area.MaxX = geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), Math.PI/2.0, p.CellSize * p.NumColumns).X;
+                   
+                   _area.MaxX = geo.AzimuthDist(new Coordinate(p.MinX, p.MinY), Math.PI/2.0, p.CellSize * p.NumColumns).X;
+
+                   double dis = Math.Abs(_area.MaxX - _area.MinX) / p.NumColumns;
+                   _area.MaxY = _area.MinY+ dis * p.NumRows;
+
+                   _orgArea.CellSize = p.CellSize;
+
                    _area.NumColumns = p.NumColumns;
                    _area.NumRows = p.NumRows;
-                   _area.CellSize = p.CellSize;
+                   _area.CellSize = dis;
                    _area.Azimut = p.Azimut;
                     
                     return true;
@@ -456,8 +485,10 @@ namespace Cetecean
                 {
 
 
-                    double dx = geo.Distance(new Coordinate(_area.MinX, _area.MinY),new Coordinate(p.MaxX, _area.MinY));
-                    double dy = geo.Distance(new Coordinate(_area.MinX, _area.MinY),new Coordinate(_area.MinX, p.MaxY));
+                    double dx = geo.Distance(new Coordinate(p.MinX, p.MinY),new Coordinate(p.MaxX, p.MinY));
+                    double dy = geo.Distance(new Coordinate(p.MinX, p.MinY),new Coordinate(p.MinX, p.MaxY));
+
+                    
 
                     if ((dy / p.CellSize) > Math.Floor(dy / p.CellSize))
                         p.NumRows = Convert.ToInt32(Math.Floor(dy / p.CellSize));
@@ -465,14 +496,25 @@ namespace Cetecean
                     if ((dx / p.CellSize) > Math.Floor(dx / p.CellSize))
                         p.NumColumns = Convert.ToInt32(Math.Floor(dx / p.CellSize));
 
+                    double dyy = Math.Abs(p.MaxY-p.MinY) / p.NumRows;
+                    double dxx = Math.Abs(p.MaxX - p.MinX) / p.NumColumns;
+
+                    double va = 0;
+                    if (dxx < dyy) va = dxx; else va = dyy;
+
+                    _area.CellSize = va;
                     _area.MinX = p.MinX;
                     _area.MinY = p.MinY;
 
-                    _area.MaxY=geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), 0, p.CellSize * p.NumRows).Y;
-                    _area.MaxX = geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), Math.PI/2.0, p.CellSize * p.NumColumns).X;
+                    //_area.MaxY=geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), 0, p.CellSize * p.NumRows).Y;
+                   //_area.MaxX = geo.AzimuthDist(new Coordinate(_area.MinX, _area.MinY), Math.PI/2.0, p.CellSize * p.NumColumns).X;
+
+                    _area.MaxX = _area.MinX + va * p.NumColumns;
+                    _area.MaxY = _area.MinY + va * p.NumRows;
+                    
                     _area.NumColumns = p.NumColumns;
                     _area.NumRows = p.NumRows;
-                    _area.CellSize = p.CellSize;
+                   // _area.CellSize = p.CellSize;
                     _area.Azimut = p.Azimut;
 
 

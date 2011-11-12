@@ -19,6 +19,7 @@ namespace Cetecean
         Map _map = null;
         VectorGrid _vector = null;
         Coordinate _startPoint = null;
+        Coordinate _startPointe = null;
         MapPointLayer _pointLayer = null;
         MapPolygonLayer _polygonLayer = null;
         AreaInterest _area = null;
@@ -153,7 +154,8 @@ namespace Cetecean
 
             removeLayer("Area selected");
             removeLayer("Origin Point");
-            removeLayer("Grid");
+         //   removeLayer("Grid");
+            _startPoint = null;
             this.Close();
 
         }
@@ -168,6 +170,7 @@ namespace Cetecean
                 //todo: draw point...
 
                 _startPoint = new Coordinate(_map.PixelToProj(e.Location));
+                _startPointe = new Coordinate(e.Location.X, e.Location.Y);
                 _numClicks = 1;
 
             }
@@ -197,7 +200,10 @@ namespace Cetecean
             if (_numClicks == 1)
             {
                 Coordinate endPoint = new Coordinate(_map.PixelToProj(e.Location));
+                Coordinate eendPoint = new Coordinate(e.Location.X, e.Location.Y);
 
+                setPolygonLayer();
+                if (_polygonLayer.DataSet.Features == null) return;
                 _polygonLayer.DataSet.Features.Clear();
                 Coordinate[] array = new Coordinate[5];
                 array[0] = _startPoint;
@@ -262,21 +268,21 @@ namespace Cetecean
             _map.ResetBuffer();
 
 
-            double[] xy = new double[] { startPoint.X, startPoint.Y };
+           // double[] xy = new double[] { startPoint.X, startPoint.Y };
            // string esri = Properties.Resources.wgs_84_esri_string;
-            ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;//new ProjectionInfo();
+           // ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;//new ProjectionInfo();
            // wgs84.ReadEsriString(esri);
-            Reproject.ReprojectPoints(xy, new double[] { 0 }, _map.Projection, wgs84, 0, 1);
+            //Reproject.ReprojectPoints(xy, new double[] { 0 }, _map.Projection, wgs84, 0, 1);
 
-            txtXmin.Text = xy[0].ToString();
-            txtYmin.Text = xy[1].ToString();
+            txtXmin.Text = startPoint.X.ToString();
+            txtYmin.Text = startPoint.Y.ToString();
             txtXmax.Text = "";
             txtYmax.Text = "";
 
             _area = new AreaInterest();
 
-            _area.MinX = xy[0];
-            _area.MinY = xy[1];
+            _area.MinX = startPoint.X;
+            _area.MinY = startPoint.Y;
             this.Visible = true;
          //   _map.MouseDown -= getPointMap_MouseDown;
            // Clean_selection();
@@ -333,15 +339,18 @@ namespace Cetecean
 
         private void btnCreateGrid_Click(object sender, EventArgs e)
         {
+            
             if (_area == null) {
 
                 MessageBox.Show("Please select an area or origin point and fill all parameters");
                 return;
             }
 
+            this.Cursor = Cursors.WaitCursor;
             if (rbtBox.Checked && (_vector != null))
             {
                 _vector.AddLayer();
+                _vector.Progress(progressBar1);
                 _vector.AddGrid();
 
             }
@@ -353,12 +362,13 @@ namespace Cetecean
                 _area.CellSize = Convert.ToDouble(txtGridSize.Text);
                 _vector = new VectorGrid(_area,_map);
                 _vector.AddLayer();
+                _vector.Progress(progressBar1);
                 _vector.AddGrid();
             }
 
             removeLayer("Area selected");
             removeLayer("Origin Point");
-
+            this.Cursor = Cursors.Default;
         }
 
         private void txtNumColumns_TextChanged(object sender, EventArgs e)
@@ -433,6 +443,21 @@ namespace Cetecean
 
 
             }
+        }
+
+        private void frmCreatePolygonGrid_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rbtPointOrigin_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rbtBox_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
 
     

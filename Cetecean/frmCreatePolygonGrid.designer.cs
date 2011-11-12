@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnl = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCreateGrid = new System.Windows.Forms.Button();
@@ -52,7 +53,7 @@
             this.btnCaptureArea = new System.Windows.Forms.Button();
             this.rbtBox = new System.Windows.Forms.RadioButton();
             this.rbtPointOrigin = new System.Windows.Forms.RadioButton();
-            this.label9 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.pnl.SuspendLayout();
             this.grbParameters.SuspendLayout();
             this.rbtPointOrign.SuspendLayout();
@@ -60,6 +61,7 @@
             // 
             // pnl
             // 
+            this.pnl.Controls.Add(this.progressBar1);
             this.pnl.Controls.Add(this.label9);
             this.pnl.Controls.Add(this.btnOK);
             this.pnl.Controls.Add(this.btnCancel);
@@ -69,12 +71,20 @@
             this.pnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl.Location = new System.Drawing.Point(0, 0);
             this.pnl.Name = "pnl";
-            this.pnl.Size = new System.Drawing.Size(399, 329);
+            this.pnl.Size = new System.Drawing.Size(401, 348);
             this.pnl.TabIndex = 0;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 277);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(0, 13);
+            this.label9.TabIndex = 5;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(210, 291);
+            this.btnOK.Location = new System.Drawing.Point(210, 295);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(81, 26);
             this.btnOK.TabIndex = 4;
@@ -84,17 +94,17 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(305, 291);
+            this.btnCancel.Location = new System.Drawing.Point(305, 295);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(81, 26);
             this.btnCancel.TabIndex = 3;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Text = "Close";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnCreateGrid
             // 
-            this.btnCreateGrid.Location = new System.Drawing.Point(108, 291);
+            this.btnCreateGrid.Location = new System.Drawing.Point(108, 295);
             this.btnCreateGrid.Name = "btnCreateGrid";
             this.btnCreateGrid.Size = new System.Drawing.Size(81, 26);
             this.btnCreateGrid.TabIndex = 2;
@@ -155,9 +165,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(26, 162);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(50, 13);
+            this.label7.Size = new System.Drawing.Size(90, 13);
             this.label7.TabIndex = 10;
-            this.label7.Text = "Grid size:";
+            this.label7.Text = "Grid size (meters):";
             // 
             // label6
             // 
@@ -294,6 +304,7 @@
             this.rbtBox.TabIndex = 1;
             this.rbtBox.Text = "Box";
             this.rbtBox.UseVisualStyleBackColor = true;
+            this.rbtBox.CheckedChanged += new System.EventHandler(this.rbtBox_CheckedChanged);
             this.rbtBox.Click += new System.EventHandler(this.rbtBox_Click);
             // 
             // rbtPointOrigin
@@ -307,24 +318,27 @@
             this.rbtPointOrigin.TabStop = true;
             this.rbtPointOrigin.Text = "Point of origin";
             this.rbtPointOrigin.UseVisualStyleBackColor = true;
+            this.rbtPointOrigin.CheckedChanged += new System.EventHandler(this.rbtPointOrigin_CheckedChanged);
             this.rbtPointOrigin.Click += new System.EventHandler(this.rbtPointOrigin_Click);
             // 
-            // label9
+            // progressBar1
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 273);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(0, 13);
-            this.label9.TabIndex = 5;
+            this.progressBar1.Location = new System.Drawing.Point(109, 327);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(278, 13);
+            this.progressBar1.TabIndex = 6;
+            this.progressBar1.Visible = false;
             // 
             // frmCreatePolygonGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 329);
+            this.ClientSize = new System.Drawing.Size(401, 348);
+            this.ControlBox = false;
             this.Controls.Add(this.pnl);
             this.Name = "frmCreatePolygonGrid";
             this.Text = "Create Polygon Grid";
+            this.Load += new System.EventHandler(this.frmCreatePolygonGrid_Load);
             this.pnl.ResumeLayout(false);
             this.pnl.PerformLayout();
             this.grbParameters.ResumeLayout(false);
@@ -362,5 +376,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
