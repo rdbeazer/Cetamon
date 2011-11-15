@@ -36,11 +36,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtTrack = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnInputTrack = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmbTrackArea = new System.Windows.Forms.ComboBox();
+            this.cmbTrackLength = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbTrackID = new System.Windows.Forms.ComboBox();
-            this.btnInputTrack = new System.Windows.Forms.Button();
             this.grbSaveOptions = new System.Windows.Forms.GroupBox();
             this.radSession = new System.Windows.Forms.RadioButton();
             this.radNewShape = new System.Windows.Forms.RadioButton();
@@ -53,9 +53,9 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(143, 425);
+            this.btnCancel.Location = new System.Drawing.Point(143, 415);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(87, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 23);
             this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -64,9 +64,10 @@
             // btnCalculate
             // 
             this.btnCalculate.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnCalculate.Location = new System.Drawing.Point(50, 425);
+            this.btnCalculate.Enabled = false;
+            this.btnCalculate.Location = new System.Drawing.Point(37, 415);
             this.btnCalculate.Name = "btnCalculate";
-            this.btnCalculate.Size = new System.Drawing.Size(86, 23);
+            this.btnCalculate.Size = new System.Drawing.Size(100, 23);
             this.btnCalculate.TabIndex = 9;
             this.btnCalculate.Text = "Calculate";
             this.btnCalculate.UseVisualStyleBackColor = true;
@@ -75,9 +76,9 @@
             // cmbTrack
             // 
             this.cmbTrack.FormattingEnabled = true;
-            this.cmbTrack.Location = new System.Drawing.Point(27, 19);
+            this.cmbTrack.Location = new System.Drawing.Point(19, 19);
             this.cmbTrack.Name = "cmbTrack";
-            this.cmbTrack.Size = new System.Drawing.Size(174, 21);
+            this.cmbTrack.Size = new System.Drawing.Size(185, 21);
             this.cmbTrack.TabIndex = 10;
             this.cmbTrack.Text = "Select Track Layer";
             this.cmbTrack.SelectedIndexChanged += new System.EventHandler(this.cmbLine_SelectedIndexChanged);
@@ -85,9 +86,9 @@
             // cmbInputGrid
             // 
             this.cmbInputGrid.FormattingEnabled = true;
-            this.cmbInputGrid.Location = new System.Drawing.Point(27, 19);
+            this.cmbInputGrid.Location = new System.Drawing.Point(19, 19);
             this.cmbInputGrid.Name = "cmbInputGrid";
-            this.cmbInputGrid.Size = new System.Drawing.Size(181, 21);
+            this.cmbInputGrid.Size = new System.Drawing.Size(185, 21);
             this.cmbInputGrid.TabIndex = 7;
             this.cmbInputGrid.Text = "Select Grid Layer to Update";
             this.cmbInputGrid.SelectedIndexChanged += new System.EventHandler(this.cmbGrid_SelectedIndexChanged);
@@ -100,7 +101,7 @@
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.groupBox1.Location = new System.Drawing.Point(12, 181);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(269, 104);
+            this.groupBox1.Size = new System.Drawing.Size(270, 104);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input grid layer to be updated:";
@@ -108,7 +109,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(24, 54);
+            this.label3.Location = new System.Drawing.Point(16, 54);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(177, 13);
             this.label3.TabIndex = 9;
@@ -118,7 +119,7 @@
             // 
             this.txtTrack.Location = new System.Drawing.Point(64, 70);
             this.txtTrack.Name = "txtTrack";
-            this.txtTrack.Size = new System.Drawing.Size(193, 20);
+            this.txtTrack.Size = new System.Drawing.Size(170, 20);
             this.txtTrack.TabIndex = 8;
             this.txtTrack.Text = "trackEffort";
             this.txtTrack.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -127,40 +128,50 @@
             // 
             this.groupBox2.Controls.Add(this.btnInputTrack);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.cmbTrackArea);
+            this.groupBox2.Controls.Add(this.cmbTrackLength);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.cmbTrackID);
             this.groupBox2.Controls.Add(this.cmbTrack);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(269, 154);
+            this.groupBox2.Size = new System.Drawing.Size(270, 149);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Input Survey Track Layer";
+            this.groupBox2.Text = "Input survey track layer";
+            // 
+            // btnInputTrack
+            // 
+            this.btnInputTrack.Location = new System.Drawing.Point(243, 17);
+            this.btnInputTrack.Name = "btnInputTrack";
+            this.btnInputTrack.Size = new System.Drawing.Size(21, 23);
+            this.btnInputTrack.TabIndex = 15;
+            this.btnInputTrack.Text = "?";
+            this.btnInputTrack.UseVisualStyleBackColor = true;
+            this.btnInputTrack.Click += new System.EventHandler(this.btnInputTrack_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(24, 97);
+            this.label2.Location = new System.Drawing.Point(16, 97);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 13);
+            this.label2.Size = new System.Drawing.Size(121, 13);
             this.label2.TabIndex = 14;
-            this.label2.Text = "Select Track Length Field:";
+            this.label2.Text = "Select track length field:";
             // 
-            // cmbTrackArea
+            // cmbTrackLength
             // 
-            this.cmbTrackArea.FormattingEnabled = true;
-            this.cmbTrackArea.Location = new System.Drawing.Point(63, 115);
-            this.cmbTrackArea.Name = "cmbTrackArea";
-            this.cmbTrackArea.Size = new System.Drawing.Size(194, 21);
-            this.cmbTrackArea.TabIndex = 13;
-            this.cmbTrackArea.Text = "Select Length Field";
-            this.cmbTrackArea.SelectedIndexChanged += new System.EventHandler(this.cmbTrackArea_SelectedIndexChanged);
+            this.cmbTrackLength.FormattingEnabled = true;
+            this.cmbTrackLength.Location = new System.Drawing.Point(55, 115);
+            this.cmbTrackLength.Name = "cmbTrackLength";
+            this.cmbTrackLength.Size = new System.Drawing.Size(185, 21);
+            this.cmbTrackLength.TabIndex = 13;
+            this.cmbTrackLength.Text = "Select Length Field";
+            this.cmbTrackLength.SelectedIndexChanged += new System.EventHandler(this.cmbTrackArea_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 49);
+            this.label1.Location = new System.Drawing.Point(16, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(144, 13);
             this.label1.TabIndex = 12;
@@ -169,22 +180,12 @@
             // cmbTrackID
             // 
             this.cmbTrackID.FormattingEnabled = true;
-            this.cmbTrackID.Location = new System.Drawing.Point(63, 65);
+            this.cmbTrackID.Location = new System.Drawing.Point(55, 65);
             this.cmbTrackID.Name = "cmbTrackID";
-            this.cmbTrackID.Size = new System.Drawing.Size(194, 21);
+            this.cmbTrackID.Size = new System.Drawing.Size(185, 21);
             this.cmbTrackID.TabIndex = 11;
             this.cmbTrackID.Text = "Select Grid ID";
             this.cmbTrackID.SelectedIndexChanged += new System.EventHandler(this.cmbTrackID_SelectedIndexChanged);
-            // 
-            // btnInputTrack
-            // 
-            this.btnInputTrack.Location = new System.Drawing.Point(222, 20);
-            this.btnInputTrack.Name = "btnInputTrack";
-            this.btnInputTrack.Size = new System.Drawing.Size(21, 23);
-            this.btnInputTrack.TabIndex = 15;
-            this.btnInputTrack.Text = "?";
-            this.btnInputTrack.UseVisualStyleBackColor = true;
-            this.btnInputTrack.Click += new System.EventHandler(this.btnInputTrack_Click);
             // 
             // grbSaveOptions
             // 
@@ -194,7 +195,7 @@
             this.grbSaveOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.grbSaveOptions.Location = new System.Drawing.Point(12, 291);
             this.grbSaveOptions.Name = "grbSaveOptions";
-            this.grbSaveOptions.Size = new System.Drawing.Size(269, 118);
+            this.grbSaveOptions.Size = new System.Drawing.Size(270, 118);
             this.grbSaveOptions.TabIndex = 67;
             this.grbSaveOptions.TabStop = false;
             this.grbSaveOptions.Text = "Save Options";
@@ -202,7 +203,7 @@
             // radSession
             // 
             this.radSession.AutoSize = true;
-            this.radSession.Location = new System.Drawing.Point(19, 88);
+            this.radSession.Location = new System.Drawing.Point(19, 91);
             this.radSession.Name = "radSession";
             this.radSession.Size = new System.Drawing.Size(199, 17);
             this.radSession.TabIndex = 69;
@@ -212,7 +213,7 @@
             // radNewShape
             // 
             this.radNewShape.AutoSize = true;
-            this.radNewShape.Location = new System.Drawing.Point(19, 52);
+            this.radNewShape.Location = new System.Drawing.Point(19, 55);
             this.radNewShape.Name = "radNewShape";
             this.radNewShape.Size = new System.Drawing.Size(180, 30);
             this.radNewShape.TabIndex = 68;
@@ -223,7 +224,7 @@
             // 
             this.radOriginal.AutoSize = true;
             this.radOriginal.Checked = true;
-            this.radOriginal.Location = new System.Drawing.Point(19, 16);
+            this.radOriginal.Location = new System.Drawing.Point(19, 19);
             this.radOriginal.Name = "radOriginal";
             this.radOriginal.Size = new System.Drawing.Size(189, 30);
             this.radOriginal.TabIndex = 67;
@@ -236,16 +237,18 @@
             this.AcceptButton = this.btnCalculate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(295, 461);
+            this.ClientSize = new System.Drawing.Size(294, 457);
             this.Controls.Add(this.grbSaveOptions);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCalculate);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmPolyEffortByGrid";
-            this.Text = "Calculate Survey Effort by Grid (Tracks)";
+            this.Text = "Survey Effort by Grid (Tracks)";
             this.Load += new System.EventHandler(this.frmPolyEffortByGrid_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -268,7 +271,7 @@
         private System.Windows.Forms.ComboBox cmbTrackID;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cmbTrackArea;
+        private System.Windows.Forms.ComboBox cmbTrackLength;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtTrack;
         private System.Windows.Forms.Button btnInputTrack;

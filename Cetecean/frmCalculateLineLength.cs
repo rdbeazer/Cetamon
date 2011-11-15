@@ -39,30 +39,44 @@ namespace Cetecean
 
         private void getLayers()
         {
-            layerList.Clear();
-
-            IMapLineLayer[] lineLayers = _map.GetLineLayers(); // Gets the collection of line layers from the map.
-            int lineCount = lineLayers.Count();  // Gets a count of line layers
-
-            if (lineCount > 0)  // Checks to make sure a line layer is loaded in the map
+            try
             {
-                for (int i = 0; i < _map.Layers.Count; i++)  // Loops through each map layer.
+                layerList.Clear();
+
+                IMapLineLayer[] lineLayers = _map.GetLineLayers(); // Gets the collection of line layers from the map.
+                int lineCount = lineLayers.Count();  // Gets a count of line layers
+
+                if (lineCount > 0)  // Checks to make sure a line layer is loaded in the map
                 {
-                    IMapLayer layer = _map.Layers[i];
-
-                    if (lineLayers.Contains(layer))  // If layer is a Line layer.
+                    for (int i = 0; i < _map.Layers.Count; i++)  // Loops through each map layer.
                     {
-                        cmbLine.Items.Add(layer.LegendText);  // Adds line layer to the combo box.
-                    }
+                        IMapLayer layer = _map.Layers[i];
 
-                    layerList.Insert(i, layer.LegendText);  // Inserts the index and legend text in the layerList.
+                        if (lineLayers.Contains(layer))  // If layer is a Line layer.
+                        {
+                            cmbLine.Items.Add(layer.LegendText);  // Adds line layer to the combo box.
+                        }
+
+                        layerList.Insert(i, layer.LegendText);  // Inserts the index and legend text in the layerList.
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please add a point layer to the map");
+                    return;
                 }
             }
-            else
+            catch (FormatException)
             {
-                MessageBox.Show("Please add a point layer to the map");
+                MessageBox.Show("Entry Error.  Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n" + ex.StackTrace, "Exception");
+                return;
+            }
+
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
@@ -76,93 +90,121 @@ namespace Cetecean
                 string lineLengthString = txtAttributeField.Text;
                 //  Creates a new DataColumn with the heading as the string.
                 DataColumn lineLengthCol = new DataColumn(lineLengthString, typeof(double));
-                //  Adds the new DataColumn if there isn't already a column with that name.
+                //Check to make sure the attribute table doesn't already contain this column name
                 if (lineInput.DataTable.Columns.Contains(lineLengthCol.ColumnName))
                 {
-                    MessageBox.Show("The data table already has a field named '" + lineLengthCol.ColumnName + " '.\n\nPlease change the field name.", "Input Error");
-                    txtAttributeField.Focus();
-                    return;
-                }
-                else
-                {
-                    lineInput.DataTable.Columns.Add(lineLengthCol);
-                }
-
-                //  Loops through each feature and assigns the variables with the appropriate coordinates of each feature.
-                foreach (Feature lineF in lineInput.Features)
-                {
-                    double startLat = lineF.Coordinates[0].Y;
-                    double startLon = lineF.Coordinates[0].X;
-                    double endLat = lineF.Coordinates[1].Y;
-                    double endLon = lineF.Coordinates[1].X;
-
-                    // Calls the GetDistance method
-                    Functions getDist = new Functions();
-                    double lineLength = getDist.GetDistance(startLat, endLat, startLon, endLon);
-
-                    //  Assigns the value retrieved from the GetDistance method to the specified location.
-                    lineF.DataRow[lineLengthCol] = lineLength;
-                }
-
-                this.Close(); //  Closes the form
-
-                if (radOriginal.Checked)  //  If user checks the box to save the attributes to the original shapefile.
-                {
-                    DialogResult result = MessageBox.Show("The polygon grid attributes have been updated.\n\nNew Field(s):" + lineLengthCol.ColumnName
-                    + "\n\nAre you sure you want to save the changes to the original shapefile?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        lineInput.Save();
-
-                        MessageBox.Show("The updated attributes have been saved to the original shapefile:\n\n" +
-                        lineInput.Filename, "File Saved");
-                    }
+                    //  Alerts the user that the field name already exists and gives the option of changing the 
+                    //  field name or overwriting the data in the field.
+                    DialogResult result = MessageBox.Show("The field name " + "'" + lineLengthCol.ColumnName +
+                        "' already exists in the data table.\n\nWould you like to over-write the existing field?",
+                        "Input Error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes) { }
                     if (result == DialogResult.No)
                     {
-                        MessageBox.Show("The updated attributes have not been saved.", "File Not Saved");
+                        MessageBox.Show("Please rename the length field", "Rename Field");
+
+                        txtAttributeField.Focus();
                         return;
                     }
                 }
-
-                if (radNewShape.Checked)  // If user checks the box to save the attributes to a new shapefile.
-                {
-                    //  output FeatureSet is declared
-                    FeatureSet output = new FeatureSet(FeatureType.Polygon);
-                    //  output is equal to the pointInput
-                    output = (FeatureSet)lineInput;
-
-                    //  Calls the saveFile method
-                    Functions saveObj = new Functions();
-                    saveObj.saveFile(output);
-
-                    if (saveObj.saved)
+                //  Adds the new DataColumn if there isn't already a column with that name.
+                    else
                     {
-                        //  Alerts the user that the file has been saved.
-                        //  Asks the user if they would like to add the saved file to the map.
-                        DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " +
-                            output.Filename + ".\n\nWould you like to add the new file to the map?", "File Saved",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                        lineInput.DataTable.Columns.Add(lineLengthCol);
+                        //addedFields += "\n\n\t" + newField1;
+                    }
 
-                        //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
-                        if (result == DialogResult.Yes)
+                    //  Loops through each feature and assigns the variables with the appropriate coordinates of each feature.
+                    foreach (Feature lineF in lineInput.Features)
+                    {
+                        double startLat = lineF.Coordinates[0].Y;
+                        double startLon = lineF.Coordinates[0].X;
+                        double endLat = lineF.Coordinates[1].Y;
+                        double endLon = lineF.Coordinates[1].X;
+
+                        // Calls the GetDistance method
+                        Functions getDist = new Functions();
+                        double lineLength = getDist.GetDistance(startLat, endLat, startLon, endLon);
+
+                        //  Assigns the value retrieved from the GetDistance method to the specified location.
+                        lineF.DataRow[lineLengthCol] = lineLength;
+                    }
+
+                    this.Close(); //  Closes the form
+
+                    if (radOriginal.Checked)  //  If user checks the box to save the attributes to the original shapefile.
+                    {
+                        DialogResult dResult = MessageBox.Show("The polygon grid attributes have been updated.\n\nNew Field(s):" + lineLengthCol.ColumnName
+                        + "\n\nAre you sure you want to save the changes to the original shapefile?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                        if (dResult == DialogResult.Yes)
                         {
-                            MapLineLayer newLineLayer = new MapLineLayer(output);
-                            string filename = output.Filename;
-                            //  the new point layer receives the name it was saved as.
-                            int index = filename.LastIndexOf("\\");
-                            string legendText = filename.Substring(index + 1);
-                            newLineLayer.LegendText = legendText;
-                            newLineLayer.Projection = _map.Projection;
-                            _map.Layers.Add(newLineLayer);
-                            _map.ResetBuffer();
+                            lineInput.Save();
+
+                            MessageBox.Show("The updated attributes have been saved to the original shapefile:\n\n" +
+                            lineInput.Filename, "File Saved");
+                        }
+                        if (dResult == DialogResult.No)
+                        {
+                            MessageBox.Show("The updated attributes have not been saved.", "File Not Saved");
+                            return;
                         }
                     }
+
+                    else if (radNewShape.Checked)  // If user checks the box to save the attributes to a new shapefile.
+                    {
+                        //  output FeatureSet is declared
+                        FeatureSet output = new FeatureSet(FeatureType.Polygon);
+                        //  output is equal to the pointInput
+                        output = (FeatureSet)lineInput;
+
+                        //  Calls the saveFile method
+                        Functions saveObj = new Functions();
+                        saveObj.saveFile(output);
+
+                        if (saveObj.saved)
+                        {
+                            //  Alerts the user that the file has been saved.
+                            //  Asks the user if they would like to add the saved file to the map.
+                            DialogResult diaResult = MessageBox.Show("The updated attributes have been saved to the new file " +
+                                output.Filename + ".\n\nWould you like to add the new file to the map?", "File Saved",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                            //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
+                            if (diaResult == DialogResult.Yes)
+                            {
+                                MapLineLayer newLineLayer = new MapLineLayer(output);
+                                string filename = output.Filename;
+                                //  the new point layer receives the name it was saved as.
+                                int index = filename.LastIndexOf("\\");
+                                string legendText = filename.Substring(index + 1);
+                                newLineLayer.LegendText = legendText;
+                                newLineLayer.Projection = _map.Projection;
+                                _map.Layers.Add(newLineLayer);
+                                _map.ResetBuffer();
+                            }
+                        }
+                    }
+                    else if(radSession.Checked)
+                    {
+                        MessageBox.Show("The input line lengths have been calculated, but the file has not been saved.", "Update Successful");
+                    }
                 }
-            }
-            catch
+            
+            catch (FormatException)
             {
-                MessageBox.Show("Please check the values entered and try again", "Entry Error");
+                MessageBox.Show("Entry Error.  Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            catch (DuplicateNameException dup)
+            {
+                MessageBox.Show(dup.Message + "\n\n" + dup.GetType().ToString() + "\n\nIt appears that this operation has already been performed using the same input.", "Exception");
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n" + ex.StackTrace, "Exception");
+                return;
             }
         }
 
@@ -170,6 +212,12 @@ namespace Cetecean
         {
             string selectedLine = cmbLine.SelectedItem.ToString();
             selectedIndex = layerList.IndexOf(selectedLine);
+            btnCalculate.Enabled = true;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
     }

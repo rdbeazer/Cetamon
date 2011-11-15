@@ -67,7 +67,6 @@
             this.chbSelectAll.TabIndex = 4;
             this.chbSelectAll.Text = "Select All";
             this.chbSelectAll.UseVisualStyleBackColor = true;
-            this.chbSelectAll.Visible = false;
             this.chbSelectAll.CheckedChanged += new System.EventHandler(this.chbSelectAll_CheckedChanged);
             // 
             // clsFields
@@ -76,7 +75,6 @@
             this.clsFields.Name = "clsFields";
             this.clsFields.Size = new System.Drawing.Size(153, 94);
             this.clsFields.TabIndex = 0;
-            this.clsFields.Visible = false;
             // 
             // lblSelect
             // 
@@ -103,12 +101,13 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(17, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 13);
+            this.label1.Size = new System.Drawing.Size(82, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Select Grid Layer";
+            this.label1.Text = "Select grid layer";
             // 
             // btnCreatePoints
             // 
+            this.btnCreatePoints.Enabled = false;
             this.btnCreatePoints.Location = new System.Drawing.Point(13, 337);
             this.btnCreatePoints.Name = "btnCreatePoints";
             this.btnCreatePoints.Size = new System.Drawing.Size(95, 23);
@@ -180,6 +179,7 @@
             this.Controls.Add(this.btnCancle);
             this.Controls.Add(this.btnCreatePoints);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmGridToPoint";
             this.Text = "Convert Grid to Points";
             this.Load += new System.EventHandler(this.frmGridToPoint_Load);

@@ -35,17 +35,18 @@
             this.cmbGrid = new System.Windows.Forms.ComboBox();
             this.lblGrid = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.grbSaveOptions = new System.Windows.Forms.GroupBox();
-            this.radSession = new System.Windows.Forms.RadioButton();
-            this.radNewShape = new System.Windows.Forms.RadioButton();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtInput = new System.Windows.Forms.TextBox();
+            this.cbxSave = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            this.grbSaveOptions.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(127, 234);
+            this.btnCancel.Location = new System.Drawing.Point(125, 243);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(87, 23);
             this.btnCancel.TabIndex = 11;
@@ -55,7 +56,8 @@
             // btnSplit
             // 
             this.btnSplit.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnSplit.Location = new System.Drawing.Point(35, 234);
+            this.btnSplit.Enabled = false;
+            this.btnSplit.Location = new System.Drawing.Point(33, 243);
             this.btnSplit.Name = "btnSplit";
             this.btnSplit.Size = new System.Drawing.Size(86, 23);
             this.btnSplit.TabIndex = 9;
@@ -78,9 +80,9 @@
             this.lblLine.AutoSize = true;
             this.lblLine.Location = new System.Drawing.Point(10, 84);
             this.lblLine.Name = "lblLine";
-            this.lblLine.Size = new System.Drawing.Size(133, 13);
+            this.lblLine.Size = new System.Drawing.Size(123, 13);
             this.lblLine.TabIndex = 8;
-            this.lblLine.Text = "Select Survey Track Layer";
+            this.lblLine.Text = "Select survey track layer";
             // 
             // cmbGrid
             // 
@@ -97,9 +99,9 @@
             this.lblGrid.AutoSize = true;
             this.lblGrid.Location = new System.Drawing.Point(6, 29);
             this.lblGrid.Name = "lblGrid";
-            this.lblGrid.Size = new System.Drawing.Size(88, 13);
+            this.lblGrid.Size = new System.Drawing.Size(82, 13);
             this.lblGrid.TabIndex = 6;
-            this.lblGrid.Text = "Select Grid Layer";
+            this.lblGrid.Text = "Select grid layer";
             // 
             // groupBox1
             // 
@@ -114,50 +116,60 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input Shapefiles";
             // 
-            // grbSaveOptions
+            // groupBox2
             // 
-            this.grbSaveOptions.Controls.Add(this.radSession);
-            this.grbSaveOptions.Controls.Add(this.radNewShape);
-            this.grbSaveOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.grbSaveOptions.Location = new System.Drawing.Point(12, 145);
-            this.grbSaveOptions.Name = "grbSaveOptions";
-            this.grbSaveOptions.Size = new System.Drawing.Size(224, 72);
-            this.grbSaveOptions.TabIndex = 67;
-            this.grbSaveOptions.TabStop = false;
-            this.grbSaveOptions.Text = "Save Options";
+            this.groupBox2.Controls.Add(this.txtInput);
+            this.groupBox2.Controls.Add(this.cbxSave);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Location = new System.Drawing.Point(12, 146);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(224, 91);
+            this.groupBox2.TabIndex = 13;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Output ";
             // 
-            // radSession
+            // txtInput
             // 
-            this.radSession.AutoSize = true;
-            this.radSession.Location = new System.Drawing.Point(13, 42);
-            this.radSession.Name = "radSession";
-            this.radSession.Size = new System.Drawing.Size(189, 17);
-            this.radSession.TabIndex = 69;
-            this.radSession.Text = "Split the tracks for this session only";
-            this.radSession.UseVisualStyleBackColor = true;
+            this.txtInput.Location = new System.Drawing.Point(22, 37);
+            this.txtInput.Name = "txtInput";
+            this.txtInput.Size = new System.Drawing.Size(155, 20);
+            this.txtInput.TabIndex = 1;
+            this.txtInput.Text = "split_tracks";
+            this.txtInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // radNewShape
+            // cbxSave
             // 
-            this.radNewShape.AutoSize = true;
-            this.radNewShape.Checked = true;
-            this.radNewShape.Location = new System.Drawing.Point(13, 19);
-            this.radNewShape.Name = "radNewShape";
-            this.radNewShape.Size = new System.Drawing.Size(124, 17);
-            this.radNewShape.TabIndex = 68;
-            this.radNewShape.TabStop = true;
-            this.radNewShape.Text = "Save the split tracks ";
-            this.radNewShape.UseVisualStyleBackColor = true;
+            this.cbxSave.AutoSize = true;
+            this.cbxSave.Checked = true;
+            this.cbxSave.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxSave.Location = new System.Drawing.Point(25, 63);
+            this.cbxSave.Name = "cbxSave";
+            this.cbxSave.Size = new System.Drawing.Size(122, 17);
+            this.cbxSave.TabIndex = 3;
+            this.cbxSave.Text = "Save point shapefile";
+            this.cbxSave.UseVisualStyleBackColor = true;
+            this.cbxSave.CheckedChanged += new System.EventHandler(this.cbxSave_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(18, 20);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(137, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Enter an output layer name:";
             // 
             // frmSplitTrack
             // 
             this.AcceptButton = this.btnSplit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 274);
-            this.Controls.Add(this.grbSaveOptions);
+            this.ClientSize = new System.Drawing.Size(244, 293);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSplit);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmSplitTrack";
@@ -165,8 +177,8 @@
             this.Load += new System.EventHandler(this.frmSplitTrack_Load_1);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.grbSaveOptions.ResumeLayout(false);
-            this.grbSaveOptions.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -180,8 +192,9 @@
         private System.Windows.Forms.ComboBox cmbGrid;
         private System.Windows.Forms.Label lblGrid;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox grbSaveOptions;
-        private System.Windows.Forms.RadioButton radSession;
-        private System.Windows.Forms.RadioButton radNewShape;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox txtInput;
+        private System.Windows.Forms.CheckBox cbxSave;
+        private System.Windows.Forms.Label label2;
     }
 }

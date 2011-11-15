@@ -105,7 +105,7 @@
     <Compile Include="frmCalculateLineLength.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmCalculateLineLength.Designer.cs">
+    <Compile Include="frmCalculateLineLength.designer.cs">
       <DependentUpon>frmCalculateLineLength.cs</DependentUpon>
     </Compile>
     <Compile Include="frmCountSpecies.cs">
@@ -172,7 +172,7 @@
     <Compile Include="frmSplitTrack.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSplitTrack.Designer.cs">
+    <Compile Include="frmSplitTrack.designer.cs">
       <DependentUpon>frmSplitTrack.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
