@@ -36,7 +36,6 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCalculate = new System.Windows.Forms.Button();
             this.grbPolygon = new System.Windows.Forms.GroupBox();
-            this.cmbField = new System.Windows.Forms.ComboBox();
             this.cmbInput1 = new System.Windows.Forms.ComboBox();
             this.lblPoint = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -54,17 +53,18 @@
             this.grbPoint.Controls.Add(this.lblSelect);
             this.grbPoint.Controls.Add(this.clsFields);
             this.grbPoint.Controls.Add(this.cmbInput2);
-            this.grbPoint.Location = new System.Drawing.Point(12, 103);
+            this.grbPoint.Location = new System.Drawing.Point(13, 71);
             this.grbPoint.Name = "grbPoint";
-            this.grbPoint.Size = new System.Drawing.Size(269, 202);
+            this.grbPoint.Size = new System.Drawing.Size(245, 211);
             this.grbPoint.TabIndex = 52;
             this.grbPoint.TabStop = false;
-            this.grbPoint.Text = "Point Selection";
+            this.grbPoint.Text = "Input Point Layer";
             // 
             // chbSelectAll
             // 
             this.chbSelectAll.AutoSize = true;
-            this.chbSelectAll.Location = new System.Drawing.Point(9, 76);
+            this.chbSelectAll.Enabled = false;
+            this.chbSelectAll.Location = new System.Drawing.Point(21, 76);
             this.chbSelectAll.Name = "chbSelectAll";
             this.chbSelectAll.Size = new System.Drawing.Size(70, 17);
             this.chbSelectAll.TabIndex = 29;
@@ -75,25 +75,26 @@
             // lblSelect
             // 
             this.lblSelect.AutoSize = true;
+            this.lblSelect.Enabled = false;
             this.lblSelect.Location = new System.Drawing.Point(6, 59);
             this.lblSelect.Name = "lblSelect";
-            this.lblSelect.Size = new System.Drawing.Size(89, 13);
+            this.lblSelect.Size = new System.Drawing.Size(201, 13);
             this.lblSelect.TabIndex = 28;
-            this.lblSelect.Text = "Select Join Fields";
+            this.lblSelect.Text = "Select point fields to join to polygon layer:";
             // 
             // clsFields
             // 
             this.clsFields.Location = new System.Drawing.Point(21, 99);
             this.clsFields.Name = "clsFields";
-            this.clsFields.Size = new System.Drawing.Size(228, 94);
+            this.clsFields.Size = new System.Drawing.Size(202, 94);
             this.clsFields.TabIndex = 27;
             // 
             // cmbInput2
             // 
             this.cmbInput2.FormattingEnabled = true;
-            this.cmbInput2.Location = new System.Drawing.Point(6, 19);
+            this.cmbInput2.Location = new System.Drawing.Point(9, 19);
             this.cmbInput2.Name = "cmbInput2";
-            this.cmbInput2.Size = new System.Drawing.Size(202, 21);
+            this.cmbInput2.Size = new System.Drawing.Size(146, 21);
             this.cmbInput2.TabIndex = 23;
             this.cmbInput2.Text = "{ select point layer }";
             this.cmbInput2.SelectedIndexChanged += new System.EventHandler(this.cmbInput2_SelectedIndexChanged);
@@ -101,7 +102,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(149, 444);
+            this.btnCancel.Location = new System.Drawing.Point(172, 422);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(86, 23);
             this.btnCancel.TabIndex = 50;
@@ -112,7 +113,8 @@
             // btnCalculate
             // 
             this.btnCalculate.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnCalculate.Location = new System.Drawing.Point(57, 444);
+            this.btnCalculate.Enabled = false;
+            this.btnCalculate.Location = new System.Drawing.Point(13, 422);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(85, 23);
             this.btnCalculate.TabIndex = 49;
@@ -122,32 +124,20 @@
             // 
             // grbPolygon
             // 
-            this.grbPolygon.Controls.Add(this.cmbField);
             this.grbPolygon.Controls.Add(this.cmbInput1);
-            this.grbPolygon.Location = new System.Drawing.Point(12, 12);
+            this.grbPolygon.Location = new System.Drawing.Point(13, 12);
             this.grbPolygon.Name = "grbPolygon";
-            this.grbPolygon.Size = new System.Drawing.Size(269, 85);
+            this.grbPolygon.Size = new System.Drawing.Size(245, 53);
             this.grbPolygon.TabIndex = 51;
             this.grbPolygon.TabStop = false;
-            this.grbPolygon.Text = "Polygon Selection";
-            // 
-            // cmbField
-            // 
-            this.cmbField.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbField.FormattingEnabled = true;
-            this.cmbField.Location = new System.Drawing.Point(65, 46);
-            this.cmbField.Name = "cmbField";
-            this.cmbField.Size = new System.Drawing.Size(184, 21);
-            this.cmbField.TabIndex = 28;
-            this.cmbField.Text = "{ select unique polygon ID field }";
-            this.cmbField.SelectedIndexChanged += new System.EventHandler(this.cmbField_SelectedIndexChanged);
+            this.grbPolygon.Text = "Input Polygon Layer";
             // 
             // cmbInput1
             // 
             this.cmbInput1.FormattingEnabled = true;
-            this.cmbInput1.Location = new System.Drawing.Point(6, 19);
+            this.cmbInput1.Location = new System.Drawing.Point(9, 19);
             this.cmbInput1.Name = "cmbInput1";
-            this.cmbInput1.Size = new System.Drawing.Size(199, 21);
+            this.cmbInput1.Size = new System.Drawing.Size(146, 21);
             this.cmbInput1.TabIndex = 20;
             this.cmbInput1.Text = "{ select polygon layer }";
             this.cmbInput1.SelectedIndexChanged += new System.EventHandler(this.cmbInput1_SelectedIndexChanged);
@@ -166,9 +156,9 @@
             this.groupBox1.Controls.Add(this.radNewShape);
             this.groupBox1.Controls.Add(this.radOriginal);
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox1.Location = new System.Drawing.Point(12, 311);
+            this.groupBox1.Location = new System.Drawing.Point(13, 288);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(269, 118);
+            this.groupBox1.Size = new System.Drawing.Size(245, 118);
             this.groupBox1.TabIndex = 69;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Save Options";
@@ -176,46 +166,48 @@
             // radSession
             // 
             this.radSession.AutoSize = true;
-            this.radSession.Location = new System.Drawing.Point(19, 88);
+            this.radSession.Location = new System.Drawing.Point(9, 91);
             this.radSession.Name = "radSession";
-            this.radSession.Size = new System.Drawing.Size(199, 17);
+            this.radSession.Size = new System.Drawing.Size(222, 17);
             this.radSession.TabIndex = 69;
-            this.radSession.Text = "Update grid layer for this session only";
+            this.radSession.Text = "Update polygon layer for this session only.";
             this.radSession.UseVisualStyleBackColor = true;
             // 
             // radNewShape
             // 
             this.radNewShape.AutoSize = true;
             this.radNewShape.Checked = true;
-            this.radNewShape.Location = new System.Drawing.Point(19, 52);
+            this.radNewShape.Location = new System.Drawing.Point(9, 55);
             this.radNewShape.Name = "radNewShape";
-            this.radNewShape.Size = new System.Drawing.Size(209, 30);
+            this.radNewShape.Size = new System.Drawing.Size(180, 30);
             this.radNewShape.TabIndex = 68;
             this.radNewShape.TabStop = true;
-            this.radNewShape.Text = "Save the updated attributes to a NEW \r\ngrid shapefile";
+            this.radNewShape.Text = "Save the updated attributes to a \r\nNEW polygon shapefile.";
             this.radNewShape.UseVisualStyleBackColor = true;
             // 
             // radOriginal
             // 
             this.radOriginal.AutoSize = true;
-            this.radOriginal.Location = new System.Drawing.Point(19, 16);
+            this.radOriginal.Location = new System.Drawing.Point(9, 19);
             this.radOriginal.Name = "radOriginal";
-            this.radOriginal.Size = new System.Drawing.Size(243, 30);
+            this.radOriginal.Size = new System.Drawing.Size(189, 30);
             this.radOriginal.TabIndex = 67;
-            this.radOriginal.Text = "Save the updated attributes to the ORIGINAL \r\ngrid shapefile";
+            this.radOriginal.Text = "Save the updated attributes to the \r\nORIGINAL polygon shapefile.";
             this.radOriginal.UseVisualStyleBackColor = true;
             // 
             // frmJoinPointsToPolygons
             // 
+            this.AcceptButton = this.btnCalculate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(296, 485);
+            this.ClientSize = new System.Drawing.Size(270, 464);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grbPoint);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.grbPolygon);
             this.Controls.Add(this.lblPoint);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "frmJoinPointsToPolygons";
             this.Text = "Join Points to Polygons";
             this.Load += new System.EventHandler(this.frmJoinPointsToPolygons_Load);
@@ -236,7 +228,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnCalculate;
         private System.Windows.Forms.GroupBox grbPolygon;
-        private System.Windows.Forms.ComboBox cmbField;
         private System.Windows.Forms.ComboBox cmbInput1;
         private System.Windows.Forms.Label lblPoint;
         private System.Windows.Forms.CheckBox chbSelectAll;
