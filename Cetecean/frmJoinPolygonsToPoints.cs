@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Topology;
@@ -21,7 +22,9 @@ namespace Cetecean
         List<string> layerList = new List<string>();
         int input1SelectIndex = 0;
         int input2SelectIndex = 0;
-        string pointIDField = null;
+        string pointIDField = "pointID";
+        bool Input1Selected = false;
+        bool Input2Selected = false;
         #endregion
 
         public frmJoinPolygonsToPoints()
@@ -37,82 +40,101 @@ namespace Cetecean
 
         private void frmJoinPolygonsToPoints_Load(object sender, EventArgs e)
         {
-            cmbInput2.Items.Clear();
-            cmbInput1.Items.Clear();
-            getLayers();
+            try
+            {
+                cmbInput2.Items.Clear();
+                cmbInput1.Items.Clear();
+                getLayers();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
+            }
         }
 
     #region Methods
         //  Method to get the map layers and populate the user selection controls in the form
         private void getLayers()
         {
-            layerList.Clear();  //  clears layerList
-
-            //  Gets the collection of polygon and point layers from the map
-            IMapPolygonLayer[] polygonLayers = _map.GetPolygonLayers();
-            IMapPointLayer[] pointLayers = _map.GetPointLayers();
-
-            //  Gets a count for each type of layer
-            int polygonCount = polygonLayers.Count();
-            int pointCount = pointLayers.Count();
-
-            //  Checks to make sure at least one polygon and one point layer are added to the map.
-            if (polygonCount > 0 && pointCount > 0)
+            try
             {
-                for (int i = 0; i < _map.Layers.Count; i++)  //  Loops through each map layer
+                layerList.Clear();  //  clears layerList
+
+                //  Gets the collection of polygon and point layers from the map
+                IMapPolygonLayer[] polygonLayers = _map.GetPolygonLayers();
+                IMapPointLayer[] pointLayers = _map.GetPointLayers();
+
+                //  Gets a count for each type of layer
+                int polygonCount = polygonLayers.Count();
+                int pointCount = pointLayers.Count();
+
+                //  Checks to make sure at least one polygon and one point layer are added to the map.
+                if (polygonCount > 0 && pointCount > 0)
                 {
-                    IMapLayer layer = _map.Layers[i];
-
-                    if (polygonLayers.Contains(layer))  //  If layer is a polygon layer
+                    for (int i = 0; i < _map.Layers.Count; i++)  //  Loops through each map layer
                     {
-                        cmbInput2.Items.Add(layer.LegendText);  //  adds the legendText of the layer to the combobox for user polygon selection
+                        IMapLayer layer = _map.Layers[i];
 
-                        //  Checks to make sure there is a polygonID associated with each feature.  If not, assigns "polygonID"
-                        IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[i].DataSet;
-                        if (!inputPolygon.DataTable.Columns.Contains("polygonID") && !inputPolygon.DataTable.Columns.Contains("POLYGONID"))
+                        if (polygonLayers.Contains(layer))  //  If layer is a polygon layer
                         {
-                            inputPolygon.AddFid();  //  Adds FID
-                            inputPolygon.DataTable.Columns["FID"].ColumnName = "polygonID"; //  Changes FID column name.
+                            cmbInput2.Items.Add(layer.LegendText);  //  adds the legendText of the layer to the combobox for user polygon selection
+
+                            //  Checks to make sure there is a polygonID associated with each feature.  If not, assigns "polygonID"
+                            IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[i].DataSet;
+                            if (!inputPolygon.DataTable.Columns.Contains("polygonID") && !inputPolygon.DataTable.Columns.Contains("POLYGONID"))
+                            {
+                                inputPolygon.AddFid();  //  Adds FID
+                                inputPolygon.DataTable.Columns["FID"].ColumnName = "polygonID"; //  Changes FID column name.
+                            }
                         }
-                    }
 
-                    if (pointLayers.Contains(layer))  //  If layer is a point layer
-                    {
-                        cmbInput1.Items.Add(layer.LegendText);  //  adds the legendText of the layer to the combobox for user point selection
-
-                        //  Checks to make sure there is a pointID associated with each feature.  If not, assigns "pointID".
-                        IFeatureSet inputPoint = (IFeatureSet)_map.Layers[i].DataSet;
-                        if (!inputPoint.DataTable.Columns.Contains("pointID") && !inputPoint.DataTable.Columns.Contains("POINTID"))
+                        if (pointLayers.Contains(layer))  //  If layer is a point layer
                         {
-                            inputPoint.AddFid();  //  Adds FID
-                            inputPoint.DataTable.Columns["FID"].ColumnName = "pointID"; //  Changes FID column name.
+                            cmbInput1.Items.Add(layer.LegendText);  //  adds the legendText of the layer to the combobox for user point selection
+
+                            //  Checks to make sure there is a pointID associated with each feature.  If not, assigns "pointID".
+                            IFeatureSet inputPoint = (IFeatureSet)_map.Layers[i].DataSet;
+                            if (!inputPoint.DataTable.Columns.Contains("pointID") && !inputPoint.DataTable.Columns.Contains("POINTID"))
+                            {
+                                inputPoint.AddFid();  //  Adds FID
+                                inputPoint.DataTable.Columns["FID"].ColumnName = "pointID"; //  Changes FID column name.
+                            }
                         }
+
+                        //*********IMPORTANT**********
+                        //  It is imporant to add each map layer to the layerList.  The layer list holds the map index and legend text for each of the 
+                        //  map layers.  This is how the user selected items in the comboboxes (referred to by their legendText) can be associated with the 
+                        //  correct map layer (by index)
+                        layerList.Insert(i, layer.LegendText);
                     }
-                    
-                    //*********IMPORTANT**********
-                    //  It is imporant to add each map layer to the layerList.  The layer list holds the map index and legend text for each of the 
-                    //  map layers.  This is how the user selected items in the comboboxes (referred to by their legendText) can be associated with the 
-                    //  correct map layer (by index)
-                    layerList.Insert(i, layer.LegendText);
+                }
+                else
+                {
+                    //  Alerts the user and closes the form if there are no polygon or point layers in the map.
+                    MessageBox.Show("For the join operation, make sure that you have a polygon shapefile and a point shapefile loaded in the map.");
+                    this.Close();
                 }
             }
-            else
+            catch (FormatException)
             {
-                //  Alerts the user and closes the form if there are no polygon or point layers in the map.
-                MessageBox.Show("For the join operation, make sure that you have a polygon shapefile and a point shapefile loaded in the map.");
-                this.Close();
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-        }
-
-        private void cmbField_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //  pointIDField holds the string for the field selected by the user as holding the unique pointID.
-            pointIDField = cmbField.SelectedItem.ToString();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
+            }
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-
             try
             {
                 //  Initializes a new list to hold the selectedFields from clsFields.
@@ -120,6 +142,13 @@ namespace Cetecean
                 foreach (string field in clsFields.CheckedItems)  //  Loops through each of the checked fields
                 {
                     selectedFields.Add(field);  //  Adds the checked fields to the selectedFields list.
+                }
+
+                if (selectedFields.Count < 1)
+                {
+                    MessageBox.Show("No fields were selected to join.\n\nPlease select at least one field to join and try again.", "Input Error");
+                    clsFields.Focus();
+                    return;
                 }
 
                 //  Creates two new input FeatureSets.
@@ -131,17 +160,35 @@ namespace Cetecean
                 //  Temporary IFeatureSet created to hold the intersection of the inputPoint and inputPolygon FeatureSets
                 IFeatureSet tempOutput = inputPoint.Intersection(inputPolygon, FieldJoinType.All, null);
 
-                string invalidColumn = null;
 
                 //  Create new DataColumns in tempOutput with the selected join fields
                 foreach (DataColumn column in tempOutput.DataTable.Columns)  //  Loops through each of the columns
                 {
                     if (selectedFields.Contains(column.ColumnName))  // if the selectedFields list contains the column name
                     {
-                        if (inputPoint.DataTable.Columns.Contains(column.ColumnName))  //  if the datatable already contains the column name.
+                        // Checks to see if the field name already exists in the data table.
+                        if (inputPoint.DataTable.Columns.Contains(column.ColumnName))
                         {
-                            invalidColumn += "\n\n" + column.ColumnName;
+                            // Alerts the user that the field name already exists and gives the option of overwriting the data.
+                            DialogResult result = MessageBox.Show("The field name " + "'" + column.ColumnName +
+                                "' already exists in the " + inputPoint.Name + " data table.\n\nWould you like to overwrite the existing data?", "Input Error",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                            if (result == DialogResult.Yes)
+                            {
+                                continue;
+                            }
+
+                            if (result == DialogResult.No)
+                            {
+                                MessageBox.Show("The field " + "'" + column.ColumnName + "' will not be joined.\n\nIf you want to join the attributes from the field, " +
+                                    "please rename the field within the shapefile.");
+                                selectedFields.Remove(column.ColumnName);
+                                continue;
+                            }
                         }
+
+
                         else
                         {
                             //  If the column name doesn't already exist in the inputPoint dataTable, it is added.
@@ -150,12 +197,6 @@ namespace Cetecean
                     }
                 }
 
-                if (invalidColumn != null)
-                {
-                    //  Alerts the user that the column name already exists
-                    MessageBox.Show("The data table already contains the following field name(s):\n\n" + invalidColumn +
-                        "\n\nThe attributes for these fields were not added to the data table.", "Input Error");
-                }
 
                 //initializes a new list to hold pointID's
                 List<int> pointIDList = new List<int>();
@@ -170,9 +211,6 @@ namespace Cetecean
                     }
                 }
 
-                //  Variable to hold the value
-                double fieldValue = 0;
-
                 foreach (int ID in pointIDList)  //  Loops through each ID in the pointIDList.
                 {
                     foreach (Feature feature in tempOutput.Features)  //  Loops through each of the features in the tempOutput (joined FeatureSet)
@@ -185,15 +223,15 @@ namespace Cetecean
                         {
                             foreach (string field in selectedFields) //  Loops through each field in selectedFields
                             {
-                                if (feature.DataRow[field] is DBNull)
+                                if (feature.DataRow[field] is DBNull)  // Checks to see if the cell is empty.
                                 {
                                     continue;
                                 }
-
                                 else
                                 {
-                                    fieldValue = Convert.ToDouble(feature.DataRow[field]);  //  Assigns the fieldValue as the value in the joined FeatureSet (tempOutput)
+                                    var fieldValue = feature.DataRow[field]; //  Assigns the fieldValue as the value in the joined FeatureSet (tempOutput)
                                     //  at the specified field column.
+
                                     //  Loops back through the inputPoint data table and if the IDs match up, the field value is assigned to the 
                                     //  specific field column in the inputPoint data table.
                                     foreach (DataRow row in inputPoint.DataTable.Rows)
@@ -252,11 +290,8 @@ namespace Cetecean
                         if (result == DialogResult.Yes)
                         {
                             MapPointLayer newPointLayer = new MapPointLayer(output);
-                            string filename = output.Filename;
-                            //  The new point layer receives the name it was saved as.
-                            int index = filename.LastIndexOf("\\");
-                            string legendText = filename.Substring(index + 1);
-                            newPointLayer.LegendText = legendText;
+                            string file = Path.GetFileNameWithoutExtension(output.Filename);
+                            newPointLayer.LegendText = file;
                             newPointLayer.Projection = _map.Projection;
                             _map.Layers.Add(newPointLayer);
                             _map.ResetBuffer();
@@ -264,60 +299,114 @@ namespace Cetecean
                     }
                 }
             }
-            catch
+            catch (FormatException)
             {
-                MessageBox.Show("Please check the values entered and try again", "Entry Error");
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
             }
         }
            
         private void cmbInput1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Creates a new string to hold the value of the selected item.
-            string selectedItem = cmbInput1.SelectedItem.ToString();
-            //The input1SelectIndex is assigned as the index of the selected item in the LayerList.
-            input1SelectIndex = layerList.IndexOf(selectedItem);
-
-            //  Input1SelectIndex is used to get the correct dataset from the map layers (the one selected by the user)
-            cmbField.Items.Clear();
-            IFeatureSet polygonFS = (IFeatureSet)_map.Layers[input1SelectIndex].DataSet;
-            foreach (DataColumn col in polygonFS.DataTable.Columns) //  Loops through each of the columns in the IFeatureSet
+            try
             {
-                cmbField.Items.Add(col.ColumnName);  // Adds the column name to the cmbField combobox
+                //Creates a new string to hold the value of the selected item.
+                string selectedItem = cmbInput1.SelectedItem.ToString();
+                //The input1SelectIndex is assigned as the index of the selected item in the LayerList.
+                input1SelectIndex = layerList.IndexOf(selectedItem);
+
+                Input1Selected = true;
+
+                if (Input1Selected && Input2Selected)
+                {
+                    btnCalculate.Enabled = true;
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
             }
         }
 
         private void cmbInput2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Same methodology as for cmbInput1 above.  However, this populates a checked list box instead of a combobox.
-            string selectedItem2 = cmbInput2.SelectedItem.ToString();
-            input2SelectIndex = layerList.IndexOf(selectedItem2);
-            clsFields.Items.Clear();
-            IFeatureSet pointFS = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
-            foreach (DataColumn col in pointFS.DataTable.Columns)
+            try
             {
-                clsFields.Items.Add(col.ColumnName);
+                // Same methodology as for cmbInput1 above.  
+                string selectedItem2 = cmbInput2.SelectedItem.ToString();
+                input2SelectIndex = layerList.IndexOf(selectedItem2);
+
+                Input2Selected = true;
+
+                if (Input1Selected && Input2Selected)
+                {
+                    btnCalculate.Enabled = true;
+                }
+
+                clsFields.Items.Clear();
+                IFeatureSet pointFS = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
+                foreach (DataColumn col in pointFS.DataTable.Columns) // Loops through each of the columns in the IFeatureSet
+                {
+                    clsFields.Items.Add(col.ColumnName); // Adds the column name to the checked list box.
+                }
+
+                chbSelectAll.Enabled = true;
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
             }
         }
 
         private void chbSelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            //  If the Select All checkbox is checked, loops through each item in the checked list box
-            //  and checks each item.
-            if (chbSelectAll.Checked)
+            try
             {
-                for (int i = 0; i < clsFields.Items.Count; i++)
+                //  If the Select All checkbox is checked, loops through each item in the checked list box
+                //  and checks each item.
+                if (chbSelectAll.Checked)
                 {
-                    clsFields.SetItemChecked(i, true);
+                    for (int i = 0; i < clsFields.Items.Count; i++)
+                    {
+                        clsFields.SetItemChecked(i, true);
+                    }
+                }
+                //  If the Select All checkbox is unchecked, loops through each item in the checked list box
+                //  and unchecks each item.
+                else
+                {
+                    for (int i = 0; i < clsFields.Items.Count; i++)
+                    {
+                        clsFields.SetItemChecked(i, false);
+                    }
                 }
             }
-            //  If the Select All checkbox is unchecked, loops through each item in the checked list box
-            //  and unchecks each item.
-            else
+            catch (FormatException)
             {
-                for (int i = 0; i < clsFields.Items.Count; i++)
-                {
-                    clsFields.SetItemChecked(i, false);
-                }
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
             }
         }
 
