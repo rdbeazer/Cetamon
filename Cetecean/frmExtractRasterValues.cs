@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Topology;
@@ -36,78 +37,101 @@ namespace Cetecean
 
         private void frmExtractRasterValues_Load(object sender, EventArgs e)
         {
-            //Clears combo box and checked list box when form is loaded.
-            cmbPoint.Items.Clear();
-            clsFields.Items.Clear();
+            try
+            {
+                //Clears combo box and checked list box when form is loaded.
+                cmbPoint.Items.Clear();
+                clsFields.Items.Clear();
 
-            //Calls getLayers method
-            getLayers();
+                //Calls getLayers method
+                getLayers();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
+            }
         }
 
     #region Methods
         private void getLayers()
         //Method to get the map layers and populate the user selection controls in the form.
         {
-            layerList.Clear();  //clears layerList
-
-            //Gets the collection of RasterLayers from the map.
-            IMapRasterLayer[] rasterLayers = _map.GetRasterLayers();
-            //Gets the collection of PointLayers from the map.
-            IMapPointLayer[] pointLayers = _map.GetPointLayers();
-
-            //Gets a count for each type of layer.
-            int rasterCount = rasterLayers.Count();
-            int pointCount = pointLayers.Count();
-
-            //Check to make sure a raster and point layer are loaded in the map.
-            if (rasterCount > 0 && pointCount > 0)
+            try
             {
-                for (int i = 0; i < _map.Layers.Count; i++) //loops through each map layer
+                layerList.Clear();  //clears layerList
+
+                //Gets the collection of RasterLayers from the map.
+                IMapRasterLayer[] rasterLayers = _map.GetRasterLayers();
+                //Gets the collection of PointLayers from the map.
+                IMapPointLayer[] pointLayers = _map.GetPointLayers();
+
+                //Gets a count for each type of layer.
+                int rasterCount = rasterLayers.Count();
+                int pointCount = pointLayers.Count();
+
+                //Check to make sure a raster and point layer are loaded in the map.
+                if (rasterCount > 0 && pointCount > 0)
                 {
-                    IMapLayer layer = _map.Layers[i];
-
-                    if (rasterLayers.Contains(layer)) //if layer is in the rasterLayers collection
+                    for (int i = 0; i < _map.Layers.Count; i++) //loops through each map layer
                     {
-                        if (!clsFields.Items.Contains(layer.LegendText))  //and it's not already added to the checked list box.
-                        {
-                            clsFields.Items.Add(layer.LegendText);  //adds the LegendText of the layer to the checked list box.
-                        }
-                        else
-                        {
-                            MessageBox.Show("Raster layers have the same name.\n\nPlease change the raster names in the legend.", "Input Error");
-                            this.Close();
-                        }
-                    }
-                    if (pointLayers.Contains(layer)) //if layer is in the pointLayers collection
-                    {
-                        cmbPoint.Items.Add(layer.LegendText);  //adds the LegendText of the layer to the checked list box.
-                    }
+                        IMapLayer layer = _map.Layers[i];
 
-                    //** -----------------------------------------------------**
-                    //  The next piece of code is important.  Each map layer needs to be added to the layerList.  The layer list is used to index the 
-                    //  map layers with their legendText.  This way, user selected items in the combobox or checked list box (referred to by
-                    // their legendText) can be associated with the correct map layer (by index).
+                        if (rasterLayers.Contains(layer)) //if layer is in the rasterLayers collection
+                        {
+                            if (!clsFields.Items.Contains(layer.LegendText))  //and it's not already added to the checked list box.
+                            {
+                                clsFields.Items.Add(layer.LegendText);  //adds the LegendText of the layer to the checked list box.
+                            }
+                            else
+                            {
+                                MessageBox.Show("Raster layers have the same name.\n\nPlease change the raster names in the legend.", "Input Error");
+                                this.Close();
+                            }
+                        }
+                        if (pointLayers.Contains(layer)) //if layer is in the pointLayers collection
+                        {
+                            cmbPoint.Items.Add(layer.LegendText);  //adds the LegendText of the layer to the checked list box.
+                        }
 
-                    layerList.Insert(i, layer.LegendText); // inserts the index and LegendText regardless of which type.
+                        //** -----------------------------------------------------**
+                        //  The next piece of code is important.  Each map layer needs to be added to the layerList.  The layer list is used to index the 
+                        //  map layers with their legendText.  This way, user selected items in the combobox or checked list box (referred to by
+                        // their legendText) can be associated with the correct map layer (by index).
+
+                        layerList.Insert(i, layer.LegendText); // inserts the index and LegendText regardless of which type.
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please make sure you have at least one raster layer and one point layer loaded into the map.");
+                    this.Close();
                 }
             }
-            else
+            catch (FormatException)
             {
-                MessageBox.Show("Please make sure you have at least one raster layer and one point layer loaded into the map.");
-                this.Close();
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
             }
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-
-            //  Checks to make sure a point layer is selected.
-            if (Convert.ToBoolean(_map.Layers[input2SelectIndex].LegendText == cmbPoint.SelectedItem))
+            try
             {
-
-            //  IFeatureSet pointInput is declared and assigned by the map layer index that the user selected in
-            //  the pointInput combobox.
-            IFeatureSet pointInput = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
+                //  IFeatureSet pointInput is declared and assigned by the map layer index that the user selected in
+                //  the pointInput combobox.
+                IFeatureSet pointInput = (IFeatureSet)_map.Layers[input2SelectIndex].DataSet;
 
                 //  creates a list and loops through it.  Used to make sure a raster is selected.
                 List<string> selectedRasters = new List<string>();
@@ -166,89 +190,122 @@ namespace Cetecean
                     return;
                 }
 
-            this.Close(); //  Closes the form
+                this.Close(); //  Closes the form
 
-            if (radOriginal.Checked)  //  If user checks the box to save the attributes to the original shapefile.
-            {
-                DialogResult result = MessageBox.Show("Saving the attributes to the original shapefile will modify the file.\n\nAre you sure you want to save?",
-                                          "Save Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                if (radOriginal.Checked)  //  If user checks the box to save the attributes to the original shapefile.
                 {
-                    pointInput.Save();
-                    MessageBox.Show("The updated attributes have been saved to " +
-                        pointInput.Filename + ".", "File Saved");
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            if (radNewShape.Checked)  // If user checks the box to save the attributes to a new shapefile.
-            {
-                //  output FeatureSet is declared
-                FeatureSet output = new FeatureSet(FeatureType.Point);
-                //  output is equal to the pointInput
-                output = (FeatureSet)pointInput;
-
-                //  Calls the saveFile method
-                Functions obj = new Functions();
-                obj.saveFile(output);
-
-
-                if (obj.saved)
-                {
-                    //  Alerts the user that the file has been saved.
-                    //  Asks the user if they would like to add the saved file to the map.
-                    DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " + output.Filename +
-                        ".\n\nWould you like to add the new file to the map?", "File Saved", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-
-                    //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
+                    DialogResult result = MessageBox.Show("Saving the attributes to the original shapefile will modify the file.\n\nAre you sure you want to save?",
+                                              "Save Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        MapPointLayer newPointLayer = new MapPointLayer(output);
-                        string filename = output.Filename;
-                        //  the new point layer receives the name it was saved as.
-                        int index = filename.LastIndexOf("\\");
-                        string legendText = filename.Substring(index + 1);
-                        newPointLayer.LegendText = legendText;
-                        newPointLayer.Projection = _map.Projection;
-                        _map.Layers.Add(newPointLayer);
-                        _map.ResetBuffer();
+                        pointInput.Save();
+                        MessageBox.Show("The updated attributes have been saved to " +
+                            pointInput.Filename + ".", "File Saved");
+                    }
+                    if (result == DialogResult.No)
+                    {
+                        MessageBox.Show("The updated attributes were not saved to a file and will remain in memory.", "File Not Saved");
+                    }
+                }
+
+                if (radNewShape.Checked)  // If user checks the box to save the attributes to a new shapefile.
+                {
+                    //  output FeatureSet is declared
+                    FeatureSet output = new FeatureSet(FeatureType.Point);
+                    //  output is equal to the pointInput
+                    output = (FeatureSet)pointInput;
+
+                    //  Calls the saveFile method
+                    Functions obj = new Functions();
+                    obj.saveFile(output);
+
+
+                    if (obj.saved)
+                    {
+                        //  Alerts the user that the file has been saved.
+                        //  Asks the user if they would like to add the saved file to the map.
+                        DialogResult result = MessageBox.Show("The updated attributes have been saved to the new file " + output.Filename +
+                            ".\n\nWould you like to add the new file to the map?", "File Saved", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                        //  If the user clicks "Yes", the saved file is added as a new point layer on the map.
+                        if (result == DialogResult.Yes)
+                        {
+                            MapPointLayer newPointLayer = new MapPointLayer(output);
+                            string file = Path.GetFileNameWithoutExtension(output.Filename);
+                            //  the new point layer receives the name it was saved as.
+
+                            newPointLayer.LegendText = file;
+                            newPointLayer.Projection = _map.Projection;
+                            _map.Layers.Add(newPointLayer);
+                            _map.ResetBuffer();
+                        }
                     }
                 }
             }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
+            }
         }
-        else
-        {
-            MessageBox.Show("Please select a valid point layer", "Input Error");
-            cmbPoint.Focus();
-        }
-    }
+
         private void cmbPoint_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //  Input2SelectIndex holds the map layer index of the item selected in the combobox.
-            string selectedPoint = cmbPoint.SelectedItem.ToString();
-            input2SelectIndex = layerList.IndexOf(selectedPoint);
+            try
+            {
+                //  Input2SelectIndex holds the map layer index of the item selected in the combobox.
+                string selectedPoint = cmbPoint.SelectedItem.ToString();
+                input2SelectIndex = layerList.IndexOf(selectedPoint);
+
+                btnCalculate.Enabled = true;
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
+            }
         }
 
         private void chbSelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            //  If the selectAll checkbox is checked, loops through each item in the checked list box
-            //  and checks each item.
-            if (chbSelectAll.Checked)
+            try
             {
-                for (int i = 0; i < clsFields.Items.Count; i++)
+                //  If the selectAll checkbox is checked, loops through each item in the checked list box
+                //  and checks each item.
+                if (chbSelectAll.Checked)
                 {
-                    clsFields.SetItemChecked(i, true);
+                    for (int i = 0; i < clsFields.Items.Count; i++)
+                    {
+                        clsFields.SetItemChecked(i, true);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < clsFields.Items.Count; i++)
+                    {
+                        clsFields.SetItemChecked(i, false);
+                    }
                 }
             }
-            else
+            catch (FormatException)
             {
-                for (int i = 0; i < clsFields.Items.Count; i++)
-                {
-                    clsFields.SetItemChecked(i, false);
-                }
+                MessageBox.Show("Please check the values entered and try again.", "Entry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.GetType().ToString() + "\n\n" + ex.StackTrace, "Exception");
+                return;
             }
         }
 
