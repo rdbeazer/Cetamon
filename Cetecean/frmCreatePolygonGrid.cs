@@ -41,7 +41,7 @@ namespace Cetecean
 
         private void rbtPointOrigin_Click(object sender, EventArgs e)
         {
-            label8.Text = "Please pick an origin:";
+            //label8.Text = "Please pick an origin:";
             label3.Visible = false;
             label4.Visible = false;
             txtXmax.Visible = false;
@@ -54,11 +54,27 @@ namespace Cetecean
             removeLayer("Area selected");
             _polygonLayer = null;
 
+            if (_activeBox)
+            {
+                _map.MouseDown -= mapSelect_MouseDown;
+                _map.MouseUp -= mapSelect_MouseUp;
+                _activeBox = false;
+            }
+
+            if (!_activePoint)
+            {
+                _map.FunctionMode = FunctionMode.None;
+                _map.Cursor = Cursors.Cross;
+                _activePoint = true;
+                _map.MouseDown += new System.Windows.Forms.MouseEventHandler(getPointMap_MouseDown);
+            }
+            grbParameters.Enabled = true;
+            this.Hide();
         }
 
         private void rbtBox_Click(object sender, EventArgs e)
         {
-            label8.Text = "Please select a region:";
+            //label8.Text = "Please select a region:";
             label3.Visible = true;
             label4.Visible = true;
             txtXmax.Visible = true;
@@ -70,54 +86,47 @@ namespace Cetecean
             setPolygonLayer();
             removeLayer("Origin Point");
             _pointLayer = null;
+
+            if (_activePoint)
+            {
+                _map.MouseDown -= getPointMap_MouseDown;
+                _activePoint = false;
+            }
+
+            if (!_activeBox)
+            {
+                _map.MouseDown += new System.Windows.Forms.MouseEventHandler(mapSelect_MouseDown);
+                _map.MouseUp += new System.Windows.Forms.MouseEventHandler(mapSelect_MouseUp);
+                _map.FunctionMode = FunctionMode.Select;
+                _activeBox = true;
+            }
+            grbParameters.Enabled = true;
+            this.Hide();
         }
 
         private void btnCaptureArea_Click(object sender, EventArgs e)
         {
-            if (rbtBox.Checked)
+            try
             {
-
-                if (_activePoint)
+                if (rbtBox.Checked)
                 {
-                    _map.MouseDown -= getPointMap_MouseDown;
-                    _activePoint = false;
+
+                  
+
                 }
 
-                if (!_activeBox)
+                if (rbtPointOrigin.Checked)
                 {
-                   
-                    _map.MouseDown += new System.Windows.Forms.MouseEventHandler(mapSelect_MouseDown);
-                    _map.MouseUp += new System.Windows.Forms.MouseEventHandler(mapSelect_MouseUp);
-                    _map.FunctionMode = FunctionMode.Select;
-                    _activeBox = true;
+  
+
                 }
-
-
-
-
+                grbParameters.Enabled = true;
+                this.Hide();
             }
-
-            if (rbtPointOrigin.Checked)
+            catch (Exception)
             {
-                if (_activeBox)
-                {
-                    _map.MouseDown -= mapSelect_MouseDown;
-                    _map.MouseUp -= mapSelect_MouseUp;
-                    _activeBox = false;
-                }
-
-                if (!_activePoint)
-                {
-                    _map.FunctionMode = FunctionMode.None;
-                    _map.Cursor = Cursors.Cross;
-                    _activePoint = true;
-                    _map.MouseDown += new System.Windows.Forms.MouseEventHandler(getPointMap_MouseDown);
-                }
-
-
+                MessageBox.Show("Capturing area problem");
             }
-            grbParameters.Enabled = true;
-            this.Hide();
         }
 
         public bool CheckValue()
@@ -183,45 +192,53 @@ namespace Cetecean
 
         void mapSelect_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            //only modify rectangle drawing if function mode is Select
-            if (_map.FunctionMode != FunctionMode.Select) return;
-
-            foreach (IMapLayer lay in _map.GetAllLayers())
+            try
             {
-                if (lay.LegendText == "Area selected")
+                //only modify rectangle drawing if function mode is Select
+                if (_map.FunctionMode != FunctionMode.Select) return;
+
+                foreach (IMapLayer lay in _map.GetAllLayers())
                 {
-                    MapPolygonLayer pol = (MapPolygonLayer)lay;
-                    pol.DataSet.Features.Clear();
+                    if (lay.LegendText == "Area selected")
+                    {
+                        MapPolygonLayer pol = (MapPolygonLayer)lay;
+                        pol.DataSet.Features.Clear();
+                    }
+                }
+
+
+
+                if (_numClicks == 1)
+                {
+                    Coordinate endPoint = new Coordinate(_map.PixelToProj(e.Location));
+                    Coordinate eendPoint = new Coordinate(e.Location.X, e.Location.Y);
+
+                    setPolygonLayer();
+                    if (_polygonLayer.DataSet.Features == null) return;
+                    _polygonLayer.DataSet.Features.Clear();
+                    Coordinate[] array = new Coordinate[5];
+                    array[0] = _startPoint;
+                    array[1] = new Coordinate(_startPoint.X, endPoint.Y);
+                    array[2] = endPoint;
+                    array[3] = new Coordinate(endPoint.X, _startPoint.Y);
+                    array[4] = _startPoint;
+                    LinearRing shell = new LinearRing(array);
+                    Polygon poly = new Polygon(shell);
+
+                    IFeature newF = _polygonLayer.DataSet.AddFeature(poly);
+                    newF.DataRow["ID"] = 1;
+                    _numClicks = 0;
+                    _map.ResetBuffer();
+                    Extent ext = poly.Envelope.ToExtent();
+                    fillData(ext);
+                    this.Visible = true;
+                    //  rbtBox.Checked = false;
                 }
             }
-
-
-
-            if (_numClicks == 1)
+            catch (Exception)
             {
-                Coordinate endPoint = new Coordinate(_map.PixelToProj(e.Location));
-                Coordinate eendPoint = new Coordinate(e.Location.X, e.Location.Y);
-
-                setPolygonLayer();
-                if (_polygonLayer.DataSet.Features == null) return;
-                _polygonLayer.DataSet.Features.Clear();
-                Coordinate[] array = new Coordinate[5];
-                array[0] = _startPoint;
-                array[1] = new Coordinate(_startPoint.X, endPoint.Y);
-                array[2] = endPoint;
-                array[3] = new Coordinate(endPoint.X, _startPoint.Y);
-                array[4] = _startPoint;
-                LinearRing shell = new LinearRing(array);
-                Polygon poly = new Polygon(shell);
-
-                IFeature newF = _polygonLayer.DataSet.AddFeature(poly);
-                newF.DataRow["ID"] = 1;
-                _numClicks = 0;
-                _map.ResetBuffer();
-                Extent ext = poly.Envelope.ToExtent();
-                fillData(ext);
-                this.Visible = true;
-
+                MessageBox.Show("Problem in the creatiation of the rectangle guide");
+            
             }
         }
 
@@ -255,37 +272,44 @@ namespace Cetecean
 
         void getPointMap_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            try
+            {
+                Coordinate startPoint;
+                startPoint = new Coordinate(_map.PixelToProj(e.Location));
+                if (_pointLayer.DataSet.Features != null)
+                    _pointLayer.DataSet.Features.Clear();
+                else
+                    return;
+                DotSpatial.Topology.Point point = new DotSpatial.Topology.Point(startPoint.X, startPoint.Y);
+                IFeature newF = _pointLayer.DataSet.AddFeature(point);
+                newF.DataRow["ID"] = 1;
+                _map.ResetBuffer();
 
-            Coordinate startPoint;
-            startPoint = new Coordinate(_map.PixelToProj(e.Location));
-            if (_pointLayer.DataSet.Features != null)
-                _pointLayer.DataSet.Features.Clear();
-            else
-                return;
-            DotSpatial.Topology.Point point = new DotSpatial.Topology.Point(startPoint.X, startPoint.Y);
-            IFeature newF = _pointLayer.DataSet.AddFeature(point);
-            newF.DataRow["ID"] = 1;
-            _map.ResetBuffer();
 
+                // double[] xy = new double[] { startPoint.X, startPoint.Y };
+                // string esri = Properties.Resources.wgs_84_esri_string;
+                // ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;//new ProjectionInfo();
+                // wgs84.ReadEsriString(esri);
+                //Reproject.ReprojectPoints(xy, new double[] { 0 }, _map.Projection, wgs84, 0, 1);
 
-           // double[] xy = new double[] { startPoint.X, startPoint.Y };
-           // string esri = Properties.Resources.wgs_84_esri_string;
-           // ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;//new ProjectionInfo();
-           // wgs84.ReadEsriString(esri);
-            //Reproject.ReprojectPoints(xy, new double[] { 0 }, _map.Projection, wgs84, 0, 1);
+                txtXmin.Text = startPoint.X.ToString();
+                txtYmin.Text = startPoint.Y.ToString();
+                txtXmax.Text = "";
+                txtYmax.Text = "";
 
-            txtXmin.Text = startPoint.X.ToString();
-            txtYmin.Text = startPoint.Y.ToString();
-            txtXmax.Text = "";
-            txtYmax.Text = "";
+                _area = new AreaInterest();
 
-            _area = new AreaInterest();
-
-            _area.MinX = startPoint.X;
-            _area.MinY = startPoint.Y;
-            this.Visible = true;
-         //   _map.MouseDown -= getPointMap_MouseDown;
-           // Clean_selection();
+                _area.MinX = startPoint.X;
+                _area.MinY = startPoint.Y;
+                this.Visible = true;
+                //   _map.MouseDown -= getPointMap_MouseDown;
+                // Clean_selection();
+                // rbtPointOrigin.Checked = false;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Problem in the addition of origin point");
+            }
         }
 
         void setPolygonLayer()
@@ -308,6 +332,7 @@ namespace Cetecean
                 _map.ViewExtents = ext;
             }
 
+
         }
         void setPointLayer() 
         {
@@ -326,49 +351,66 @@ namespace Cetecean
         }
         void removeLayer(string name)
         {
-            _map.FunctionMode = FunctionMode.None;
-            foreach (IMapLayer lay in _map.GetLayers())
+            try
             {
-                if (lay.LegendText == name)
+                _map.FunctionMode = FunctionMode.None;
+                foreach (IMapLayer lay in _map.GetLayers())
                 {
-                    _map.Layers.Remove(lay);
-                    break;
+                    if (lay.LegendText == name)
+                    {
+                        _map.Layers.Remove(lay);
+                        break;
+                    }
                 }
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Problem in removing a layer");
+            }
+
         }
 
         private void btnCreateGrid_Click(object sender, EventArgs e)
         {
-            
-            if (_area == null) {
-
-                MessageBox.Show("Please select an area or origin point and fill all parameters");
-                return;
-            }
-
-            this.Cursor = Cursors.WaitCursor;
-            if (rbtBox.Checked && (_vector != null))
+            try
             {
-                _vector.AddLayer();
-                _vector.Progress(progressBar1);
-                _vector.AddGrid();
 
+                if (_area == null)
+                {
+
+                    MessageBox.Show("Please select an area or origin point and fill all parameters");
+                    return;
+                }
+
+                this.Cursor = Cursors.WaitCursor;
+                if (rbtBox.Checked && (_vector != null))
+                {
+
+                    _vector.AddLayer();
+                    _vector.Progress(progressBar1);
+                    _vector.AddGrid();
+
+                }
+
+                if (rbtPointOrigin.Checked && Validator.IsInt32(txtNumColumns) && Validator.IsInt32(txtNumRows) && Validator.IsDouble(txtGridSize))
+                {
+                    _area.NumColumns = Convert.ToInt32(txtNumColumns.Text);
+                    _area.NumRows = Convert.ToInt32(txtNumRows.Text);
+                    _area.CellSize = Convert.ToDouble(txtGridSize.Text);
+                    _vector = new VectorGrid(_area, _map);
+                    _vector.AddLayer();
+                    _vector.Progress(progressBar1);
+                    _vector.AddGrid();
+                }
+
+                removeLayer("Area selected");
+                removeLayer("Origin Point");
+                this.Cursor = Cursors.Default;
             }
-
-            if (rbtPointOrigin.Checked && Validator.IsInt32(txtNumColumns) && Validator.IsInt32(txtNumRows) && Validator.IsDouble(txtGridSize))
+            catch (Exception)
             {
-                _area.NumColumns = Convert.ToInt32(txtNumColumns.Text);
-                _area.NumRows = Convert.ToInt32(txtNumRows.Text);
-                _area.CellSize = Convert.ToDouble(txtGridSize.Text);
-                _vector = new VectorGrid(_area,_map);
-                _vector.AddLayer();
-                _vector.Progress(progressBar1);
-                _vector.AddGrid();
+                MessageBox.Show("Problem in the creation of the grid");
             }
-
-            removeLayer("Area selected");
-            removeLayer("Origin Point");
-            this.Cursor = Cursors.Default;
         }
 
         private void txtNumColumns_TextChanged(object sender, EventArgs e)

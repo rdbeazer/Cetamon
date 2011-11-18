@@ -217,9 +217,9 @@
             this.rbtOne.AutoSize = true;
             this.rbtOne.Location = new System.Drawing.Point(28, 57);
             this.rbtOne.Name = "rbtOne";
-            this.rbtOne.Size = new System.Drawing.Size(182, 17);
+            this.rbtOne.Size = new System.Drawing.Size(70, 17);
             this.rbtOne.TabIndex = 0;
-            this.rbtOne.Text = "One field (Same width both sides)";
+            this.rbtOne.Text = "One field ";
             this.rbtOne.UseVisualStyleBackColor = true;
             this.rbtOne.CheckedChanged += new System.EventHandler(this.rbtOne_CheckedChanged);
             // 

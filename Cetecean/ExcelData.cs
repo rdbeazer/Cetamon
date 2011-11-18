@@ -187,6 +187,11 @@ namespace Cetecean
         #endregion
 
         #region Properties
+
+        public Dictionary<string, string> listUsed { get; set; }
+
+        public string Problems { get; set; }
+
         /// <summary>
         /// Gets the path to the source file being converted
         /// </summary>
@@ -324,7 +329,15 @@ namespace Cetecean
 
         public DataTable GetData(string type)
         {
-          return this.GetDataTable(this.GetListOfDataTables(string.Empty),type);
+            try
+            {
+                return this.GetDataTable(this.GetListOfDataTables(string.Empty), type);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Problem in the creation of the DataTable");
+                return null;
+            }
         }
 
 
@@ -508,9 +521,17 @@ namespace Cetecean
             DataRow row2 = dataTable.Rows[1];
 
             Dictionary<string, string> listfields = new Dictionary<string, string>();
+           // Dictionary<string, string> 
+                listUsed = new Dictionary<string, string>();
+            int emp=0;
             foreach (DataColumn col in dataTable.Columns)
             {
                 string columnData = System.Convert.ToString(row[col]);
+                if (columnData == "")
+                {
+                    columnData = "Unknown_" + emp.ToString();
+                    emp++;
+                }
                 listfields.Add(columnData, TypeOfField(System.Convert.ToString(row2[col])));
             }
 
@@ -518,54 +539,107 @@ namespace Cetecean
                 frmTypeOfField fields = new frmTypeOfField(type, listfields);
                 if (fields.ShowDialog() == DialogResult.OK)
                 {
-
+                    listfields = fields.List;
+                    listUsed = fields.ListLatLon;
                 }
                 else {
 
                     return null;
                 }
-                    
-               
-                    //foreach (DataColumn col in dataTable.Columns)
-                    //{
-                    //    string columnData = System.Convert.ToString(row[col]);
 
-                    //    if (CheckNamesList(type, columnData.ToUpper()))
-                    //    {
-                    //        columnNamesCheck.Add(columnData.ToUpper(), columnData);
-                    //    }
-                    //}
+                     string[] list= new string[listfields.Count];
+                    DataTable newTable = new DataTable();
+                    int i = 0;
+                    foreach (string col in listfields.Keys)
+                    {
+                        newTable.Columns.Add(col, Gettype(listfields[col]));
+                        list[i]=col;
+                        i++;
+                    }
 
+                  Problems="";
+                    i = 0;
+                    foreach (DataRow rowi in dataTable.Rows)
+                    {
+                        if (i > 0)
+                        {
+                            DataRow newRow = newTable.NewRow();
+                            for (int j = 0; j < listfields.Count; j++)
+                            {
+                                if (!ConvertData(newRow, rowi, listfields[list[j]], j))
+                                {
+                                    Problems += "Row: " + i.ToString() + "; field:" + list[j] +"\r\n";
+                                }
+                            //    newRow[j] = rowi[j];
+                            
+                            }
+                            //newRow.ItemArray = rowi.ItemArray;
+                            newTable.Rows.Add(newRow);
+                        }
+                        i++;
+                    }
 
-                    //if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4)
-                    //{
-                    //    DataTable newTable = new DataTable();
-                    //    foreach (DataColumn col in dataTable.Columns)
-                    //    {
-                    //        string columnData = System.Convert.ToString(row[col]);
-                    //        newTable.Columns.Add(columnData, FieldType(columnData.ToUpper()));
-                    //    }
-
-                    //    int i = 0;
-                    //    foreach (DataRow rowi in dataTable.Rows)
-                    //    {
-                    //        if (i > 0)
-                    //        {
-                    //            DataRow newRow = newTable.NewRow();
-                    //            newRow.ItemArray = rowi.ItemArray;
-                    //            newTable.Rows.Add(newRow);
-                    //        }
-                    //        i++;
-                    //    }
-
-                    //    return newTable;
-                    //}
-
-                    return null;
-        
+                    return newTable;
+     
         
         }
 
+
+        private bool ConvertData(DataRow target, DataRow source, string type, int index)
+        {
+            try
+            {
+                if (type == "string")
+                {
+
+                    target[index] = Convert.ToString(source[index]);
+                    return true;
+                }
+
+
+                if (type == "double")
+                {
+
+                    target[index] = Convert.ToDouble(source[index]);
+                    return true;
+                }
+
+                if (type == "int")
+                {
+
+                    target[index] = Convert.ToInt32(source[index]);
+                    return true;
+                }
+                if (type == "date")
+                {
+
+                    target[index] = Convert.ToDateTime(source[index]);
+                    return true;
+                }
+
+            }
+
+            catch (InvalidCastException)
+            { 
+            return false;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+
+            return false;
+        }
+        
+        private Type Gettype(string v)
+        {
+            if (v == "string") return typeof(string);
+            if (v == "double") return typeof(double);
+            if (v == "int") return typeof(int);
+            if (v == "Date") return typeof(DateTime);
+           
+            return typeof(string);
+        }
 
         /// <summary>
         /// It might seem a little pointless but it makes WriteCSVFiles cleaner to code.

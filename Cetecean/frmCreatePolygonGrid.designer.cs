@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnl = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label9 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -49,11 +50,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Label1 = new System.Windows.Forms.Label();
             this.rbtPointOrign = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.btnCaptureArea = new System.Windows.Forms.Button();
             this.rbtBox = new System.Windows.Forms.RadioButton();
             this.rbtPointOrigin = new System.Windows.Forms.RadioButton();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.pnl.SuspendLayout();
             this.grbParameters.SuspendLayout();
             this.rbtPointOrign.SuspendLayout();
@@ -73,6 +71,14 @@
             this.pnl.Name = "pnl";
             this.pnl.Size = new System.Drawing.Size(401, 348);
             this.pnl.TabIndex = 0;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(109, 327);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(278, 13);
+            this.progressBar1.TabIndex = 6;
+            this.progressBar1.Visible = false;
             // 
             // label9
             // 
@@ -265,8 +271,6 @@
             // 
             // rbtPointOrign
             // 
-            this.rbtPointOrign.Controls.Add(this.label8);
-            this.rbtPointOrign.Controls.Add(this.btnCaptureArea);
             this.rbtPointOrign.Controls.Add(this.rbtBox);
             this.rbtPointOrign.Controls.Add(this.rbtPointOrigin);
             this.rbtPointOrign.Location = new System.Drawing.Point(12, 12);
@@ -276,29 +280,10 @@
             this.rbtPointOrign.TabStop = false;
             this.rbtPointOrign.Text = "Based on:";
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(171, 30);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(108, 13);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "Please pick an origin:";
-            // 
-            // btnCaptureArea
-            // 
-            this.btnCaptureArea.Location = new System.Drawing.Point(293, 23);
-            this.btnCaptureArea.Name = "btnCaptureArea";
-            this.btnCaptureArea.Size = new System.Drawing.Size(32, 26);
-            this.btnCaptureArea.TabIndex = 2;
-            this.btnCaptureArea.Text = "...";
-            this.btnCaptureArea.UseVisualStyleBackColor = true;
-            this.btnCaptureArea.Click += new System.EventHandler(this.btnCaptureArea_Click);
-            // 
             // rbtBox
             // 
             this.rbtBox.AutoSize = true;
-            this.rbtBox.Location = new System.Drawing.Point(116, 28);
+            this.rbtBox.Location = new System.Drawing.Point(247, 28);
             this.rbtBox.Name = "rbtBox";
             this.rbtBox.Size = new System.Drawing.Size(43, 17);
             this.rbtBox.TabIndex = 1;
@@ -310,24 +295,14 @@
             // rbtPointOrigin
             // 
             this.rbtPointOrigin.AutoSize = true;
-            this.rbtPointOrigin.Checked = true;
             this.rbtPointOrigin.Location = new System.Drawing.Point(21, 28);
             this.rbtPointOrigin.Name = "rbtPointOrigin";
             this.rbtPointOrigin.Size = new System.Drawing.Size(89, 17);
             this.rbtPointOrigin.TabIndex = 0;
-            this.rbtPointOrigin.TabStop = true;
             this.rbtPointOrigin.Text = "Point of origin";
             this.rbtPointOrigin.UseVisualStyleBackColor = true;
             this.rbtPointOrigin.CheckedChanged += new System.EventHandler(this.rbtPointOrigin_CheckedChanged);
             this.rbtPointOrigin.Click += new System.EventHandler(this.rbtPointOrigin_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(109, 327);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(278, 13);
-            this.progressBar1.TabIndex = 6;
-            this.progressBar1.Visible = false;
             // 
             // frmCreatePolygonGrid
             // 
@@ -372,8 +347,6 @@
         private System.Windows.Forms.GroupBox rbtPointOrign;
         private System.Windows.Forms.RadioButton rbtBox;
         private System.Windows.Forms.RadioButton rbtPointOrigin;
-        private System.Windows.Forms.Button btnCaptureArea;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ProgressBar progressBar1;

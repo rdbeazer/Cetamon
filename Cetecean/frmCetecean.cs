@@ -15,7 +15,7 @@ namespace Cetecean
 {
     public partial class frmCetecean : Form
     {
-
+        GeoCal geo;
 
         public frmCetecean()
         {
@@ -25,7 +25,7 @@ namespace Cetecean
 
         private void frmCetecean_Load(object sender, EventArgs e)
         {
-            //GeoCal geo = new GeoCal(map1.Projection);
+             geo = new GeoCal(map1.Projection);
             //double lat = 50.06639;
             //double lon = -5.71472;
             //double lat1 = 58.64389;
@@ -34,7 +34,7 @@ namespace Cetecean
             //double distance =geo.Distance(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
             //double Azimuth = geo.GetAzimuth(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
 
-           // map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+            map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
 
             //Coordinate n = geo.AzimuthDist(new Coordinate(lon, lat), Azimuth, distance);
 
@@ -61,10 +61,11 @@ namespace Cetecean
 
         private void ExcelToLine_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             OpenFileDialog dialog = new OpenFileDialog();
             //dialog.Filter="xls files (*.xls)|*.xls";
             //dialog.InitialDirectory=@"..\..\..\Data_set\";  
-            dialog.Title = "Select a Excel File";
+            dialog.Title = "Select an Excel File";
             string strFileName = String.Empty;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -73,6 +74,7 @@ namespace Cetecean
 
             if (strFileName == String.Empty)
             {
+                this.Cursor = Cursors.Default;
                 return;
             }
             else
@@ -80,8 +82,22 @@ namespace Cetecean
                 ExcelData convert = new ExcelData(@strFileName);
                 convert.Import();
                 DataTable data = convert.GetData("line");
-                AddLineLayer(data, Validator.GetNameFile(@strFileName));
+
+                if (data == null)
+                {
+                    MessageBox.Show("The file has not been imported");
+                    this.Cursor = Cursors.Default;
+                    return;
+                }
+                if (convert.Problems != "")
+                {
+                    frmErrors error = new frmErrors(convert.Problems);
+                    error.Show();
+                }
+
+                AddLineLayer(data,convert.listUsed, Validator.GetNameFile(@strFileName));
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void convertExceltoPolygon_Click(object sender, EventArgs e)
@@ -112,18 +128,15 @@ namespace Cetecean
 
         }
 
-        private void AddPointLayer(DataTable table, string name)
+        private void AddPointLayer(DataTable table,Dictionary<string,string> list, string name)
         {
 
-            //try
-            //{
+            try
+            {
+
                 MapPointLayer pointLayer = new MapPointLayer();
                 FeatureSet pointFs = new FeatureSet(FeatureType.Point);
                 
-                System.Data.DataColumn latField = new System.Data.DataColumn("Latitude", typeof(double));
-                System.Data.DataColumn longField = new System.Data.DataColumn("Longitude", typeof(double));
-
-
                 //loops through each DataColumn in the data table (from excel sheet) and adds the column name and data type.
                 //to the FeatureSet lineFs.
                 foreach (DataColumn col in table.Columns)
@@ -143,15 +156,14 @@ namespace Cetecean
                 {
                     double latitude = 0;
                     double longitude = 0;
-                    longitude = Convert.ToDouble(row["Longitude"]);
-                    latitude = Convert.ToDouble(row["Latitude"]);
+                    longitude = Convert.ToDouble(row[list["Longitude"]]);
+                    latitude = Convert.ToDouble(row[list["Latitude"]]);
                     double[] xy = new double[] { longitude, latitude };
                     ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
                     Reproject.ReprojectPoints(xy, new double[] { 0 }, wgs84, map1.Projection, 0, 1);
                     DotSpatial.Topology.Point point = new DotSpatial.Topology.Point(xy[0], xy[1]);
                     IFeature newF = pointLayer.DataSet.AddFeature(point);
-                    newF.DataRow["Latitude"] = latitude;
-                    newF.DataRow["Longitude"] = longitude;
+                   
                     ProjectionInfo ip = map1.Projection;
 
 
@@ -161,15 +173,16 @@ namespace Cetecean
                     }
                 }
                 map1.ResetBuffer();
-            //}
+                Validator.SaveShapefile(name + ".xls", pointFs);
+            }
 
-            //catch (NullReferenceException nre) 
-            //{
-            //    MessageBox.Show("Please check the import data.  An error has occured.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            catch (Exception) 
+            {
+                MessageBox.Show("Problem in the creation of Shapefile");
+            }
         }
           
-        private void AddLineLayer(DataTable table,string name)
+        private void AddLineLayer(DataTable table, Dictionary<string, string> list,string name)
         {
             //Initialize new MapLineLayer "lineLayer"
             MapLineLayer lineLayer = new MapLineLayer();
@@ -204,10 +217,10 @@ namespace Cetecean
                 try
                 {
                     //Gets values from specified columns and assigns to variables
-                    longitude = Convert.ToDouble(row["StartLon"]);
-                    latitude = Convert.ToDouble(row["StartLat"]);
-                    longitude1 = Convert.ToDouble(row["EndLon"]);
-                    latitude1 = Convert.ToDouble(row["EndLat"]);
+                    longitude = Convert.ToDouble(row[list["StartLon"]]);
+                    latitude = Convert.ToDouble(row[list["StartLat"]]);
+                    longitude1 = Convert.ToDouble(row[list["EndLon"]]);
+                    latitude1 = Convert.ToDouble(row[list["EndLat"]]);
 
                     //Creates new array and adds coordinate values.
                     double[] xy = new double[] { longitude, latitude, longitude1, latitude1 };
@@ -230,7 +243,7 @@ namespace Cetecean
                     IFeature newF = lineLayer.DataSet.AddFeature(li);
 
                     //Calculates line length using GetDistance method.
-                    double lineLength = GetDistance(latitude, latitude1, longitude, longitude1);
+                    double lineLength = geo.Distance(new Coordinate(latitude, longitude),new Coordinate(latitude1, longitude1));
                     //Sets the value in column "Survey Line Length" to the returned lineLength.
                     newF.DataRow["TrackLength"] = lineLength;
 
@@ -382,10 +395,12 @@ namespace Cetecean
 
         private void importFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "xls files (*.xls)|*.xls";
             dialog.InitialDirectory = @"..\..\..\Data_set\";
-            dialog.Title = "Select a Excel File";
+            dialog.Title = "Select an Excel File";
             string strFileName = String.Empty;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -394,6 +409,7 @@ namespace Cetecean
 
             if (strFileName == String.Empty)
             {
+                this.Cursor = Cursors.Default;
                 return;
             }
             else
@@ -403,12 +419,19 @@ namespace Cetecean
                 DataTable data = convert.GetData("point");
                 if (data == null)
                 {
-                    MessageBox.Show("Invalid Excel attribute configuration.  Please choose a different file or correct the current file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("The file has not been imported");
+                    this.Cursor = Cursors.Default;
                     return;
                 }
-                AddPointLayer(data, Validator.GetNameFile(@strFileName));
-            }
+                if (convert.Problems != "")
+                {
+                    frmErrors error = new frmErrors(convert.Problems);
+                    error.Show();
+                }
 
+                AddPointLayer(data, convert.listUsed, Validator.GetNameFile(@strFileName));
+            }
+            this.Cursor = Cursors.Default;
         }
 
         private void panToolStripMenuItem_Click(object sender, EventArgs e)

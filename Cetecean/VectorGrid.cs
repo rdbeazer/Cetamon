@@ -198,15 +198,21 @@ namespace Cetecean
 
         public Coordinate ProjectPointAzimut(Coordinate c)
         {
+            try
+            {
 
-
-            if (_area.Azimut == 0) return c;
-            double angle = DegToRad(_area.Azimut);
-            double azi = GetAzimut(c);
-            double v = (angle + azi) * 180.0 / Math.PI;
-            double dist = Math.Sqrt((_area.MinX - c.X) * (_area.MinX - c.X) + (_area.MinY - c.Y) * (_area.MinY - c.Y));
-            return new Coordinate((Math.Sin(angle + azi) * dist) + _area.MinX, (Math.Cos(angle + azi) * dist) + _area.MinY);
-
+                if (_area.Azimut == 0) return c;
+                double angle = DegToRad(_area.Azimut);
+                double azi = GetAzimut(c);
+                double v = (angle + azi) * 180.0 / Math.PI;
+                double dist = Math.Sqrt((_area.MinX - c.X) * (_area.MinX - c.X) + (_area.MinY - c.Y) * (_area.MinY - c.Y));
+                return new Coordinate((Math.Sin(angle + azi) * dist) + _area.MinX, (Math.Cos(angle + azi) * dist) + _area.MinY);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Problem in the function point Azimuth");
+                return null;
+            }
 
         }
 
@@ -422,21 +428,28 @@ namespace Cetecean
 
         public void UpdateAreaInterestByColumnsRows(AreaInterest p)
         {
-            double dx = p.MaxX - p.MinX;
-            double dy = p.MaxY - p.MinY;
-            double cellSizeX = dx / p.NumColumns;
-            double cellSizeY = dy / p.NumRows;
+            try
+            {
+                double dx = p.MaxX - p.MinX;
+                double dy = p.MaxY - p.MinY;
+                double cellSizeX = dx / p.NumColumns;
+                double cellSizeY = dy / p.NumRows;
 
-            _area.MinX = p.MinX;
-            _area.MinY = p.MinY;
-            _area.MaxY = p.MinY + (p.NumRows * cellSizeY);
-            _area.MaxX = p.MinX + (p.NumColumns * cellSizeX);
+                _area.MinX = p.MinX;
+                _area.MinY = p.MinY;
+                _area.MaxY = p.MinY + (p.NumRows * cellSizeY);
+                _area.MaxX = p.MinX + (p.NumColumns * cellSizeX);
 
-            _area.NumColumns = p.NumColumns;
-            _area.NumRows = p.NumRows;
-            _area.CellSizeX = cellSizeX;
-            _area.CellSizeY = cellSizeY;
-            _area.Azimut = p.Azimut;
+                _area.NumColumns = p.NumColumns;
+                _area.NumRows = p.NumRows;
+                _area.CellSizeX = cellSizeX;
+                _area.CellSizeY = cellSizeY;
+                _area.Azimut = p.Azimut;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Problem in the UpdateAreaInterest");
+            }
         }
 
         public void UpdateAreaInterestByCellSize(AreaInterest p)
@@ -483,10 +496,14 @@ namespace Cetecean
                 }
                 else 
                 {
+                    Coordinate p1 = new Coordinate(p.MinX, p.MinY);
+                    Coordinate p2 = new Coordinate(p.MaxX, p.MinY);
+                    Coordinate p3 = new Coordinate(p.MinX, p.MinY);
+                    Coordinate p4 = new Coordinate(p.MinX, p.MaxY);
 
-
-                    double dx = geo.Distance(new Coordinate(p.MinX, p.MinY),new Coordinate(p.MaxX, p.MinY));
-                    double dy = geo.Distance(new Coordinate(p.MinX, p.MinY),new Coordinate(p.MinX, p.MaxY));
+                    double dx = geo.Distance(p1,p2);
+                    
+                    double dy = geo.Distance(p3,p4);
 
                     
 
@@ -497,10 +514,10 @@ namespace Cetecean
                         p.NumColumns = Convert.ToInt32(Math.Floor(dx / p.CellSize));
 
                     double dyy = Math.Abs(p.MaxY-p.MinY) / p.NumRows;
-                    double dxx = Math.Abs(p.MaxX - p.MinX) / p.NumColumns;
+                    double dxx = Math.Abs(p.MaxX- p.MinX) / p.NumColumns;
 
                     double va = 0;
-                    if (dxx < dyy) va = dxx; else va = dyy;
+                    if (dxx > dyy) va = dxx; else va = dyy;
 
                     _area.CellSize = va;
                     _area.MinX = p.MinX;

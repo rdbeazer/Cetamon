@@ -35,22 +35,16 @@ namespace Cetecean
         /// </summary>
         private void GetLayers()
         {
-            //the current polygon layers are added in the combobox
-            int i = 0;
-            if (_map.Layers.Count > 0)
+
+            if (_map.GetPolygonLayers().Length > 0)
             {
-                foreach (IMapLayer iLa in _map.Layers)
+                for (int i = 0; i < _map.GetPolygonLayers().Length; i++)
                 {
-                    FeatureSet fT = (FeatureSet)iLa.DataSet;
-                    if (fT.FeatureType == FeatureType.Polygon)
-                    {
-                        cbxPolygon1.Items.Add(iLa.LegendText);
-
-                        i++;
-                    }
-
+                    string title = _map.GetPolygonLayers()[i].LegendText;
+                    cbxPolygon1.Items.Add(title);
                 }
             }
+
             else
             {
                 MessageBox.Show("Please add a polygon layer ");
@@ -58,13 +52,7 @@ namespace Cetecean
                 return;
             }
 
-            if (i < 1)
-            {
-                MessageBox.Show("Please add a polygon layer ");
-                Close();
-                return;
 
-            }
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
@@ -93,9 +81,15 @@ namespace Cetecean
             {
                 fea.DataRow["Area"] = fea.Area();
             }
-
-
             MessageBox.Show("The area was calculated sucessfully");
+            try
+            {
+                polyg1.Save();
+            }
+            catch(Exception) {
+                Validator.SaveShapefile("layer", (FeatureSet)polyg1);
+            }
+            
             Close();
 
         }

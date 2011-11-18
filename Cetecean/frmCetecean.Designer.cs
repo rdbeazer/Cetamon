@@ -39,7 +39,6 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExcelToLine = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertExceltoPolygon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
             this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -163,7 +162,6 @@
             this.toolStripSeparator2,
             this.importFileToolStripMenuItem,
             this.ExcelToLine,
-            this.convertExceltoPolygon,
             this.toolStripSeparator1,
             this.tsmExit});
             this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
@@ -173,45 +171,38 @@
             // openShapefileToolStripMenuItem
             // 
             this.openShapefileToolStripMenuItem.Name = "openShapefileToolStripMenuItem";
-            this.openShapefileToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.openShapefileToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.openShapefileToolStripMenuItem.Text = "Open Shapefile";
             this.openShapefileToolStripMenuItem.Click += new System.EventHandler(this.openShapefileToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(273, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(257, 6);
             // 
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.importFileToolStripMenuItem.Text = "Convert Excel file to Point Shapefile";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
             // ExcelToLine
             // 
             this.ExcelToLine.Name = "ExcelToLine";
-            this.ExcelToLine.Size = new System.Drawing.Size(276, 22);
+            this.ExcelToLine.Size = new System.Drawing.Size(260, 22);
             this.ExcelToLine.Text = "Convert Excel file to Line Shapefile";
             this.ExcelToLine.Click += new System.EventHandler(this.ExcelToLine_Click);
-            // 
-            // convertExceltoPolygon
-            // 
-            this.convertExceltoPolygon.Name = "convertExceltoPolygon";
-            this.convertExceltoPolygon.Size = new System.Drawing.Size(276, 22);
-            this.convertExceltoPolygon.Text = "Convert Excel file to Polygon Shapefile";
-            this.convertExceltoPolygon.Click += new System.EventHandler(this.convertExceltoPolygon_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(273, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(257, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(276, 22);
+            this.tsmExit.Size = new System.Drawing.Size(260, 22);
             this.tsmExit.Text = "Exit";
             this.tsmExit.Click += new System.EventHandler(this.tsmExit_Click);
             // 
@@ -453,22 +444,16 @@
             // 
             // appManager1
             // 
-       //     this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
-       //     this.appManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.DataManager.DataProviderDirectories")));
             this.appManager1.DataManager.LoadInRam = true;
             this.appManager1.DataManager.ProgressHandler = null;
             this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
+            this.appManager1.DockManager = null;
             this.appManager1.HeaderControl = null;
-      //      this.appManager1.LayoutControl = null;
             this.appManager1.Legend = this.legend1;
-         //   this.appManager1.MainMenu = null;
-        //    this.appManager1.MainToolStrip = null;
             this.appManager1.Map = this.map1;
             this.appManager1.ProgressHandler = null;
-        //    this.appManager1.Ribbon = null;
-        //    this.appManager1.TabManager = null;
+            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             this.appManager1.ToolManager = null;
-        //    this.appManager1.ToolStripContainer = null;
             // 
             // frmCetecean
             // 
@@ -510,7 +495,6 @@
         private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem ExcelToLine;
-        private System.Windows.Forms.ToolStripMenuItem convertExceltoPolygon;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem splitTracksByGridToolStripMenuItem;
