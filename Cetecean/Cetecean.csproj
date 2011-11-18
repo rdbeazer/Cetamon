@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EE11762E-C275-46C3-BF2E-EBF74314131E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cetecean</RootNamespace>
+    <AssemblyName>Cetacean</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning, Version=0.11.9.6, Culture=neutral, PublicKeyToken=f6f66d1554473068, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dotspatial\x86\DotSpatial.Positioning.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\x86\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\..\DotSpatial\x86\DotSpatial.Topology.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="frmAbout1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout1.Designer.cs">
+      <DependentUpon>frmAbout1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AreaInterest.cs" />
+    <Compile Include="frmCalculateArea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalculateArea.designer.cs">
+      <DependentUpon>frmCalculateArea.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCalculateBuffer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalculateBuffer.Designer.cs">
+      <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCalculateField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalculateField.Designer.cs">
+      <DependentUpon>frmCalculateField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCalculateLineLength.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalculateLineLength.designer.cs">
+      <DependentUpon>frmCalculateLineLength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCountSpecies.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCountSpecies.Designer.cs">
+      <DependentUpon>frmCountSpecies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExcelData.cs" />
+    <Compile Include="frmCetecean.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCetecean.Designer.cs">
+      <DependentUpon>frmCetecean.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCreatePolygonGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCreatePolygonGrid.designer.cs">
+      <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmErrors.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmErrors.Designer.cs">
+      <DependentUpon>frmErrors.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtractRasterValues.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtractRasterValues.Designer.cs">
+      <DependentUpon>frmExtractRasterValues.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGridToPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGridToPoint.designer.cs">
+      <DependentUpon>frmGridToPoint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmJoinPointsToPolygons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmJoinPointsToPolygons.Designer.cs">
+      <DependentUpon>frmJoinPointsToPolygons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmJoinPolygonsToPoints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmJoinPolygonsToPoints.Designer.cs">
+      <DependentUpon>frmJoinPolygonsToPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPolyEffortByGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPolyEffortByGrid.designer.cs">
+      <DependentUpon>frmPolyEffortByGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPolyEffortBySwathe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPolyEffortBySwathe.designer.cs">
+      <DependentUpon>frmPolyEffortBySwathe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplitPolygons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplitPolygons.designer.cs">
+      <DependentUpon>frmSplitPolygons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplitTrack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplitTrack.designer.cs">
+      <DependentUpon>frmSplitTrack.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeOfField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeOfField.Designer.cs">
+      <DependentUpon>frmTypeOfField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Functions.cs" />
+    <Compile Include="GeoCal.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validator.cs" />
+    <Compile Include="VectorGrid.cs" />
+    <EmbeddedResource Include="frmAbout1.resx">
+      <DependentUpon>frmAbout1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalculateArea.resx">
+      <DependentUpon>frmCalculateArea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalculateBuffer.resx">
+      <DependentUpon>frmCalculateBuffer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalculateField.resx">
+      <DependentUpon>frmCalculateField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalculateLineLength.resx">
+      <DependentUpon>frmCalculateLineLength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCountSpecies.resx">
+      <DependentUpon>frmCountSpecies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCetecean.resx">
+      <DependentUpon>frmCetecean.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCreatePolygonGrid.resx">
+      <DependentUpon>frmCreatePolygonGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmErrors.resx">
+      <DependentUpon>frmErrors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtractRasterValues.resx">
+      <DependentUpon>frmExtractRasterValues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGridToPoint.resx">
+      <DependentUpon>frmGridToPoint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmJoinPointsToPolygons.resx">
+      <DependentUpon>frmJoinPointsToPolygons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmJoinPolygonsToPoints.resx">
+      <DependentUpon>frmJoinPolygonsToPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPolyEffortByGrid.resx">
+      <DependentUpon>frmPolyEffortByGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPolyEffortBySwathe.resx">
+      <DependentUpon>frmPolyEffortBySwathe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplitPolygons.resx">
+      <DependentUpon>frmSplitPolygons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplitTrack.resx">
+      <DependentUpon>frmSplitTrack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeOfField.resx">
+      <DependentUpon>frmTypeOfField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
