@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
+
 
 namespace Cetecean
 {
@@ -309,6 +311,11 @@ namespace Cetecean
                 this.CloseConnections();
                 
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Import excel function failed");
+                    
+            }
             finally
             {
                 this.CloseConnections();
@@ -442,10 +449,7 @@ namespace Cetecean
 
             return newTable;
 
-            //table.Columns.Add("Latitude", typeof(double));
-            //table.Columns.Add("Longitude", typeof(double));
-            //table.Rows.Add(45.253, -112.43);
-            //table.Rows.Add(45.509, -112.46091);
+
 
         }
 
@@ -477,7 +481,21 @@ namespace Cetecean
 
 
         }
-         
+
+
+        private string TypeOfField(string value) {
+
+            try
+            {
+               Convert.ToDouble(value);
+                return "double";
+            }
+            catch (FormatException)
+            {
+
+                return "string";
+            }
+        }
 
 
 
@@ -485,49 +503,65 @@ namespace Cetecean
         {
             SortedList<string,string> columnNamesCheck = new SortedList<string,string>();
 
-            foreach (DataTable dataTable in dataTables)
+            DataTable dataTable = dataTables[0];
+            DataRow row = dataTable.Rows[0];
+            DataRow row2 = dataTable.Rows[1];
+
+            Dictionary<string, string> listfields = new Dictionary<string, string>();
+            foreach (DataColumn col in dataTable.Columns)
             {
-
-                DataRow row = dataTable.Rows[0];
-                //foreach (DataRow row in dataTable.Rows)
-                //{
-                    foreach (DataColumn col in dataTable.Columns)
-                    {
-                        string columnData = System.Convert.ToString(row[col]);
-
-                        if (CheckNamesList(type, columnData.ToUpper()))
-                        {
-                            columnNamesCheck.Add(columnData.ToUpper(), columnData);
-                        }
-                    }
-                //}
-
-                    if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4 || columnNamesCheck.Count ==5)
-                    {
-                        DataTable newTable = new DataTable();
-                        foreach (DataColumn col in dataTable.Columns)
-                        {
-                            string columnData = System.Convert.ToString(row[col]);
-                            newTable.Columns.Add(columnData, FieldType(columnData.ToUpper()));
-                        }
-
-                        int i = 0;
-                        foreach (DataRow rowi in dataTable.Rows)
-                        {
-                            if (i > 0)
-                            {
-                                DataRow newRow = newTable.NewRow();
-                                newRow.ItemArray = rowi.ItemArray;
-                                newTable.Rows.Add(newRow);
-                            }
-                            i++;
-                        }
-
-                        return newTable;
-                    }
+                string columnData = System.Convert.ToString(row[col]);
+                listfields.Add(columnData, TypeOfField(System.Convert.ToString(row2[col])));
             }
 
-            return null;
+
+                frmTypeOfField fields = new frmTypeOfField(type, listfields);
+                if (fields.ShowDialog() == DialogResult.OK)
+                {
+
+                }
+                else {
+
+                    return null;
+                }
+                    
+               
+                    //foreach (DataColumn col in dataTable.Columns)
+                    //{
+                    //    string columnData = System.Convert.ToString(row[col]);
+
+                    //    if (CheckNamesList(type, columnData.ToUpper()))
+                    //    {
+                    //        columnNamesCheck.Add(columnData.ToUpper(), columnData);
+                    //    }
+                    //}
+
+
+                    //if (columnNamesCheck.Count == 2 || columnNamesCheck.Count == 4)
+                    //{
+                    //    DataTable newTable = new DataTable();
+                    //    foreach (DataColumn col in dataTable.Columns)
+                    //    {
+                    //        string columnData = System.Convert.ToString(row[col]);
+                    //        newTable.Columns.Add(columnData, FieldType(columnData.ToUpper()));
+                    //    }
+
+                    //    int i = 0;
+                    //    foreach (DataRow rowi in dataTable.Rows)
+                    //    {
+                    //        if (i > 0)
+                    //        {
+                    //            DataRow newRow = newTable.NewRow();
+                    //            newRow.ItemArray = rowi.ItemArray;
+                    //            newTable.Rows.Add(newRow);
+                    //        }
+                    //        i++;
+                    //    }
+
+                    //    return newTable;
+                    //}
+
+                    return null;
         
         
         }

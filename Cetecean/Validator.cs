@@ -25,6 +25,18 @@ namespace Cetecean
             }
         }
 
+
+        public static bool IsSelected(ComboBox combo)
+        {
+            if (combo.Text == "")
+            {
+                MessageBox.Show(combo.Tag + " is a required field.", Title);
+                combo.Focus();
+                return false;
+            }
+            return true;
+        }
+
         public static bool IsPresent(TextBox textBox)
         {
             if (textBox.Text == "")
@@ -155,5 +167,6 @@ namespace Cetecean
             }
             return true;
         }
+
     }
 }
