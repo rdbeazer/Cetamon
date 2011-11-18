@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Topology;
@@ -93,26 +94,16 @@ namespace Cetecean
                 //Check to make sure the attribute table doesn't already contain this column name
                 if (lineInput.DataTable.Columns.Contains(lineLengthCol.ColumnName))
                 {
-                    //  Alerts the user that the field name already exists and gives the option of changing the 
-                    //  field name or overwriting the data in the field.
-                    DialogResult result = MessageBox.Show("The field name " + "'" + lineLengthCol.ColumnName +
-                        "' already exists in the data table.\n\nWould you like to over-write the existing field?",
-                        "Input Error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (result == DialogResult.Yes) { }
-                    if (result == DialogResult.No)
-                    {
-                        MessageBox.Show("Please rename the length field", "Rename Field");
-
+                    MessageBox.Show("The attribute table already contains a column with the name " + "'" + lineLengthCol.ColumnName +
+                        "'. \nPlease rename the column.", "Input Error");
                         txtAttributeField.Focus();
                         return;
-                    }
                 }
                 //  Adds the new DataColumn if there isn't already a column with that name.
-                    else
-                    {
-                        lineInput.DataTable.Columns.Add(lineLengthCol);
-                        //addedFields += "\n\n\t" + newField1;
-                    }
+                else
+                {
+                    lineInput.DataTable.Columns.Add(lineLengthCol);
+                }
 
                     //  Loops through each feature and assigns the variables with the appropriate coordinates of each feature.
                     foreach (Feature lineF in lineInput.Features)
@@ -174,11 +165,8 @@ namespace Cetecean
                             if (diaResult == DialogResult.Yes)
                             {
                                 MapLineLayer newLineLayer = new MapLineLayer(output);
-                                string filename = output.Filename;
-                                //  the new point layer receives the name it was saved as.
-                                int index = filename.LastIndexOf("\\");
-                                string legendText = filename.Substring(index + 1);
-                                newLineLayer.LegendText = legendText;
+                                string file = Path.GetFileNameWithoutExtension(output.Filename);
+                                newLineLayer.LegendText = file;
                                 newLineLayer.Projection = _map.Projection;
                                 _map.Layers.Add(newLineLayer);
                                 _map.ResetBuffer();
