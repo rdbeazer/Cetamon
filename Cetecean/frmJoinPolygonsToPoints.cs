@@ -362,6 +362,7 @@ namespace Cetecean
                 }
 
                 chbSelectAll.Enabled = true;
+                lblSelect.Enabled = true;
             }
             catch (FormatException)
             {

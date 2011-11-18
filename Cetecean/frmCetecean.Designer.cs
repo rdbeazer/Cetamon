@@ -444,16 +444,22 @@
             // 
             // appManager1
             // 
+            this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
+            this.appManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.DataManager.DataProviderDirectories")));
             this.appManager1.DataManager.LoadInRam = true;
             this.appManager1.DataManager.ProgressHandler = null;
             this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
-            this.appManager1.DockManager = null;
             this.appManager1.HeaderControl = null;
+            this.appManager1.LayoutControl = null;
             this.appManager1.Legend = this.legend1;
+            this.appManager1.MainMenu = null;
+            this.appManager1.MainToolStrip = null;
             this.appManager1.Map = this.map1;
             this.appManager1.ProgressHandler = null;
-            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
+            this.appManager1.Ribbon = null;
+            this.appManager1.TabManager = null;
             this.appManager1.ToolManager = null;
+            this.appManager1.ToolStripContainer = null;
             // 
             // frmCetecean
             // 

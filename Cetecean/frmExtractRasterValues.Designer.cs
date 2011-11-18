@@ -49,9 +49,9 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(157, 412);
+            this.btnCancel.Location = new System.Drawing.Point(102, 412);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(94, 23);
+            this.btnCancel.Size = new System.Drawing.Size(84, 23);
             this.btnCancel.TabIndex = 9;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -62,7 +62,7 @@
             this.btnCalculate.Enabled = false;
             this.btnCalculate.Location = new System.Drawing.Point(12, 412);
             this.btnCalculate.Name = "btnCalculate";
-            this.btnCalculate.Size = new System.Drawing.Size(94, 23);
+            this.btnCalculate.Size = new System.Drawing.Size(84, 23);
             this.btnCalculate.TabIndex = 8;
             this.btnCalculate.Text = "Calculate";
             this.btnCalculate.UseVisualStyleBackColor = true;
