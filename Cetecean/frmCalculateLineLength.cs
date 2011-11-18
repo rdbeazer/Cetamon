@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Topology;
@@ -164,11 +165,8 @@ namespace Cetecean
                             if (diaResult == DialogResult.Yes)
                             {
                                 MapLineLayer newLineLayer = new MapLineLayer(output);
-                                string filename = output.Filename;
-                                //  the new point layer receives the name it was saved as.
-                                int index = filename.LastIndexOf("\\");
-                                string legendText = filename.Substring(index + 1);
-                                newLineLayer.LegendText = legendText;
+                                string file = Path.GetFileNameWithoutExtension(output.Filename);
+                                newLineLayer.LegendText = file;
                                 newLineLayer.Projection = _map.Projection;
                                 _map.Layers.Add(newLineLayer);
                                 _map.ResetBuffer();
