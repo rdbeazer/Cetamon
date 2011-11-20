@@ -20,7 +20,8 @@ namespace Cetecean
         public frmCetecean()
         {
             InitializeComponent();
-            this.Text = "Cetacean Monitoring System " + Assembly.GetCallingAssembly().GetName().Version.ToString(); 
+            this.Text = "Cetacean Monitoring System " + Assembly.GetCallingAssembly().GetName().Version.ToString();
+            map1.GeoMouseMove += map1_GeoMouseMove;
         }
 
         private void frmCetecean_Load(object sender, EventArgs e)
@@ -592,8 +593,12 @@ namespace Cetecean
             calcLine.Show();
         }
 
-        
 
+        private void map1_GeoMouseMove(object sender, GeoMouseArgs e)
+        {
+            tslXCoord.Text = "X: " + Math.Round(e.GeographicLocation.X, 4);
+            tslYCoord.Text = " Y: " + Math.Round(e.GeographicLocation.Y, 4);
+        }
 
         
      
