@@ -67,6 +67,8 @@ namespace Cetecean
             //dialog.Filter="xls files (*.xls)|*.xls";
             //dialog.InitialDirectory=@"..\..\..\Data_set\";  
             dialog.Title = "Select an Excel File";
+            dialog.Filter = "xls files (*.xls)|*.xls|xlsx files (*.xlsx)| *.xlsx";
+
             string strFileName = String.Empty;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -174,7 +176,7 @@ namespace Cetecean
                     }
                 }
                 map1.ResetBuffer();
-                Validator.SaveShapefile(name + ".xls", pointFs);
+                Validator.SaveShapefile(name, pointFs);
             }
 
             catch (Exception) 
@@ -399,13 +401,15 @@ namespace Cetecean
             this.Cursor = Cursors.WaitCursor;
 
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "xls files (*.xls)|*.xls";
+            dialog.Filter = "xls files (*.xls)|*.xls|xlsx files (*.xlsx)| *.xlsx";
             dialog.InitialDirectory = @"..\..\..\Data_set\";
             dialog.Title = "Select an Excel File";
             string strFileName = String.Empty;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 strFileName = dialog.FileName;
+
+
             }
 
             if (strFileName == String.Empty)

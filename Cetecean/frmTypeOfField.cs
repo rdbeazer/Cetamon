@@ -16,6 +16,7 @@ namespace Cetecean
         DataTable listData;
         Dictionary<string, string> listOut;
         Dictionary<string, string> listLatLon = new Dictionary<string,string>();
+        Dictionary<string, string> listFormDate= new Dictionary<string,string>();
         string type = "";
 
         public Dictionary<string, string> List
@@ -23,6 +24,12 @@ namespace Cetecean
             set { listOut = value; }
             get { return listOut; }
 
+        }
+
+
+        public Dictionary<string, string> FormatDate
+        {
+            get { return listFormDate; }
         }
 
         public Dictionary<string, string> ListLatLon
@@ -143,9 +150,15 @@ namespace Cetecean
 
         private void frmTypeOfField_Load(object sender, EventArgs e)
         {
+           
             cbxTypeOfField.Items.Add("string");
             cbxTypeOfField.Items.Add("double");
             cbxTypeOfField.Items.Add("int");
+            cbxTypeOfField.Items.Add("date");
+            cbxTypeOfField.Items.Add("time");
+            cbxDateFormat.Items.Add("dd/MM/yyyy");
+            cbxDateFormat.Items.Add("MM/dd/yyyy");
+            cbxDateFormat.SelectedIndex= 0;
 
         }
 
@@ -254,6 +267,32 @@ namespace Cetecean
             listOut[txtNameField.Text] = cbxTypeOfField.Text;
             int i = dgvListfields.CurrentCell.RowIndex;
             dgvListfields.Rows[i].Cells[1].Value = cbxTypeOfField.Text;
+            if (cbxTypeOfField.Text == "date")
+            {
+                if (!listFormDate.ContainsKey(txtNameField.Text))
+                {
+                    listFormDate.Add(txtNameField.Text, cbxDateFormat.Text);
+                }
+                else {
+
+                    listFormDate.Remove(txtNameField.Text);
+                    listFormDate.Add(txtNameField.Text, cbxDateFormat.Text);
+                }
+
+            }
+
+
+        }
+
+        private void cbxTypeOfField_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxTypeOfField.Text == "date")
+            {
+                cbxDateFormat.Visible = true;
+            }
+            else {
+                cbxDateFormat.Visible = false;
+            }
         }
     }
 }

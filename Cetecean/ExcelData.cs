@@ -7,6 +7,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Globalization;
 
 
 namespace Cetecean
@@ -414,7 +415,7 @@ namespace Cetecean
             }
         }
 
-       
+     /*  
         private bool CheckNamesList(string type, string name)
         {
             
@@ -442,6 +443,8 @@ namespace Cetecean
 
             return false;
         }
+        */
+
 
         private DataTable CopyMemory(DataTable table)
         {
@@ -467,33 +470,7 @@ namespace Cetecean
         }
 
 
-        private Type FieldType(string name)
-        {
-
-            switch (name)
-            {
-                case "STARTLAT":
-                case "ENDLAT":
-                case "STARTLON":
-                case "ENDLON":
-                case "LATITUDE":
-                case "LONGITUDE":
-                    return typeof(double);
-                case "UNIQUE ROW NUMBER":
-                case "TRANSECTID":
-                case "SEGMENT ID":
-                case "LEFT":
-                case "RIGHT":
-                case "COURSE":
-                case "NUMBER":
-                case "SIGHTING ID":
-                    return typeof(int);
-                default:
-                    return typeof(string);
-            }
-
-
-        }
+ 
 
 
         private string TypeOfField(string value) {
@@ -521,6 +498,7 @@ namespace Cetecean
             DataRow row2 = dataTable.Rows[1];
 
             Dictionary<string, string> listfields = new Dictionary<string, string>();
+            Dictionary<string, string> formatDate = new Dictionary<string, string>(); ;
            // Dictionary<string, string> 
                 listUsed = new Dictionary<string, string>();
             int emp=0;
@@ -541,6 +519,7 @@ namespace Cetecean
                 {
                     listfields = fields.List;
                     listUsed = fields.ListLatLon;
+                    formatDate = fields.FormatDate;
                 }
                 else {
 
@@ -548,34 +527,76 @@ namespace Cetecean
                 }
 
                      string[] list= new string[listfields.Count];
+                     int[] listDate = new int[formatDate.Count];
                     DataTable newTable = new DataTable();
                     int i = 0;
+                    int iDate = 0;
                     foreach (string col in listfields.Keys)
                     {
                         newTable.Columns.Add(col, Gettype(listfields[col]));
                         list[i]=col;
+                        if (listfields[col] == "date")
+                        {
+                            listDate[iDate] = i;
+                            iDate++;
+                        }
+
                         i++;
                     }
 
                   Problems="";
                     i = 0;
+
                     foreach (DataRow rowi in dataTable.Rows)
                     {
-                        if (i > 0)
+                        if (rowi[0].ToString() != "")
                         {
-                            DataRow newRow = newTable.NewRow();
-                            for (int j = 0; j < listfields.Count; j++)
+                            if (i > 0)
                             {
-                                if (!ConvertData(newRow, rowi, listfields[list[j]], j))
+                                DataRow newRow = newTable.NewRow();
+
+
+                                try
                                 {
-                                    Problems += "Row: " + i.ToString() + "; field:" + list[j] +"\r\n";
+                                    if (formatDate.Count > 0)
+                                    {
+                                        int iD = 0;
+                                        foreach (string field in formatDate.Keys)
+                                        {
+                                            string v = Convert.ToString(rowi[listDate[iD]]);
+                                            string v1 = DateTime.ParseExact(v, formatDate[field],null).ToString();
+                                            rowi[listDate[iD]] = v1;
+                                            iD++;
+                                        }
+
+                                    }
+
+                                    newRow.ItemArray = rowi.ItemArray;
                                 }
-                            //    newRow[j] = rowi[j];
+                                catch (Exception)
+                            {
+                                    for (int j = 0; j < listfields.Count; j++)
+                                    {
+                                        try
+                                        {
+                                            if (!ConvertData(newRow, rowi, listfields[list[j]], j))
+                                            {
+                                                Problems += "Row: " + i.ToString()  + " --  field:" + list[j]  + "\r\n";
+                                            }
+                                            newRow[j] = rowi[j];
+                                        }
+                                        catch (Exception)
+                                        {
+                                        }
+
+                                    }
+        
                             
                             }
-                            //newRow.ItemArray = rowi.ItemArray;
-                            newTable.Rows.Add(newRow);
-                        }
+                                //newRow.ItemArray = rowi.ItemArray;
+                                newTable.Rows.Add(newRow);
+                            }
+                        } 
                         i++;
                     }
 
@@ -612,10 +633,22 @@ namespace Cetecean
                 }
                 if (type == "date")
                 {
+                    try
+                    {
+                        System.Globalization.CultureInfo culture = new CultureInfo("en-GB");
+                        target[index] = Convert.ToDateTime(source[index], culture);
+                    }
+                    catch (FormatException)
+                    {
+                        System.Globalization.CultureInfo culture = new CultureInfo("en-US");
+                        target[index] = Convert.ToDateTime(source[index], culture);
+                    }
 
-                    target[index] = Convert.ToDateTime(source[index]);
                     return true;
                 }
+
+
+
 
             }
 
@@ -636,8 +669,8 @@ namespace Cetecean
             if (v == "string") return typeof(string);
             if (v == "double") return typeof(double);
             if (v == "int") return typeof(int);
-            if (v == "Date") return typeof(DateTime);
-           
+            if (v == "date") return typeof(DateTime);
+            if (v == "time") return typeof(DateTime);
             return typeof(string);
         }
 

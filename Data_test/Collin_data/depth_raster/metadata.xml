@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<!--<!DOCTYPE metadata SYSTEM "http://www.esri.com/metadata/esriprof80.dtd">-->
+<metadata xml:lang="en"><Esri><MetaID>{BF67D903-CA56-4790-A048-B55AB8B193F4}</MetaID><CreaDate>20111006</CreaDate><CreaTime>11565100</CreaTime><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="C:\Program Files (x86)\ArcGIS\ArcToolbox\Toolboxes\Spatial Analyst Tools.tbx\TopoToRaster" Date="20111006" Time="115651">TopoToRaster "Depth_North_Sea CONTOUR Contour" "C:\Users\CDM\Desktop\MapWindow Cetacean Tool\depth_raster" 0.1 Study_Area_Grid 20 # # ENFORCE CONTOUR 40 # 1 0 # # # # # #</Process></lineage></DataProperties></Esri></metadata>

@@ -51,12 +51,15 @@ namespace Cetecean
         public static string GetNameFile(string file)
         {
             char[] v = file.ToCharArray();
+            string temp = "";
             for (int i = v.Length - 1; i > 0; i--)
             {
                 if (v[i] == '/' || v[i] == '\\')
                 {
-                    return file.Substring(i + 1, file.Length - i - 5);
+
+                    return temp.Split('.')[0]; //file.Substring(i + 1, file.Length - i - 5);
                 }
+                temp = v[i].ToString()+ temp;
             }
             return "default";
         }

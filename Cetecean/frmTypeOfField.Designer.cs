@@ -49,6 +49,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dgvListfields = new System.Windows.Forms.DataGridView();
+            this.cbxDateFormat = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.grpChange.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListfields)).BeginInit();
@@ -79,6 +80,7 @@
             // 
             // grpChange
             // 
+            this.grpChange.Controls.Add(this.cbxDateFormat);
             this.grpChange.Controls.Add(this.label2);
             this.grpChange.Controls.Add(this.txtNameField);
             this.grpChange.Controls.Add(this.label8);
@@ -87,7 +89,7 @@
             this.grpChange.Enabled = false;
             this.grpChange.Location = new System.Drawing.Point(23, 222);
             this.grpChange.Name = "grpChange";
-            this.grpChange.Size = new System.Drawing.Size(271, 118);
+            this.grpChange.Size = new System.Drawing.Size(306, 118);
             this.grpChange.TabIndex = 20;
             this.grpChange.TabStop = false;
             this.grpChange.Text = "Change type of field";
@@ -106,7 +108,7 @@
             this.txtNameField.Enabled = false;
             this.txtNameField.Location = new System.Drawing.Point(73, 30);
             this.txtNameField.Name = "txtNameField";
-            this.txtNameField.Size = new System.Drawing.Size(172, 20);
+            this.txtNameField.Size = new System.Drawing.Size(101, 20);
             this.txtNameField.TabIndex = 12;
             // 
             // label8
@@ -123,12 +125,13 @@
             this.cbxTypeOfField.FormattingEnabled = true;
             this.cbxTypeOfField.Location = new System.Drawing.Point(73, 61);
             this.cbxTypeOfField.Name = "cbxTypeOfField";
-            this.cbxTypeOfField.Size = new System.Drawing.Size(172, 21);
+            this.cbxTypeOfField.Size = new System.Drawing.Size(101, 21);
             this.cbxTypeOfField.TabIndex = 14;
+            this.cbxTypeOfField.SelectedIndexChanged += new System.EventHandler(this.cbxTypeOfField_SelectedIndexChanged);
             // 
             // btnChange
             // 
-            this.btnChange.Location = new System.Drawing.Point(170, 88);
+            this.btnChange.Location = new System.Drawing.Point(213, 89);
             this.btnChange.Name = "btnChange";
             this.btnChange.Size = new System.Drawing.Size(75, 23);
             this.btnChange.TabIndex = 15;
@@ -275,6 +278,15 @@
             this.dgvListfields.TabIndex = 0;
             this.dgvListfields.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListfields_CellContentClick);
             // 
+            // cbxDateFormat
+            // 
+            this.cbxDateFormat.FormattingEnabled = true;
+            this.cbxDateFormat.Location = new System.Drawing.Point(180, 61);
+            this.cbxDateFormat.Name = "cbxDateFormat";
+            this.cbxDateFormat.Size = new System.Drawing.Size(108, 21);
+            this.cbxDateFormat.TabIndex = 16;
+            this.cbxDateFormat.Visible = false;
+            // 
             // frmTypeOfField
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -316,5 +328,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.GroupBox grpChange;
+        private System.Windows.Forms.ComboBox cbxDateFormat;
     }
 }
