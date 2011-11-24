@@ -79,7 +79,7 @@ namespace Cetecean
             label4.Visible = true;
             txtXmax.Visible = true;
             txtYmax.Visible = true;
-            
+
             txtNumColumns.Enabled = false;
             txtNumRows.Enabled = false;
             ClearAll();
@@ -111,13 +111,13 @@ namespace Cetecean
                 if (rbtBox.Checked)
                 {
 
-                  
+
 
                 }
 
                 if (rbtPointOrigin.Checked)
                 {
-  
+
 
                 }
                 grbParameters.Enabled = true;
@@ -142,9 +142,9 @@ namespace Cetecean
                 {
                     return false;
                 }
-                
+
                 return true;
-            } 
+            }
             return false;
         }
 
@@ -163,7 +163,7 @@ namespace Cetecean
 
             removeLayer("Area selected");
             removeLayer("Origin Point");
-         //   removeLayer("Grid");
+            //   removeLayer("Grid");
             _startPoint = null;
             this.Close();
 
@@ -238,7 +238,7 @@ namespace Cetecean
             catch (Exception)
             {
                 MessageBox.Show("Problem in the creatiation of the rectangle guide");
-            
+
             }
         }
 
@@ -335,7 +335,7 @@ namespace Cetecean
 
 
         }
-        void setPointLayer() 
+        void setPointLayer()
         {
             if (_pointLayer == null)
             {
@@ -375,40 +375,93 @@ namespace Cetecean
         {
             try
             {
-
-                if (_area == null)
+                if (cbxEdit.Checked)
                 {
 
-                    MessageBox.Show("Please select an area or origin point and fill all parameters");
-                    return;
+
+                    if (
+                        
+                        // Validator.IsDouble(txtXmax) &&
+                        //  Validator.IsDouble(txtYmax) &&
+                        Validator.IsDouble(txtXmin) &&
+                        Validator.IsDouble(txtYmin) &&
+                          Validator.IsInt32(txtNumColumns) &&
+                          Validator.IsInt32(txtNumRows) &&
+                          Validator.IsDoublePositive(txtGridSizeX) &&
+                        Validator.IsDoublePositive(txtGridSizeY) &&
+                        // Validator.IsGreaterThan(txtXmax,txtXmin) &&
+                        //  Validator.IsGreaterThan(txtYmax,txtYmin) &&
+                        Validator.IsDoublePositive(txtNumColumns) &&
+                        Validator.IsDoublePositive(txtNumRows) &&
+                        Validator.IsDoublePositive(txtGridSizeX) &&
+                        Validator.IsDoublePositive(txtGridSizeY)
+                        )
+                    {
+                        _area = new AreaInterest();
+                        //_area.MaxX = Convert.ToDouble(txtXmax.Text);
+                        //_area.MaxY = Convert.ToDouble(txtYmax.Text);
+                        _area.MinX = Convert.ToDouble(txtXmin.Text);
+                        _area.MinY = Convert.ToDouble(txtYmin.Text);
+                        _area.NumColumns = Convert.ToInt32(txtNumColumns.Text);
+                        _area.NumRows = Convert.ToInt32(txtNumRows.Text);
+                        _area.CellSizeX = Convert.ToDouble(txtGridSizeX.Text);
+                        _area.CellSizeY = Convert.ToDouble(txtGridSizeY.Text);
+                        _vector = new VectorGrid(_area.TypeCoor, _area.MinX, _area.MinY, _area.NumColumns, _area.NumRows, _area.CellSizeX, _area.CellSizeY, _area.Azimut, _map);
+                        _vector.AddLayer();
+                        _vector.Progress(progressBar1);
+                        _vector.AddGrid();
+
+                        txtXmax.Text = "";
+                        txtYmax.Text = "";
+                        removeLayer("Area selected");
+                        removeLayer("Origin Point");
+                        this.Cursor = Cursors.Default;
+
+                    }
+
                 }
 
-                this.Cursor = Cursors.WaitCursor;
-                if (rbtBox.Checked && (_vector != null))
+                else
                 {
 
-                    _vector.AddLayer();
-                    _vector.Progress(progressBar1);
-                    _vector.AddGrid();
 
+                    if (_area == null)
+                    {
+
+                        MessageBox.Show("Please select an area or origin point and fill all parameters");
+                        return;
+                    }
+
+                    this.Cursor = Cursors.WaitCursor;
+                    if (rbtBox.Checked && (_vector != null))
+                    {
+
+                        _vector.AddLayer();
+                        _vector.Progress(progressBar1);
+                        _vector.AddGrid();
+
+                    }
+
+                    if (rbtPointOrigin.Checked &&
+                        Validator.IsInt32(txtNumColumns) &&
+                        Validator.IsInt32(txtNumRows) &&
+                        Validator.IsDouble(txtGridSizeX))
+                    {
+                        _area.NumColumns = Convert.ToInt32(txtNumColumns.Text);
+                        _area.NumRows = Convert.ToInt32(txtNumRows.Text);
+                        _area.CellSizeX = Convert.ToDouble(txtGridSizeX.Text);
+                        _area.CellSizeY = Convert.ToDouble(txtGridSizeY.Text);
+                        _vector = new VectorGrid(_area.TypeCoor, _area.MinX, _area.MinY, _area.NumColumns, _area.NumRows, _area.CellSizeX, _area.CellSizeY, _area.Azimut, _map);
+                        // _vector = new VectorGrid(_area, _map);
+                        _vector.AddLayer();
+                        _vector.Progress(progressBar1);
+                        _vector.AddGrid();
+                    }
+
+                    removeLayer("Area selected");
+                    removeLayer("Origin Point");
+                    this.Cursor = Cursors.Default;
                 }
-
-                if (rbtPointOrigin.Checked && Validator.IsInt32(txtNumColumns) && Validator.IsInt32(txtNumRows) && Validator.IsDouble(txtGridSizeX))
-                {
-                    _area.NumColumns = Convert.ToInt32(txtNumColumns.Text);
-                    _area.NumRows = Convert.ToInt32(txtNumRows.Text);
-                    _area.CellSizeX = Convert.ToDouble(txtGridSizeX.Text);
-                    _area.CellSizeY = Convert.ToDouble(txtGridSizeY.Text);
-                    _vector = new VectorGrid(_area.TypeCoor, _area.MinX,_area.MinY, _area.NumColumns, _area.NumRows, _area.CellSizeX, _area.CellSizeY, _area.Azimut, _map);
-                   // _vector = new VectorGrid(_area, _map);
-                    _vector.AddLayer();
-                    _vector.Progress(progressBar1);
-                    _vector.AddGrid();
-                }
-
-                removeLayer("Area selected");
-                removeLayer("Origin Point");
-                this.Cursor = Cursors.Default;
             }
             catch (Exception)
             {
@@ -446,7 +499,7 @@ namespace Cetecean
 
             if (strFileName == String.Empty)
             {
-              // MessageBox.Show("The polygon Grid won't be saved");
+                // MessageBox.Show("The polygon Grid won't be saved");
                 return;
             }
             else
@@ -455,15 +508,15 @@ namespace Cetecean
                 _vector.Save(strFileName);
 
                 foreach (ILayer l in _map.GetAllLayers())
-                { 
-                   if (l.LegendText== "Grid")
-                   {
-                       MapPolygonLayer p = (MapPolygonLayer)l;
-                       p.LegendText=Validator.GetNameFile(strFileName);
-                       Close();
-                       return;
-                   }
-                
+                {
+                    if (l.LegendText == "Grid")
+                    {
+                        MapPolygonLayer p = (MapPolygonLayer)l;
+                        p.LegendText = Validator.GetNameFile(strFileName);
+                        Close();
+                        return;
+                    }
+
                 }
 
 
@@ -478,11 +531,32 @@ namespace Cetecean
         private void rbtPointOrigin_CheckedChanged(object sender, EventArgs e)
         {
             btnCalculate.Visible = false;
+            txtXmin.Enabled = false;
+            txtYmin.Enabled = false;
+            if (cbxEdit.Checked)
+            {
+                txtXmin.Enabled = true;
+                txtYmin.Enabled = true;
+            }
         }
 
         private void rbtBox_CheckedChanged(object sender, EventArgs e)
         {
             btnCalculate.Visible = true;
+            txtXmax.Enabled = false;
+            txtXmin.Enabled = false;
+            txtYmax.Enabled = false;
+            txtYmin.Enabled = false;
+            if (cbxEdit.Checked)
+            {
+                label3.Visible = true;
+                label4.Visible = true;
+                txtXmin.Enabled = true;
+                txtYmin.Enabled = true;
+            }
+
+
+
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
@@ -513,6 +587,50 @@ namespace Cetecean
             }
         }
 
-    
+        private void cbxEdit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxEdit.Checked)
+            {
+                label3.Visible = false;
+                label4.Visible = false;
+                txtXmax.Visible = false;
+                txtXmin.Enabled = true;
+                txtYmax.Visible = false;
+                txtYmin.Enabled = true;
+                txtNumRows.Enabled = true;
+                txtNumColumns.Enabled = true;
+                txtGridSizeX.Enabled = true;
+                txtGridSizeY.Enabled = true;
+                btnCalculate.Visible = false;
+            }
+            else {
+                if (rbtBox.Checked)
+                {
+                    label3.Visible = true;
+                    label4.Visible = true;
+                    txtXmax.Visible = true;
+                    txtYmax.Visible = true;
+                    btnCalculate.Visible = true;
+                    txtXmax.Enabled = false;
+                    txtXmin.Enabled = false;
+                    txtYmax.Enabled = false;
+                    txtYmin.Enabled = false;
+                    txtNumRows.Enabled = false;
+                    txtNumColumns.Enabled = false;
+                }
+
+                if (rbtPointOrigin.Checked)
+                {
+                    btnCalculate.Visible = false;
+                    txtXmin.Enabled = false;
+                    txtYmin.Enabled = false;
+                }
+            
+            
+            
+            }
+
+
+        }
     }
 }

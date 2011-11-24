@@ -79,6 +79,29 @@ namespace Cetecean
             }
         }
 
+        public static bool IsGreaterThan(TextBox textBox, TextBox textBox1)
+        {
+            try
+            {
+                if (
+                 Convert.ToDouble(textBox.Text) > Convert.ToDouble(textBox1.Text))
+                    return true;
+                else
+                {
+                    MessageBox.Show(textBox.Tag + " should be greater than " + textBox1.Tag);
+                    return true;
+                }
+               
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show(textBox.Tag + " must be a double number.", Title);
+                textBox.Focus();
+                return false;
+            }
+        }
+
+
         public static bool IsDouble(TextBox textBox)
         {
             try
