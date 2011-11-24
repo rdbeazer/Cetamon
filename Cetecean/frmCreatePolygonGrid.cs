@@ -131,12 +131,12 @@ namespace Cetecean
 
         public bool CheckValue()
         {
-            if (txtGridSize.Text != "")
+            if (txtGridSizeX.Text != "")
             {
                 try
                 {
 
-                    Convert.ToDouble(txtGridSize.Text);
+                    Convert.ToDouble(txtGridSizeX.Text);
                 }
                 catch (FormatException)
                 {
@@ -264,7 +264,8 @@ namespace Cetecean
             txtYmin.Text = "";
             txtNumRows.Text = "";
             txtNumColumns.Text = "";
-            txtGridSize.Text = "";
+            txtGridSizeX.Text = "";
+            txtGridSizeY.Text = "";
             _area = null;
             _vector = null;
 
@@ -392,12 +393,14 @@ namespace Cetecean
 
                 }
 
-                if (rbtPointOrigin.Checked && Validator.IsInt32(txtNumColumns) && Validator.IsInt32(txtNumRows) && Validator.IsDouble(txtGridSize))
+                if (rbtPointOrigin.Checked && Validator.IsInt32(txtNumColumns) && Validator.IsInt32(txtNumRows) && Validator.IsDouble(txtGridSizeX))
                 {
                     _area.NumColumns = Convert.ToInt32(txtNumColumns.Text);
                     _area.NumRows = Convert.ToInt32(txtNumRows.Text);
-                    _area.CellSize = Convert.ToDouble(txtGridSize.Text);
-                    _vector = new VectorGrid(_area, _map);
+                    _area.CellSizeX = Convert.ToDouble(txtGridSizeX.Text);
+                    _area.CellSizeY = Convert.ToDouble(txtGridSizeY.Text);
+                    _vector = new VectorGrid(_area.TypeCoor, _area.MinX,_area.MinY, _area.NumColumns, _area.NumRows, _area.CellSizeX, _area.CellSizeY, _area.Azimut, _map);
+                   // _vector = new VectorGrid(_area, _map);
                     _vector.AddLayer();
                     _vector.Progress(progressBar1);
                     _vector.AddGrid();
@@ -425,26 +428,6 @@ namespace Cetecean
 
         private void txtGridSize_TextChanged(object sender, EventArgs e)
         {
-            if (rbtBox.Checked)
-            {
-                if (CheckValue())
-                {
-                    if (_area != null)
-                    {
-                        _area.NumColumns = 0;
-                        _area.NumRows = 0;
-                        _area.CellSize = Convert.ToDouble(txtGridSize.Text);
-                        _vector = new VectorGrid(_area, _map);
-                        txtNumRows.Text = _vector.Get_area().NumRows.ToString();
-                        txtNumColumns.Text = _vector.Get_area().NumColumns.ToString();
-                    }
-                }
-                else
-                {
-                    txtNumColumns.Text = "";
-                    txtNumRows.Text = "";
-                }
-            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -494,12 +477,40 @@ namespace Cetecean
 
         private void rbtPointOrigin_CheckedChanged(object sender, EventArgs e)
         {
-
+            btnCalculate.Visible = false;
         }
 
         private void rbtBox_CheckedChanged(object sender, EventArgs e)
         {
+            btnCalculate.Visible = true;
+        }
 
+        private void btnCalculate_Click(object sender, EventArgs e)
+        {
+
+            if (rbtBox.Checked)
+            {
+                if (Validator.IsDouble(txtGridSizeX) && Validator.IsDouble(txtGridSizeY))
+                {
+                    if (_area != null)
+                    {
+
+                        _area.NumColumns = 0;
+                        _area.NumRows = 0;
+                        _area.CellSizeX = Convert.ToDouble(txtGridSizeX.Text);
+                        _area.CellSizeY = Convert.ToDouble(txtGridSizeY.Text);
+                        _vector = new VectorGrid(_area, _map);
+                        _vector.UpdateRowColsByCellSize(double.Parse(txtGridSizeX.Text), double.Parse(txtGridSizeY.Text));
+                        txtNumRows.Text = _vector.Get_area().NumRows.ToString();
+                        txtNumColumns.Text = _vector.Get_area().NumColumns.ToString();
+                    }
+                }
+                else
+                {
+                    txtNumColumns.Text = "";
+                    txtNumRows.Text = "";
+                }
+            }
         }
 
     

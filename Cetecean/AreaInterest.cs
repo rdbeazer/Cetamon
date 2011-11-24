@@ -17,8 +17,29 @@ namespace Cetecean
         private double cellSizeX = 1;
         private double cellSizeY = 1;
         private double azimut = 0;
+        private string typeCoor = "LatLon";
+        private string name = "Domain";
+        private string description = "";
+
+        public string Name
+        {
+            get { return name; }
+            set { this.name = value; }
+        }
         public AreaInterest()
         {
+        }
+
+        public string Description
+        {
+            get { return this.description; }
+            set { this.description = value; }
+        }
+
+        public string TypeCoor
+        {
+            get { return typeCoor; }
+            set { this.typeCoor = value; }
         }
 
         public double MinX

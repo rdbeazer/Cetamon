@@ -35,7 +35,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCreateGrid = new System.Windows.Forms.Button();
             this.grbParameters = new System.Windows.Forms.GroupBox();
-            this.txtGridSize = new System.Windows.Forms.TextBox();
+            this.txtGridSizeX = new System.Windows.Forms.TextBox();
             this.txtNumRows = new System.Windows.Forms.TextBox();
             this.txtNumColumns = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -52,6 +52,9 @@
             this.rbtPointOrign = new System.Windows.Forms.GroupBox();
             this.rbtBox = new System.Windows.Forms.RadioButton();
             this.rbtPointOrigin = new System.Windows.Forms.RadioButton();
+            this.txtGridSizeY = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btnCalculate = new System.Windows.Forms.Button();
             this.pnl.SuspendLayout();
             this.grbParameters.SuspendLayout();
             this.rbtPointOrign.SuspendLayout();
@@ -69,12 +72,12 @@
             this.pnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl.Location = new System.Drawing.Point(0, 0);
             this.pnl.Name = "pnl";
-            this.pnl.Size = new System.Drawing.Size(401, 348);
+            this.pnl.Size = new System.Drawing.Size(401, 371);
             this.pnl.TabIndex = 0;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(109, 327);
+            this.progressBar1.Location = new System.Drawing.Point(108, 346);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(278, 13);
             this.progressBar1.TabIndex = 6;
@@ -90,7 +93,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(210, 295);
+            this.btnOK.Location = new System.Drawing.Point(209, 314);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(81, 26);
             this.btnOK.TabIndex = 4;
@@ -100,7 +103,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(305, 295);
+            this.btnCancel.Location = new System.Drawing.Point(304, 314);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(81, 26);
             this.btnCancel.TabIndex = 3;
@@ -110,7 +113,7 @@
             // 
             // btnCreateGrid
             // 
-            this.btnCreateGrid.Location = new System.Drawing.Point(108, 295);
+            this.btnCreateGrid.Location = new System.Drawing.Point(107, 314);
             this.btnCreateGrid.Name = "btnCreateGrid";
             this.btnCreateGrid.Size = new System.Drawing.Size(81, 26);
             this.btnCreateGrid.TabIndex = 2;
@@ -120,7 +123,10 @@
             // 
             // grbParameters
             // 
-            this.grbParameters.Controls.Add(this.txtGridSize);
+            this.grbParameters.Controls.Add(this.btnCalculate);
+            this.grbParameters.Controls.Add(this.txtGridSizeY);
+            this.grbParameters.Controls.Add(this.label8);
+            this.grbParameters.Controls.Add(this.txtGridSizeX);
             this.grbParameters.Controls.Add(this.txtNumRows);
             this.grbParameters.Controls.Add(this.txtNumColumns);
             this.grbParameters.Controls.Add(this.label7);
@@ -137,18 +143,18 @@
             this.grbParameters.Enabled = false;
             this.grbParameters.Location = new System.Drawing.Point(14, 79);
             this.grbParameters.Name = "grbParameters";
-            this.grbParameters.Size = new System.Drawing.Size(372, 191);
+            this.grbParameters.Size = new System.Drawing.Size(372, 229);
             this.grbParameters.TabIndex = 1;
             this.grbParameters.TabStop = false;
             this.grbParameters.Text = "Parameters Grid";
             // 
-            // txtGridSize
+            // txtGridSizeX
             // 
-            this.txtGridSize.Location = new System.Drawing.Point(184, 158);
-            this.txtGridSize.Name = "txtGridSize";
-            this.txtGridSize.Size = new System.Drawing.Size(75, 20);
-            this.txtGridSize.TabIndex = 13;
-            this.txtGridSize.TextChanged += new System.EventHandler(this.txtGridSize_TextChanged);
+            this.txtGridSizeX.Location = new System.Drawing.Point(184, 158);
+            this.txtGridSizeX.Name = "txtGridSizeX";
+            this.txtGridSizeX.Size = new System.Drawing.Size(75, 20);
+            this.txtGridSizeX.TabIndex = 13;
+            this.txtGridSizeX.TextChanged += new System.EventHandler(this.txtGridSize_TextChanged);
             // 
             // txtNumRows
             // 
@@ -171,9 +177,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(26, 162);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(90, 13);
+            this.label7.Size = new System.Drawing.Size(70, 13);
             this.label7.TabIndex = 10;
-            this.label7.Text = "Grid size (meters):";
+            this.label7.Text = "Grid size (dx):";
             // 
             // label6
             // 
@@ -304,11 +310,37 @@
             this.rbtPointOrigin.CheckedChanged += new System.EventHandler(this.rbtPointOrigin_CheckedChanged);
             this.rbtPointOrigin.Click += new System.EventHandler(this.rbtPointOrigin_Click);
             // 
+            // txtGridSizeY
+            // 
+            this.txtGridSizeY.Location = new System.Drawing.Point(184, 184);
+            this.txtGridSizeY.Name = "txtGridSizeY";
+            this.txtGridSizeY.Size = new System.Drawing.Size(75, 20);
+            this.txtGridSizeY.TabIndex = 15;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(26, 188);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(70, 13);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Grid size (dy):";
+            // 
+            // btnCalculate
+            // 
+            this.btnCalculate.Location = new System.Drawing.Point(267, 171);
+            this.btnCalculate.Name = "btnCalculate";
+            this.btnCalculate.Size = new System.Drawing.Size(59, 23);
+            this.btnCalculate.TabIndex = 16;
+            this.btnCalculate.Text = "Calculate";
+            this.btnCalculate.UseVisualStyleBackColor = true;
+            this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
+            // 
             // frmCreatePolygonGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 348);
+            this.ClientSize = new System.Drawing.Size(401, 371);
             this.ControlBox = false;
             this.Controls.Add(this.pnl);
             this.Name = "frmCreatePolygonGrid";
@@ -330,7 +362,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnCreateGrid;
         private System.Windows.Forms.GroupBox grbParameters;
-        private System.Windows.Forms.TextBox txtGridSize;
+        private System.Windows.Forms.TextBox txtGridSizeX;
         private System.Windows.Forms.TextBox txtNumRows;
         private System.Windows.Forms.TextBox txtNumColumns;
         private System.Windows.Forms.Label label7;
@@ -350,5 +382,8 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.TextBox txtGridSizeY;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnCalculate;
     }
 }
