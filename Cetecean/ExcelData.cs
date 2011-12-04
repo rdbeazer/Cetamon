@@ -40,7 +40,8 @@ namespace Cetecean
         /// {3}: XML. Empty string for XLS. XLSX/XLSB needs to be ' Xml'.
         /// </summary>
         private const string ProviderString = "Provider=Microsoft.ACE.OLEDB.{0};Data Source={1};Extended Properties=\"Excel {2}{3};HDR={3};IMEX=1\";";
-
+        private const string ProviderString1 = "Provider=Microsoft.Jet.OleDb.4.0; data source={1};Extended Properties=\"Excel 8.0;HDR={3};IMEX=1\";";
+ 
         /// <summary>
         /// The OLE DB Connection to use.
         /// </summary>
@@ -144,7 +145,7 @@ namespace Cetecean
             }
 
             this.SourceFile = sourceFile;
-
+            this.IsImportHeader = ImportHeader.No;
            this.workSheets = new Dictionary<string, DataTable>();
         }
 
@@ -284,6 +285,25 @@ namespace Cetecean
         }
 
         /// <summary>
+        /// Gets the DB ConnectionString with required parameters.
+        /// </summary>
+        public string ConnectionString1
+        {
+            get
+            {
+                this.isXMLFile = false;
+                return
+                String.Format(
+                "Provider=Microsoft.Jet.OleDb.4.0; data source={1};Extended Properties=\"Excel 8.0;HDR={3};IMEX=1\";",
+                this.ACEDbVersion,
+                this.SourceFile,
+                this.ExcelVersion,
+                this.XMLConnectionString,
+                this.HeaderRowConnectionString);
+            }
+        }
+
+        /// <summary>
         /// Gets the CSV file delimeter required.
         /// </summary>
         public string Delimeter { get; private set; }
@@ -319,6 +339,20 @@ namespace Cetecean
             }
             catch (Exception)
             {
+                try
+                {
+                    this.OpenConnection1();
+                    this.SetWorkSheets();
+                    this.SetDataFromWorkSheets();
+                    this.CloseConnections();
+                
+                }
+                catch (Exception)
+                { 
+                
+                }
+
+
                 MessageBox.Show("Import excel function failed");
                     
             }
@@ -361,6 +395,25 @@ namespace Cetecean
                 throw new Exception("There was a problem opening the excel file.");
             }
         }
+
+
+        /// <summary>
+        /// Opens the database connection to the file.
+        /// </summary>
+        private void OpenConnection1()
+        {
+            try
+            {
+                this.connection = new OleDbConnection(this.ConnectionString1);
+
+                this.connection.Open();
+            }
+            catch
+            {
+                throw new Exception("There was a problem opening the excel file.");
+            }
+        }
+
 
         /// <summary>
         /// Closes all open streams and database connections.
@@ -493,26 +546,39 @@ namespace Cetecean
         {
             SortedList<string,string> columnNamesCheck = new SortedList<string,string>();
 
-            DataTable dataTable = dataTables[0];
-            DataRow row = dataTable.Rows[0];
-            DataRow row2 = dataTable.Rows[1];
-
-            Dictionary<string, string> listfields = new Dictionary<string, string>();
-            Dictionary<string, string> formatDate = new Dictionary<string, string>(); ;
-           // Dictionary<string, string> 
-                listUsed = new Dictionary<string, string>();
-            int emp=0;
-            foreach (DataColumn col in dataTable.Columns)
+            
+            DataTable dataTable =null;
+            
+            int idTable=0;
+            foreach (string name in this.workSheetNames)
             {
-                string columnData = System.Convert.ToString(row[col]);
-                if (columnData == "")
+                if (name.ToUpper().IndexOf("FILTER") == -1)
                 {
-                    columnData = "Unknown_" + emp.ToString();
-                    emp++;
+                  dataTable=dataTables[idTable];
+                    break;
                 }
-                listfields.Add(columnData, TypeOfField(System.Convert.ToString(row2[col])));
+                idTable++;
             }
 
+
+            
+            DataRow row = dataTable.Rows[0];
+
+
+         //   DataRow row2 = dataTable.Rows[1];
+
+            Dictionary<string, string> listfields = new Dictionary<string, string>();
+            Dictionary<string, string> formatDate = new Dictionary<string, string>(); 
+            listUsed = new Dictionary<string, string>();
+
+
+
+            foreach (DataColumn col in dataTable.Columns)
+            {
+                string columnData = col.ColumnName;
+                listfields.Add(columnData, TypeOfField(System.Convert.ToString(row[col])));
+
+            }
 
                 frmTypeOfField fields = new frmTypeOfField(type, listfields);
                 if (fields.ShowDialog() == DialogResult.OK)
@@ -551,8 +617,8 @@ namespace Cetecean
                     {
                         if (rowi[0].ToString() != "")
                         {
-                            if (i > 0)
-                            {
+                            //if (i > 0)
+                            //{
                                 DataRow newRow = newTable.NewRow();
 
 
@@ -593,9 +659,9 @@ namespace Cetecean
         
                             
                             }
-                                //newRow.ItemArray = rowi.ItemArray;
                                 newTable.Rows.Add(newRow);
-                            }
+                            //}//if i<0
+
                         } 
                         i++;
                     }

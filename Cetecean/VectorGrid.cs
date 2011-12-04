@@ -251,6 +251,75 @@ namespace Cetecean
         }
 
 
+        public void AddGrid(IList<IFeature> selected)
+        {
+            if (pro != null)
+            {
+                pro.Value = 0;
+                pro.Maximum = 1000;
+                pro.Visible = true;
+            }
+
+            _GridLayer.DataSet.Features.Clear();
+
+            Int32 id = 0;
+
+            for (int i = 0; i < _area.NumColumns; i++)
+            {
+                for (int j = 0; j < _area.NumRows; j++)
+                {
+
+                    int val = 1000 * id / (_area.NumColumns * _area.NumRows);
+
+                    if (pro != null)
+                    {
+                        pro.Value = val;
+                      //  pro.Increment(val);
+                    }
+                    Coordinate[] array = new Coordinate[5];
+
+                    array[0] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    array[1] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    array[2] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    array[3] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    array[4] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    LinearRing shell = new LinearRing(array);
+                    Polygon poly = new Polygon(shell);
+
+                    if (selected != null && selected.Count > 0)
+                    {
+                        foreach (IFeature fea in selected)
+                        {
+                            if (!fea.Intersects((IGeometry)poly))
+                            {
+                                IFeature newF = _GridLayer.DataSet.AddFeature(poly);
+                                newF.DataRow["ID"] = id;
+                                newF.DataRow["row"] = j + 1;
+                                newF.DataRow["col"] = i + 1;
+
+                            }
+                        }
+                        id++;
+                    }
+                    else
+                    {
+                        IFeature newF = _GridLayer.DataSet.AddFeature(poly);
+                        newF.DataRow["ID"] = id;
+                        newF.DataRow["row"] = j + 1;
+                        newF.DataRow["col"] = i + 1;
+                        id++;
+                    
+                    }
+                   
+                }
+            }
+            rectangleFs = (FeatureSet)_GridLayer.DataSet;
+            _mainMap.ResetBuffer();
+            if (pro != null)  pro.Visible = false;
+
+        }
+
+
         public void AddGrid()
         {
             if (pro != null)
@@ -294,7 +363,7 @@ namespace Cetecean
             rectangleFs = (FeatureSet)_GridLayer.DataSet;
             _mainMap.ResetBuffer();
             if (pro != null) if (pro.Value == pro.Maximum) pro.Visible = false;
-            //   OnRectangleCreated();
+
         }
 
         public Extent GetExtent(double offset)

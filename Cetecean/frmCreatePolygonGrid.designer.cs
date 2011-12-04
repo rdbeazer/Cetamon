@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             this.pnl = new System.Windows.Forms.Panel();
+            this.cbxListLayers = new System.Windows.Forms.ComboBox();
+            this.cbxDeleteCellss = new System.Windows.Forms.CheckBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label9 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCreateGrid = new System.Windows.Forms.Button();
             this.grbParameters = new System.Windows.Forms.GroupBox();
+            this.cbxEdit = new System.Windows.Forms.CheckBox();
             this.btnCalculate = new System.Windows.Forms.Button();
             this.txtGridSizeY = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -55,7 +58,6 @@
             this.rbtPointOrign = new System.Windows.Forms.GroupBox();
             this.rbtBox = new System.Windows.Forms.RadioButton();
             this.rbtPointOrigin = new System.Windows.Forms.RadioButton();
-            this.cbxEdit = new System.Windows.Forms.CheckBox();
             this.pnl.SuspendLayout();
             this.grbParameters.SuspendLayout();
             this.rbtPointOrign.SuspendLayout();
@@ -63,6 +65,8 @@
             // 
             // pnl
             // 
+            this.pnl.Controls.Add(this.cbxListLayers);
+            this.pnl.Controls.Add(this.cbxDeleteCellss);
             this.pnl.Controls.Add(this.progressBar1);
             this.pnl.Controls.Add(this.label9);
             this.pnl.Controls.Add(this.btnOK);
@@ -73,12 +77,32 @@
             this.pnl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl.Location = new System.Drawing.Point(0, 0);
             this.pnl.Name = "pnl";
-            this.pnl.Size = new System.Drawing.Size(426, 371);
+            this.pnl.Size = new System.Drawing.Size(426, 423);
             this.pnl.TabIndex = 0;
+            // 
+            // cbxListLayers
+            // 
+            this.cbxListLayers.FormattingEnabled = true;
+            this.cbxListLayers.Location = new System.Drawing.Point(228, 324);
+            this.cbxListLayers.Name = "cbxListLayers";
+            this.cbxListLayers.Size = new System.Drawing.Size(164, 21);
+            this.cbxListLayers.TabIndex = 8;
+            this.cbxListLayers.Visible = false;
+            // 
+            // cbxDeleteCellss
+            // 
+            this.cbxDeleteCellss.AutoSize = true;
+            this.cbxDeleteCellss.Location = new System.Drawing.Point(20, 326);
+            this.cbxDeleteCellss.Name = "cbxDeleteCellss";
+            this.cbxDeleteCellss.Size = new System.Drawing.Size(195, 17);
+            this.cbxDeleteCellss.TabIndex = 7;
+            this.cbxDeleteCellss.Text = "Delete cells that intersect with  layer";
+            this.cbxDeleteCellss.UseVisualStyleBackColor = true;
+            this.cbxDeleteCellss.CheckedChanged += new System.EventHandler(this.cbxDeleteCellss_CheckedChanged);
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(16, 346);
+            this.progressBar1.Location = new System.Drawing.Point(16, 381);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(392, 13);
             this.progressBar1.TabIndex = 6;
@@ -94,7 +118,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(173, 314);
+            this.btnOK.Location = new System.Drawing.Point(173, 349);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(81, 26);
             this.btnOK.TabIndex = 4;
@@ -104,7 +128,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(327, 314);
+            this.btnCancel.Location = new System.Drawing.Point(327, 349);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(81, 26);
             this.btnCancel.TabIndex = 3;
@@ -114,7 +138,7 @@
             // 
             // btnCreateGrid
             // 
-            this.btnCreateGrid.Location = new System.Drawing.Point(19, 314);
+            this.btnCreateGrid.Location = new System.Drawing.Point(19, 349);
             this.btnCreateGrid.Name = "btnCreateGrid";
             this.btnCreateGrid.Size = new System.Drawing.Size(81, 26);
             this.btnCreateGrid.TabIndex = 2;
@@ -149,6 +173,17 @@
             this.grbParameters.TabIndex = 1;
             this.grbParameters.TabStop = false;
             this.grbParameters.Text = "Parameters Grid";
+            // 
+            // cbxEdit
+            // 
+            this.cbxEdit.AutoSize = true;
+            this.cbxEdit.Location = new System.Drawing.Point(350, 19);
+            this.cbxEdit.Name = "cbxEdit";
+            this.cbxEdit.Size = new System.Drawing.Size(44, 17);
+            this.cbxEdit.TabIndex = 17;
+            this.cbxEdit.Text = "Edit";
+            this.cbxEdit.UseVisualStyleBackColor = true;
+            this.cbxEdit.CheckedChanged += new System.EventHandler(this.cbxEdit_CheckedChanged);
             // 
             // btnCalculate
             // 
@@ -348,22 +383,11 @@
             this.rbtPointOrigin.CheckedChanged += new System.EventHandler(this.rbtPointOrigin_CheckedChanged);
             this.rbtPointOrigin.Click += new System.EventHandler(this.rbtPointOrigin_Click);
             // 
-            // cbxEdit
-            // 
-            this.cbxEdit.AutoSize = true;
-            this.cbxEdit.Location = new System.Drawing.Point(350, 19);
-            this.cbxEdit.Name = "cbxEdit";
-            this.cbxEdit.Size = new System.Drawing.Size(44, 17);
-            this.cbxEdit.TabIndex = 17;
-            this.cbxEdit.Text = "Edit";
-            this.cbxEdit.UseVisualStyleBackColor = true;
-            this.cbxEdit.CheckedChanged += new System.EventHandler(this.cbxEdit_CheckedChanged);
-            // 
             // frmCreatePolygonGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(426, 371);
+            this.ClientSize = new System.Drawing.Size(426, 423);
             this.ControlBox = false;
             this.Controls.Add(this.pnl);
             this.Name = "frmCreatePolygonGrid";
@@ -409,5 +433,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnCalculate;
         private System.Windows.Forms.CheckBox cbxEdit;
+        private System.Windows.Forms.ComboBox cbxListLayers;
+        private System.Windows.Forms.CheckBox cbxDeleteCellss;
     }
 }

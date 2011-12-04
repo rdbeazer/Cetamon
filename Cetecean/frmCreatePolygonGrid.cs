@@ -215,6 +215,8 @@ namespace Cetecean
 
                     setPolygonLayer();
                     if (_polygonLayer.DataSet.Features == null) return;
+
+
                     _polygonLayer.DataSet.Features.Clear();
                     Coordinate[] array = new Coordinate[5];
                     array[0] = _startPoint;
@@ -333,7 +335,6 @@ namespace Cetecean
                 _map.ViewExtents = ext;
             }
 
-
         }
         void setPointLayer()
         {
@@ -409,13 +410,13 @@ namespace Cetecean
                         _vector = new VectorGrid(_area.TypeCoor, _area.MinX, _area.MinY, _area.NumColumns, _area.NumRows, _area.CellSizeX, _area.CellSizeY, _area.Azimut, _map);
                         _vector.AddLayer();
                         _vector.Progress(progressBar1);
-                        _vector.AddGrid();
+                        _vector.AddGrid(GetIntersection((IEnvelope)_vector.GetExtent().ToEnvelope()));
 
                         txtXmax.Text = "";
                         txtYmax.Text = "";
                         removeLayer("Area selected");
                         removeLayer("Origin Point");
-                        this.Cursor = Cursors.Default;
+                       // this.Cursor = Cursors.Default;
 
                     }
 
@@ -438,7 +439,7 @@ namespace Cetecean
 
                         _vector.AddLayer();
                         _vector.Progress(progressBar1);
-                        _vector.AddGrid();
+                        _vector.AddGrid(GetIntersection((IEnvelope)_vector.GetExtent().ToEnvelope()));
 
                     }
 
@@ -455,19 +456,56 @@ namespace Cetecean
                         // _vector = new VectorGrid(_area, _map);
                         _vector.AddLayer();
                         _vector.Progress(progressBar1);
-                        _vector.AddGrid();
+                        _vector.AddGrid(GetIntersection((IEnvelope)_vector.GetExtent().ToEnvelope()));
                     }
 
                     removeLayer("Area selected");
                     removeLayer("Origin Point");
-                    this.Cursor = Cursors.Default;
+                    
                 }
             }
             catch (Exception)
             {
                 MessageBox.Show("Problem in the creation of the grid");
             }
+
+            IMapFeatureLayer lay = null;
+
+            if (cbxListLayers.Visible)
+            {
+                foreach (IMapFeatureLayer iLa in _map.GetFeatureLayers())
+                {
+                    if (iLa.LegendText == cbxListLayers.Text && iLa.LegendText != "Area selected")
+                        lay = iLa;
+                }
+            }
+            this.Cursor = Cursors.Default;
         }
+
+        private IList<IFeature> GetIntersection(IEnvelope env)
+        {
+            IMapFeatureLayer lay = null;
+            if (env == null) return null;
+
+            if (cbxListLayers.Visible)
+            {
+                foreach (IMapFeatureLayer iLa in _map.GetFeatureLayers())
+                {
+                    if (iLa.LegendText == cbxListLayers.Text && iLa.LegendText != "Area selected")
+                        lay = iLa;
+                }
+            }
+            else
+                return null;
+
+            if (lay == null) return null;
+
+            lay.Select(env, env);
+            ISelection sel = lay.Selection;
+            IList<IFeature> selected = sel.ToFeatureList();
+            return selected;
+        }
+
 
         private void txtNumColumns_TextChanged(object sender, EventArgs e)
         {
@@ -632,5 +670,52 @@ namespace Cetecean
 
 
         }
+
+        private void cbxDeleteCellss_CheckedChanged(object sender, EventArgs e)
+        {
+            int i = 0;
+            if (!cbxDeleteCellss.Checked) return;
+            if (_map.Layers.Count > 0)
+            {
+                cbxListLayers.Items.Clear();
+                foreach (IMapFeatureLayer iLa in _map.GetFeatureLayers())
+                {
+                    FeatureSet fT = (FeatureSet)iLa.DataSet;
+                    if (iLa.LegendText != "Grid" && iLa.LegendText != "Area selected")
+                    {
+                        cbxListLayers.Items.Add(iLa.LegendText);
+
+                        i++;
+                    }
+
+                }
+                cbxListLayers.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Please add layer");
+                cbxListLayers.Visible = false;
+                return;
+            }
+        }
+
+        private IFeatureSet CreateRectangleFromExtentGrid(Extent ext)
+        {
+            if (_polygonLayer==null) return null ;
+
+                    _polygonLayer.DataSet.Features.Clear();
+                    Coordinate[] array = new Coordinate[5];
+                    array[0] = new Coordinate(ext.MinX,ext.MinY);
+                    array[1] = new Coordinate(ext.MinX,ext.MaxY);
+                    array[2] = new Coordinate(ext.MaxX,ext.MaxY);
+                    array[3] = new Coordinate(ext.MaxX,ext.MinY);
+                    array[4] =new Coordinate(ext.MinX,ext.MinY);
+                    LinearRing shell = new LinearRing(array);
+                    Polygon poly = new Polygon(shell);
+
+                    IFeature newF = _polygonLayer.DataSet.AddFeature(poly);
+                    newF.DataRow["ID"] = 1;
+                    return _polygonLayer.DataSet;
+                 }
     }
 }
