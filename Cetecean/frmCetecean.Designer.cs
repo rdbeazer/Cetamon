@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCetecean));
             this.panel1 = new System.Windows.Forms.Panel();
             this.spatialToolStrip1 = new DotSpatial.Controls.SpatialToolStrip();
+            this.map1 = new DotSpatial.Controls.Map();
             this.legend1 = new DotSpatial.Controls.Legend();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,6 +40,8 @@
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExcelToLine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
             this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,11 +74,10 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.appManager1 = new DotSpatial.Controls.AppManager();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.map1 = new DotSpatial.Controls.Map();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslXCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslYCoord = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -105,6 +107,27 @@
             this.spatialToolStrip1.Size = new System.Drawing.Size(847, 25);
             this.spatialToolStrip1.TabIndex = 1;
             this.spatialToolStrip1.Text = "spatialToolStrip1";
+            // 
+            // map1
+            // 
+            this.map1.AllowDrop = true;
+            this.map1.BackColor = System.Drawing.Color.White;
+            this.map1.CollectAfterDraw = false;
+            this.map1.CollisionDetection = false;
+            this.map1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.map1.ExtendBuffer = false;
+            this.map1.FunctionMode = DotSpatial.Controls.FunctionMode.None;
+            this.map1.IsBusy = false;
+            this.map1.Legend = this.legend1;
+            this.map1.Location = new System.Drawing.Point(0, 0);
+            this.map1.Name = "map1";
+            this.map1.ProgressHandler = null;
+            this.map1.ProjectionModeDefine = DotSpatial.Controls.ActionMode.Prompt;
+            this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
+            this.map1.RedrawLayersWhileResizing = false;
+            this.map1.SelectionEnabled = true;
+            this.map1.Size = new System.Drawing.Size(670, 502);
+            this.map1.TabIndex = 0;
             // 
             // legend1
             // 
@@ -148,6 +171,8 @@
             this.importFileToolStripMenuItem,
             this.ExcelToLine,
             this.toolStripSeparator1,
+            this.printToolStripMenuItem,
+            this.toolStripSeparator5,
             this.tsmExit});
             this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
             this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -183,6 +208,18 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(257, 6);
+            // 
+            // printToolStripMenuItem
+            // 
+            this.printToolStripMenuItem.Name = "printToolStripMenuItem";
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.printToolStripMenuItem.Text = "Print";
+            this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(257, 6);
             // 
             // tsmExit
             // 
@@ -338,7 +375,7 @@
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(234, 22);
-            this.toolStripMenuItem2.Text = "Count Species per Polygon";
+            this.toolStripMenuItem2.Text = "Count Sightings per Polygon";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripSeparator4
@@ -411,22 +448,22 @@
             // 
             // appManager1
             // 
-            //this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
-            //this.appManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.DataManager.DataProviderDirectories")));
+            this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
+            this.appManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.DataManager.DataProviderDirectories")));
             this.appManager1.DataManager.LoadInRam = true;
             this.appManager1.DataManager.ProgressHandler = null;
             this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
             this.appManager1.HeaderControl = null;
-            //this.appManager1.LayoutControl = null;
+            this.appManager1.LayoutControl = null;
             this.appManager1.Legend = this.legend1;
-            //this.appManager1.MainMenu = null;
-            //this.appManager1.MainToolStrip = null;
+            this.appManager1.MainMenu = null;
+            this.appManager1.MainToolStrip = null;
             this.appManager1.Map = this.map1;
             this.appManager1.ProgressHandler = null;
-            //this.appManager1.Ribbon = null;
-            //this.appManager1.TabManager = null;
+            this.appManager1.Ribbon = null;
+            this.appManager1.TabManager = null;
             this.appManager1.ToolManager = null;
-            //this.appManager1.ToolStripContainer = null;
+            this.appManager1.ToolStripContainer = null;
             // 
             // statusStrip1
             // 
@@ -440,43 +477,11 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // splitContainer1
+            // toolStripStatusLabel1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.legend1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.map1);
-            this.splitContainer1.Size = new System.Drawing.Size(847, 502);
-            this.splitContainer1.SplitterDistance = 173;
-            this.splitContainer1.TabIndex = 4;
-            // 
-            // map1
-            // 
-            this.map1.AllowDrop = true;
-            this.map1.BackColor = System.Drawing.Color.White;
-            this.map1.CollectAfterDraw = false;
-            this.map1.CollisionDetection = false;
-            this.map1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.map1.ExtendBuffer = false;
-            this.map1.FunctionMode = DotSpatial.Controls.FunctionMode.None;
-            this.map1.IsBusy = false;
-            this.map1.Legend = this.legend1;
-            this.map1.Location = new System.Drawing.Point(0, 0);
-            this.map1.Name = "map1";
-            this.map1.ProgressHandler = null;
-            this.map1.ProjectionModeDefine = DotSpatial.Controls.ActionMode.Prompt;
-            this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
-            this.map1.RedrawLayersWhileResizing = false;
-            this.map1.SelectionEnabled = true;
-            this.map1.Size = new System.Drawing.Size(670, 502);
-            this.map1.TabIndex = 0;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(790, 19);
+            this.toolStripStatusLabel1.Spring = true;
             // 
             // tslXCoord
             // 
@@ -494,11 +499,22 @@
             this.tslYCoord.Size = new System.Drawing.Size(21, 19);
             this.tslYCoord.Text = "--";
             // 
-            // toolStripStatusLabel1
+            // splitContainer1
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(759, 19);
-            this.toolStripStatusLabel1.Spring = true;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.legend1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.map1);
+            this.splitContainer1.Size = new System.Drawing.Size(847, 502);
+            this.splitContainer1.SplitterDistance = 173;
+            this.splitContainer1.TabIndex = 4;
             // 
             // frmCetecean
             // 
@@ -576,6 +592,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel tslXCoord;
         private System.Windows.Forms.ToolStripStatusLabel tslYCoord;
+        private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 
     }
 }

@@ -31,6 +31,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.cmbSwatheArea = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbSwatheID = new System.Windows.Forms.ComboBox();
             this.cmbSwathe = new System.Windows.Forms.ComboBox();
@@ -44,7 +45,6 @@
             this.radSession = new System.Windows.Forms.RadioButton();
             this.radNewShape = new System.Windows.Forms.RadioButton();
             this.radOriginal = new System.Windows.Forms.RadioButton();
-            this.cmbSwatheArea = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.grbSaveOptions.SuspendLayout();
@@ -83,6 +83,16 @@
             this.label4.Size = new System.Drawing.Size(120, 13);
             this.label4.TabIndex = 10;
             this.label4.Text = "Select swathe area field";
+            // 
+            // cmbSwatheArea
+            // 
+            this.cmbSwatheArea.FormattingEnabled = true;
+            this.cmbSwatheArea.Location = new System.Drawing.Point(63, 111);
+            this.cmbSwatheArea.Name = "cmbSwatheArea";
+            this.cmbSwatheArea.Size = new System.Drawing.Size(185, 21);
+            this.cmbSwatheArea.TabIndex = 9;
+            this.cmbSwatheArea.Text = "Select swathe area field";
+            this.cmbSwatheArea.SelectedIndexChanged += new System.EventHandler(this.cmbSwatheArea_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -219,16 +229,6 @@
             this.radOriginal.Text = "Save the updated attributes to the \r\nORIGINAL grid shapefile";
             this.radOriginal.UseVisualStyleBackColor = true;
             // 
-            // cmbSwatheArea
-            // 
-            this.cmbSwatheArea.FormattingEnabled = true;
-            this.cmbSwatheArea.Location = new System.Drawing.Point(63, 111);
-            this.cmbSwatheArea.Name = "cmbSwatheArea";
-            this.cmbSwatheArea.Size = new System.Drawing.Size(185, 21);
-            this.cmbSwatheArea.TabIndex = 9;
-            this.cmbSwatheArea.Text = "Select swathe area field";
-            this.cmbSwatheArea.SelectedIndexChanged += new System.EventHandler(this.cmbSwatheArea_SelectedIndexChanged);
-            // 
             // frmPolyEffortBySwathe
             // 
             this.AcceptButton = this.btnCalculate;
@@ -244,7 +244,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmPolyEffortBySwathe";
-            this.Text = "Survey Effort by Polygon (Swathes)";
+            this.Text = "Survey Effort by Grid (Swathes)";
             this.Load += new System.EventHandler(this.polyEffortBySwathe_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

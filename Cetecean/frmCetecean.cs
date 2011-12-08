@@ -604,6 +604,13 @@ namespace Cetecean
             tslYCoord.Text = " Y: " + Math.Round(e.GeographicLocation.Y, 4);
         }
 
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DotSpatial.Controls.LayoutForm frm = new DotSpatial.Controls.LayoutForm();
+            frm.MapControl = map1;
+            frm.Show();
+        }
+
         
      
     }

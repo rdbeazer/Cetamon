@@ -159,8 +159,8 @@ namespace Cetecean
 
                 //Create new Columns in the point attribute table
                 outputPoint.DataTable.Columns.Add(new DataColumn("Point_ID", typeof(int)));
-                outputPoint.DataTable.Columns.Add(new DataColumn("Lat", typeof(double)));
-                outputPoint.DataTable.Columns.Add(new DataColumn("Long", typeof(double)));
+                outputPoint.DataTable.Columns.Add(new DataColumn("Y_Coord", typeof(double)));
+                outputPoint.DataTable.Columns.Add(new DataColumn("X_Coord", typeof(double)));
 
                 //Check the status of the selected all checkbox
                 foreach (int ind in clsFields.CheckedIndices)
@@ -200,8 +200,8 @@ namespace Cetecean
                     pointAdd.DataRow.BeginEdit();
                     //Adds amplifying information about the point
                     pointAdd.DataRow["Point_ID"] = id;
-                    pointAdd.DataRow["Lat"] = placeHolder.Coordinates[0].X;
-                    pointAdd.DataRow["Long"] = placeHolder.Coordinates[0].Y;
+                    pointAdd.DataRow["X_Coord"] = placeHolder.Coordinates[0].X;
+                    pointAdd.DataRow["Y_Coord"] = placeHolder.Coordinates[0].Y;
                     //Takes the user selected columns from the grid featureset and adds them to the point
                     foreach (string name in columnList)             //Add the selected point attributes
                     {

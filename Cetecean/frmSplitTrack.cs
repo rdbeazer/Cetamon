@@ -76,6 +76,13 @@ namespace Cetecean
                         if (polygonLayers.Contains(layer))  //  If layer is a polygon layer
                         {
                             cmbGrid.Items.Add(layer.LegendText);//  adds the legendText of the layer to the combobox for user polygon selection
+                            //  Checks to make sure there is a polygonID associated with each feature.  If not, assigns "polygonID"
+                            IFeatureSet inputPolygon = (IFeatureSet)_map.Layers[i].DataSet;
+                            if (!inputPolygon.DataTable.Columns.Contains("polygonID") && !inputPolygon.DataTable.Columns.Contains("POLYGONID"))
+                            {
+                                inputPolygon.AddFid();  //  Adds FID
+                                inputPolygon.DataTable.Columns["FID"].ColumnName = "polygonID"; //  Changes FID column name.
+                            }
                         }
 
                         if (lineLayers.Contains(layer))
@@ -149,7 +156,11 @@ namespace Cetecean
                     {
                         return;
                     }
-                    tempOutput.DataTable.Columns.Add(new DataColumn("TrackLength", typeof(double)));
+
+                    if (!tempOutput.DataTable.Columns.Contains("TrackLength"))
+                    {
+                        tempOutput.DataTable.Columns.Add(new DataColumn("TrackLength", typeof(double)));   
+                    }
                     calculateTrackDistance(tempOutput);
                     output = (FeatureSet)tempOutput;
                    
@@ -169,7 +180,7 @@ namespace Cetecean
                             if (result == DialogResult.Yes)
                             {
                                  string text = txtInput.Text;
-                                 MapLineLayer lineIntersectLayer = new MapLineLayer(tempOutput);
+                                 MapLineLayer lineIntersectLayer = new MapLineLayer(output);
                                  lineIntersectLayer.LegendText = text;
                                  lineIntersectLayer.Symbolizer.SetFillColor(Color.Blue);
                                  _map.Layers.Add(lineIntersectLayer);
@@ -182,7 +193,7 @@ namespace Cetecean
                     {
                         DialogResult result = MessageBox.Show("Split track operation successful, however the file has not been saved.", "Operation Successful");
                         string text = txtInput.Text;
-                        MapLineLayer lineIntersectLayer = new MapLineLayer(tempOutput);
+                        MapLineLayer lineIntersectLayer = new MapLineLayer(output);
                         lineIntersectLayer.LegendText = text;
                         lineIntersectLayer.Symbolizer.SetFillColor(Color.Blue);
                         _map.Layers.Add(lineIntersectLayer);
@@ -217,7 +228,6 @@ namespace Cetecean
 
             foreach (Feature fe in inputFeatureSet.Features)
             {
-                double trackDistance = 0;
                 //declares a coordinate array and populates it with the coordinates from each feature fe.
                 Coordinate[] coord = (Coordinate[])fe.Coordinates;
 
@@ -228,33 +238,9 @@ namespace Cetecean
                 fe.DataRow["EndLon"] = coord[1].X;
 
                 //re-calculates the survey line length using the coordinates from above and the GetDistance method.
-                trackDistance = GetDistance(coord[0].Y, coord[1].Y, coord[0].X, coord[1].X);
-                fe.DataRow["TrackLength"] = trackDistance;
-
+                Functions distance = new Functions();
+                fe.DataRow["TrackLength"] = distance.GetDistance(coord[0].Y, coord[1].Y, coord[0].X, coord[1].X);
             }
-
-        }
-
-        //Method calculates the distance between two coordinate locations.
-        public double GetDistance(double Lat1, double Lat2, double long1, double long2)
-        {
-            double distance = Double.MinValue;
-            //converts decimal degrees to radians
-            double Lat1InRad = Lat1 * (Math.PI / 180.0);
-            double Long1InRad = long1 * (Math.PI / 180.0);
-            double Lat2InRad = Lat2 * (Math.PI / 180.0);
-            double Long2InRad = long2 * (Math.PI / 180.0);
-
-            double Longitude = Long2InRad - Long1InRad;
-            double Latitude = Lat2InRad - Lat1InRad;
-
-            double a = Math.Pow(Math.Sin(Latitude / 2.0), 2.0) + Math.Cos(Lat1InRad) * Math.Cos(Lat2InRad) * Math.Pow(Math.Sin(Longitude / 2.0), 2.0);
-            double c = 2.0 * Math.Asin(Math.Sqrt(a));
-
-            const Double kEarthRadiusKms = 6376.5;
-            distance = kEarthRadiusKms * c;
-            double roundDist = Math.Round(distance, 2);
-            return roundDist;
         }
 
         #endregion

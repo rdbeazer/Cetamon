@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.grbPoint = new System.Windows.Forms.GroupBox();
+            this.lblField = new System.Windows.Forms.Label();
             this.cmbInput2 = new System.Windows.Forms.ComboBox();
             this.cmbSpecies = new System.Windows.Forms.ComboBox();
             this.grbPolygon = new System.Windows.Forms.GroupBox();
@@ -37,6 +38,7 @@
             this.btnCalculate = new System.Windows.Forms.Button();
             this.lblPoint = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblSpeciesCount = new System.Windows.Forms.Label();
             this.txtSpeciesCount = new System.Windows.Forms.TextBox();
             this.lblSightings = new System.Windows.Forms.Label();
             this.txtSightings = new System.Windows.Forms.TextBox();
@@ -45,8 +47,6 @@
             this.radSession = new System.Windows.Forms.RadioButton();
             this.radNewShape = new System.Windows.Forms.RadioButton();
             this.radOriginal = new System.Windows.Forms.RadioButton();
-            this.lblField = new System.Windows.Forms.Label();
-            this.lblSpeciesCount = new System.Windows.Forms.Label();
             this.grbPoint.SuspendLayout();
             this.grbPolygon.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -64,6 +64,15 @@
             this.grbPoint.TabIndex = 39;
             this.grbPoint.TabStop = false;
             this.grbPoint.Text = "Input Species Point Layer";
+            // 
+            // lblField
+            // 
+            this.lblField.AutoSize = true;
+            this.lblField.Location = new System.Drawing.Point(24, 52);
+            this.lblField.Name = "lblField";
+            this.lblField.Size = new System.Drawing.Size(187, 13);
+            this.lblField.TabIndex = 30;
+            this.lblField.Text = "Select field with species count values:";
             // 
             // cmbInput2
             // 
@@ -148,6 +157,15 @@
             this.groupBox1.TabIndex = 41;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "New Attribute Fields in Polygon Layer";
+            // 
+            // lblSpeciesCount
+            // 
+            this.lblSpeciesCount.AutoSize = true;
+            this.lblSpeciesCount.Location = new System.Drawing.Point(17, 95);
+            this.lblSpeciesCount.Name = "lblSpeciesCount";
+            this.lblSpeciesCount.Size = new System.Drawing.Size(170, 13);
+            this.lblSpeciesCount.TabIndex = 35;
+            this.lblSpeciesCount.Text = "Enter field name for species count:";
             // 
             // txtSpeciesCount
             // 
@@ -234,24 +252,6 @@
             this.radOriginal.Text = "Save the updated attributes to the ORIGINAL \r\npoint shapefile";
             this.radOriginal.UseVisualStyleBackColor = true;
             // 
-            // lblField
-            // 
-            this.lblField.AutoSize = true;
-            this.lblField.Location = new System.Drawing.Point(24, 52);
-            this.lblField.Name = "lblField";
-            this.lblField.Size = new System.Drawing.Size(187, 13);
-            this.lblField.TabIndex = 30;
-            this.lblField.Text = "Select field with species count values:";
-            // 
-            // lblSpeciesCount
-            // 
-            this.lblSpeciesCount.AutoSize = true;
-            this.lblSpeciesCount.Location = new System.Drawing.Point(17, 95);
-            this.lblSpeciesCount.Name = "lblSpeciesCount";
-            this.lblSpeciesCount.Size = new System.Drawing.Size(170, 13);
-            this.lblSpeciesCount.TabIndex = 35;
-            this.lblSpeciesCount.Text = "Enter field name for species count:";
-            // 
             // frmCountSpecies
             // 
             this.AcceptButton = this.btnCalculate;
@@ -267,7 +267,7 @@
             this.Controls.Add(this.lblPoint);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "frmCountSpecies";
-            this.Text = "Count Species per Polygon";
+            this.Text = "Count Sightings per Polygon";
             this.Load += new System.EventHandler(this.frmCountSpecies_Load);
             this.grbPoint.ResumeLayout(false);
             this.grbPoint.PerformLayout();

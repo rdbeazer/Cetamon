@@ -311,9 +311,9 @@ namespace Cetecean
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This tool allows the user to take survey swathe lengths and add them to the \n" +
+            MessageBox.Show("This tool allows the user to take survey swathe lengths and add them to the" +
           "attribute table of a polygon grid layer for survey effort calculations. \n\n" +
-          "Please select the swathe layer to input into this function here. \n\n" +
+          "Please select the swathe layer to input into this function here." +
           "Other selections for the swathe input are based on fields in the attribute table. \n\n" +
           "The grid shapefile required is the same polygon shapefile that has been used to segment the survey swathes.", "Input Swathe Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
         
