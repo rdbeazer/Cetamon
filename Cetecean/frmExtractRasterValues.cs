@@ -151,8 +151,6 @@ namespace Cetecean
                         int selectedIndex = layerList.IndexOf(raster);
                         //  Declares a new raster using the DataSet at the specified map.Layers index.
                         IRaster rasterInput = (IRaster)_map.Layers[selectedIndex].DataSet;
-                        //  Sets the NoDataValue of the raster to the int value of the NoDataValue textbox.
-                        rasterInput.NoDataValue = Convert.ToInt32(txtNoDataValue.Text);
                         //  Creates a new DataColumn named the same as the LegendText of the raster.
                         //      The type is double because it holds raster values.
                         DataColumn rasValCol = new DataColumn(_map.Layers[selectedIndex].LegendText, typeof(double));
@@ -170,16 +168,37 @@ namespace Cetecean
                             pointInput.DataTable.Columns.Add(rasValCol);
                         }
 
+                        double minX = rasterInput.Bounds.Extent.MinX;
+                        double maxX = rasterInput.Bounds.Extent.MaxX;
+                        double minY = rasterInput.Bounds.Extent.MinY;
+                        double maxY = rasterInput.Bounds.Extent.MaxY;
+                        double noData = Convert.ToDouble(txtNoDataValue.Text);
+
                         foreach (IFeature ptFeature in pointInput.Features)  //  Loops through each feature
                         {
                             //  assigns the coordinates of the point to variable coord.
                             Coordinate coord = ptFeature.Coordinates[0];
-                            //  gets the rowColumn index for the raster based on the coordinate coord.
-                            RcIndex rowColumn = rasterInput.Bounds.ProjToCell(coord);
-                            //  declares variable rasValue which holds the value of the raster cell at the rowColumn index.
-                            double rasValue = rasterInput.Value[rowColumn.Row, rowColumn.Column];
-                            //  adds the raster value to the specified column in the feature.
-                            ptFeature.DataRow[rasValCol] = rasValue;
+
+                            if (coord.X <= minX || coord.X >= maxX || coord.Y <= minY || coord.Y >= maxY)
+                            {
+                                ptFeature.DataRow[rasValCol] = noData;
+                            }
+                            else
+                            {
+                                //  gets the rowColumn index for the raster based on the coordinate coord.
+                                RcIndex rowColumn = rasterInput.Bounds.ProjToCell(coord);
+                                if (rasterInput.Value[rowColumn.Row, rowColumn.Column] == rasterInput.NoDataValue)
+                                {
+                                    ptFeature.DataRow[rasValCol] = noData;
+                                }
+                                else
+                                {
+                                    //  declares variable rasValue which holds the value of the raster cell at the rowColumn index.
+                                    double rasValue = rasterInput.Value[rowColumn.Row, rowColumn.Column];
+                                    //  adds the raster value to the specified column in the feature.
+                                    ptFeature.DataRow[rasValCol] = rasValue;
+                                }
+                            }
                         }
                     }
                 }

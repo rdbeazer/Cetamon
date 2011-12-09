@@ -24,8 +24,6 @@ namespace Cetecean
         List<string> layerList = new List<string>();
         int input1SelectIndex = 0;
         int input2SelectIndex = 0;
-        bool speciesCount = true;
-        string polygonIDField = null;
         string speciesCountField = null;
         string addedFields = null;
         string newField1 = null;

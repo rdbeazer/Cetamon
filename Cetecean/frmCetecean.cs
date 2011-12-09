@@ -602,6 +602,7 @@ namespace Cetecean
         {
             tslXCoord.Text = "X: " + Math.Round(e.GeographicLocation.X, 4);
             tslYCoord.Text = " Y: " + Math.Round(e.GeographicLocation.Y, 4);
+            tslProjection.Text = map1.Projection.Name;
         }
 
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
@@ -609,6 +610,12 @@ namespace Cetecean
             DotSpatial.Controls.LayoutForm frm = new DotSpatial.Controls.LayoutForm();
             frm.MapControl = map1;
             frm.Show();
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            frmReprojectShapefile reproj = new frmReprojectShapefile(map1);
+            reproj.Show();
         }
 
         
