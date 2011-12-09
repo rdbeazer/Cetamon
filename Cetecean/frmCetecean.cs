@@ -603,7 +603,7 @@ namespace Cetecean
         {
             tslXCoord.Text = "X: " + Math.Round(e.GeographicLocation.X, 4);
             tslYCoord.Text = " Y: " + Math.Round(e.GeographicLocation.Y, 4);
-            tslProjection.Text = map1.Projection.Name;
+            tslProjection.Text = map1.Projection.ToString();
         }
 
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
