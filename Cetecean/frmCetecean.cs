@@ -20,7 +20,7 @@ namespace Cetecean
         public frmCetecean()
         {
             InitializeComponent();
-            this.Text = "Cetacean Monitoring System " + Assembly.GetCallingAssembly().GetName().Version.ToString();
+            this.Text = "MARINElife Ecological Survey Data Analyst " + Assembly.GetCallingAssembly().GetName().Version.ToString();
             map1.GeoMouseMove += map1_GeoMouseMove;
         }
 
@@ -55,6 +55,7 @@ namespace Cetecean
 
         //Create output FS to hold the joined tables
         FeatureSet output = new FeatureSet();
+        string projSaveFile = "";
 
         #endregion
 
@@ -618,7 +619,89 @@ namespace Cetecean
             reproj.Show();
         }
 
-        
-     
+        private void mnuOpenProject_Click(object sender, EventArgs e)
+        {
+            open();
+        }
+
+        private void mnuSave_Click(object sender, EventArgs e)
+        {
+            save();
+        }
+
+        private void mnuSaveAs_Click(object sender, EventArgs e)
+        {
+            saveAs();
+        }
+
+        private void saveAs()
+        {
+            tsslSave.Visible = true;
+            SaveFileDialog svProjFile = new SaveFileDialog();
+            svProjFile.Filter = "DotSpatial Project Files (*.dspx)|*.dspx";
+            svProjFile.Title = "Save LineSiter Project File";
+            svProjFile.CreatePrompt = true;
+            svProjFile.OverwritePrompt = true;
+            if (svProjFile.ShowDialog() == DialogResult.OK)
+            {
+                appManager1.SerializationManager.SaveProject(svProjFile.FileName);
+                projSaveFile = svProjFile.FileName;
+            }
+            tsslProjName.Text = projSaveFile;
+            tsslSave.Visible = false;
+        }
+
+        private void save()
+        {
+            tsslSave.Visible = true;
+            if (projSaveFile != null)
+            {
+                appManager1.SerializationManager.SaveProject(projSaveFile);
+            }
+            else
+            {
+                SaveFileDialog svProjFile = new SaveFileDialog();
+                svProjFile.Filter = "DotSpatial Project Files (*.dspx)|*.dspx";
+                if (svProjFile.ShowDialog() == DialogResult.OK)
+                {
+                    appManager1.SerializationManager.SaveProject(svProjFile.FileName);
+                    projSaveFile = svProjFile.FileName;
+                }
+                tsslProjName.Text = projSaveFile;
+            }
+            tsslSave.Visible = false;
+        }
+
+        private void open()
+        {
+            try
+            {
+                tsslOpen.Visible = true;
+                tsslProjName.Text = "Project Loading Please Wait...";
+                OpenFileDialog opProjFile = new OpenFileDialog();
+                opProjFile.Filter = "DotSpatial Project Files (*.dspx)|*.dspx";
+                if (opProjFile.ShowDialog() == DialogResult.OK)
+                {
+                    appManager1.SerializationManager.OpenProject(opProjFile.FileName);
+                    projSaveFile = opProjFile.FileName;
+                }
+                else
+                {
+                    tsslOpen.Visible = false;
+                    tsslProjName.Text = "No Project Loaded";
+                    return;
+                }
+                tsslProjName.Text = projSaveFile;
+                map1.Refresh();
+                map1.ZoomToMaxExtent();
+                tsslOpen.Visible = false;
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("An file error has occured.  Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
     }
 }

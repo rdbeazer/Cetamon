@@ -36,6 +36,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openShapefileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExcelToLine = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,6 +44,7 @@
             this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenProject = new System.Windows.Forms.ToolStripMenuItem();
             this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,13 +76,18 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.appManager1 = new DotSpatial.Controls.AppManager();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tslMapProjectionLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tslProjection = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslXCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslYCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tslMapProjectionLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tslProjection = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsslProjName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslOpen = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSave = new System.Windows.Forms.ToolStripStatusLabel();
+            this.mnuSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -169,6 +176,10 @@
             // fIleToolStripMenuItem
             // 
             this.fIleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuOpenProject,
+            this.mnuSave,
+            this.mnuSaveAs,
+            this.toolStripSeparator6,
             this.openShapefileToolStripMenuItem,
             this.toolStripMenuItem4,
             this.toolStripSeparator2,
@@ -188,6 +199,13 @@
             this.openShapefileToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.openShapefileToolStripMenuItem.Text = "Open Shapefile";
             this.openShapefileToolStripMenuItem.Click += new System.EventHandler(this.openShapefileToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(260, 22);
+            this.toolStripMenuItem4.Text = "Reproject Shapefile";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
             // toolStripSeparator2
             // 
@@ -231,6 +249,13 @@
             this.tsmExit.Size = new System.Drawing.Size(260, 22);
             this.tsmExit.Text = "Exit";
             this.tsmExit.Click += new System.EventHandler(this.tsmExit_Click);
+            // 
+            // mnuOpenProject
+            // 
+            this.mnuOpenProject.Name = "mnuOpenProject";
+            this.mnuOpenProject.Size = new System.Drawing.Size(260, 22);
+            this.mnuOpenProject.Text = "Open Project";
+            this.mnuOpenProject.Click += new System.EventHandler(this.mnuOpenProject_Click);
             // 
             // operationsToolStripMenuItem
             // 
@@ -475,6 +500,9 @@
             this.tslMapProjectionLabel2,
             this.tslProjection,
             this.toolStripStatusLabel1,
+            this.tsslSave,
+            this.tsslOpen,
+            this.tsslProjName,
             this.tslXCoord,
             this.tslYCoord});
             this.statusStrip1.Location = new System.Drawing.Point(0, 551);
@@ -482,6 +510,17 @@
             this.statusStrip1.Size = new System.Drawing.Size(847, 24);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tslMapProjectionLabel2
+            // 
+            this.tslMapProjectionLabel2.Name = "tslMapProjectionLabel2";
+            this.tslMapProjectionLabel2.Size = new System.Drawing.Size(91, 19);
+            this.tslMapProjectionLabel2.Text = "Map Projection:";
+            // 
+            // tslProjection
+            // 
+            this.tslProjection.Name = "tslProjection";
+            this.tslProjection.Size = new System.Drawing.Size(0, 19);
             // 
             // toolStripStatusLabel1
             // 
@@ -522,23 +561,43 @@
             this.splitContainer1.SplitterDistance = 173;
             this.splitContainer1.TabIndex = 4;
             // 
-            // tslMapProjectionLabel2
+            // tsslProjName
             // 
-            this.tslMapProjectionLabel2.Name = "tslMapProjectionLabel2";
-            this.tslMapProjectionLabel2.Size = new System.Drawing.Size(91, 19);
-            this.tslMapProjectionLabel2.Text = "Map Projection:";
+            this.tsslProjName.Name = "tsslProjName";
+            this.tsslProjName.Size = new System.Drawing.Size(0, 19);
             // 
-            // tslProjection
+            // tsslOpen
             // 
-            this.tslProjection.Name = "tslProjection";
-            this.tslProjection.Size = new System.Drawing.Size(0, 19);
+            this.tsslOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsslOpen.Image")));
+            this.tsslOpen.Name = "tsslOpen";
+            this.tsslOpen.Size = new System.Drawing.Size(16, 19);
+            this.tsslOpen.Visible = false;
             // 
-            // toolStripMenuItem4
+            // tsslSave
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(260, 22);
-            this.toolStripMenuItem4.Text = "Reproject Shapefile";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            this.tsslSave.Image = ((System.Drawing.Image)(resources.GetObject("tsslSave.Image")));
+            this.tsslSave.Name = "tsslSave";
+            this.tsslSave.Size = new System.Drawing.Size(16, 19);
+            this.tsslSave.Visible = false;
+            // 
+            // mnuSave
+            // 
+            this.mnuSave.Name = "mnuSave";
+            this.mnuSave.Size = new System.Drawing.Size(260, 22);
+            this.mnuSave.Text = "Save Project";
+            this.mnuSave.Click += new System.EventHandler(this.mnuSave_Click);
+            // 
+            // mnuSaveAs
+            // 
+            this.mnuSaveAs.Name = "mnuSaveAs";
+            this.mnuSaveAs.Size = new System.Drawing.Size(260, 22);
+            this.mnuSaveAs.Text = "Save Project As";
+            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(257, 6);
             // 
             // frmCetecean
             // 
@@ -621,6 +680,13 @@
         private System.Windows.Forms.ToolStripStatusLabel tslMapProjectionLabel2;
         private System.Windows.Forms.ToolStripStatusLabel tslProjection;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpenProject;
+        private System.Windows.Forms.ToolStripStatusLabel tsslProjName;
+        private System.Windows.Forms.ToolStripStatusLabel tsslOpen;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSave;
+        private System.Windows.Forms.ToolStripMenuItem mnuSave;
+        private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 
     }
 }
