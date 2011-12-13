@@ -77,6 +77,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\AddNewColum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\AddNewColum.designer.cs">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\AttributeCalculator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\AttributeCalculator.designer.cs">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DialogButtons.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\FunClass.cs" />
+    <Compile Include="Form\SymbologyFormsMessageStrings.Designer.cs" />
     <Compile Include="frmReprojectShapefile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,6 +217,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validator.cs" />
     <Compile Include="VectorGrid.cs" />
+    <EmbeddedResource Include="Form\AddNewColum.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\AddNewColum.zh-CN.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\AttributeCalculator.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\AttributeCalculator.zh-CN.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\DialogButtons.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\DialogButtons.zh-CN.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\SymbologyFormsMessageStrings.resx" />
     <EmbeddedResource Include="frmAbout1.resx">
       <DependentUpon>frmAbout1.cs</DependentUpon>
     </EmbeddedResource>

@@ -36,7 +36,7 @@ namespace Cetecean
             //double Azimuth = geo.GetAzimuth(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
 
             map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
-
+            
             //Coordinate n = geo.AzimuthDist(new Coordinate(lon, lat), Azimuth, distance);
 
 
@@ -697,7 +697,7 @@ namespace Cetecean
                 tsslOpen.Visible = false;
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("An file error has occured.  Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

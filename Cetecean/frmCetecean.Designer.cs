@@ -35,6 +35,10 @@
             this.legend1 = new DotSpatial.Controls.Legend();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.openShapefileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -44,7 +48,6 @@
             this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuOpenProject = new System.Windows.Forms.ToolStripMenuItem();
             this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,20 +77,17 @@
             this.tsmHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.appManager1 = new DotSpatial.Controls.AppManager();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tslMapProjectionLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslProjection = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSave = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslOpen = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslProjName = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslXCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslYCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tsslProjName = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslOpen = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslSave = new System.Windows.Forms.ToolStripStatusLabel();
-            this.mnuSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.appManager1 = new DotSpatial.Controls.AppManager();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -193,6 +193,32 @@
             this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fIleToolStripMenuItem.Text = "File";
             // 
+            // mnuOpenProject
+            // 
+            this.mnuOpenProject.Name = "mnuOpenProject";
+            this.mnuOpenProject.Size = new System.Drawing.Size(260, 22);
+            this.mnuOpenProject.Text = "Open Project";
+            this.mnuOpenProject.Click += new System.EventHandler(this.mnuOpenProject_Click);
+            // 
+            // mnuSave
+            // 
+            this.mnuSave.Name = "mnuSave";
+            this.mnuSave.Size = new System.Drawing.Size(260, 22);
+            this.mnuSave.Text = "Save Project";
+            this.mnuSave.Click += new System.EventHandler(this.mnuSave_Click);
+            // 
+            // mnuSaveAs
+            // 
+            this.mnuSaveAs.Name = "mnuSaveAs";
+            this.mnuSaveAs.Size = new System.Drawing.Size(260, 22);
+            this.mnuSaveAs.Text = "Save Project As";
+            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(257, 6);
+            // 
             // openShapefileToolStripMenuItem
             // 
             this.openShapefileToolStripMenuItem.Name = "openShapefileToolStripMenuItem";
@@ -249,13 +275,6 @@
             this.tsmExit.Size = new System.Drawing.Size(260, 22);
             this.tsmExit.Text = "Exit";
             this.tsmExit.Click += new System.EventHandler(this.tsmExit_Click);
-            // 
-            // mnuOpenProject
-            // 
-            this.mnuOpenProject.Name = "mnuOpenProject";
-            this.mnuOpenProject.Size = new System.Drawing.Size(260, 22);
-            this.mnuOpenProject.Text = "Open Project";
-            this.mnuOpenProject.Click += new System.EventHandler(this.mnuOpenProject_Click);
             // 
             // operationsToolStripMenuItem
             // 
@@ -475,25 +494,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // appManager1
-            // 
-            this.appManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
-            this.appManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.DataManager.DataProviderDirectories")));
-            this.appManager1.DataManager.LoadInRam = true;
-            this.appManager1.DataManager.ProgressHandler = null;
-            this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
-            this.appManager1.HeaderControl = null;
-            this.appManager1.LayoutControl = null;
-            this.appManager1.Legend = this.legend1;
-            this.appManager1.MainMenu = null;
-            this.appManager1.MainToolStrip = null;
-            this.appManager1.Map = this.map1;
-            this.appManager1.ProgressHandler = null;
-            this.appManager1.Ribbon = null;
-            this.appManager1.TabManager = null;
-            this.appManager1.ToolManager = null;
-            this.appManager1.ToolStripContainer = null;
-            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -528,6 +528,25 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(699, 19);
             this.toolStripStatusLabel1.Spring = true;
             // 
+            // tsslSave
+            // 
+            this.tsslSave.Image = ((System.Drawing.Image)(resources.GetObject("tsslSave.Image")));
+            this.tsslSave.Name = "tsslSave";
+            this.tsslSave.Size = new System.Drawing.Size(16, 19);
+            this.tsslSave.Visible = false;
+            // 
+            // tsslOpen
+            // 
+            this.tsslOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsslOpen.Image")));
+            this.tsslOpen.Name = "tsslOpen";
+            this.tsslOpen.Size = new System.Drawing.Size(16, 19);
+            this.tsslOpen.Visible = false;
+            // 
+            // tsslProjName
+            // 
+            this.tsslProjName.Name = "tsslProjName";
+            this.tsslProjName.Size = new System.Drawing.Size(0, 19);
+            // 
             // tslXCoord
             // 
             this.tslXCoord.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
@@ -561,43 +580,18 @@
             this.splitContainer1.SplitterDistance = 173;
             this.splitContainer1.TabIndex = 4;
             // 
-            // tsslProjName
+            // appManager1
             // 
-            this.tsslProjName.Name = "tsslProjName";
-            this.tsslProjName.Size = new System.Drawing.Size(0, 19);
-            // 
-            // tsslOpen
-            // 
-            this.tsslOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsslOpen.Image")));
-            this.tsslOpen.Name = "tsslOpen";
-            this.tsslOpen.Size = new System.Drawing.Size(16, 19);
-            this.tsslOpen.Visible = false;
-            // 
-            // tsslSave
-            // 
-            this.tsslSave.Image = ((System.Drawing.Image)(resources.GetObject("tsslSave.Image")));
-            this.tsslSave.Name = "tsslSave";
-            this.tsslSave.Size = new System.Drawing.Size(16, 19);
-            this.tsslSave.Visible = false;
-            // 
-            // mnuSave
-            // 
-            this.mnuSave.Name = "mnuSave";
-            this.mnuSave.Size = new System.Drawing.Size(260, 22);
-            this.mnuSave.Text = "Save Project";
-            this.mnuSave.Click += new System.EventHandler(this.mnuSave_Click);
-            // 
-            // mnuSaveAs
-            // 
-            this.mnuSaveAs.Name = "mnuSaveAs";
-            this.mnuSaveAs.Size = new System.Drawing.Size(260, 22);
-            this.mnuSaveAs.Text = "Save Project As";
-            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(257, 6);
+            this.appManager1.DataManager.LoadInRam = true;
+            this.appManager1.DataManager.ProgressHandler = null;
+            this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
+            this.appManager1.DockManager = null;
+            this.appManager1.HeaderControl = null;
+            this.appManager1.Legend = null;
+            this.appManager1.Map = null;
+            this.appManager1.ProgressHandler = null;
+            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
+            this.appManager1.ToolManager = null;
             // 
             // frmCetecean
             // 
@@ -659,7 +653,6 @@
         //private DotSpatial.Controls.AppManager appManager1;
         private System.Windows.Forms.ToolStripMenuItem convertGridToPointsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculatorFieldToolStripMenuItem;
-        private DotSpatial.Controls.AppManager appManager1;
         private System.Windows.Forms.ToolStripMenuItem tsmHelp;
         private System.Windows.Forms.ToolStripMenuItem tsmAbout;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -687,6 +680,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuSave;
         private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private DotSpatial.Controls.AppManager appManager1;
 
     }
 }

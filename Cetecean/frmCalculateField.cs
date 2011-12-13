@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Controls;
-using DotSpatial.Symbology.Forms;
+//using DotSpatial.Symbology.Forms;
 namespace Cetecean
 {
     public partial class frmCalculateField : Form

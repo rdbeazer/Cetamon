@@ -293,7 +293,7 @@ namespace Cetecean
                             if (!fea.Intersects((IGeometry)poly))
                             {
                                 IFeature newF = _GridLayer.DataSet.AddFeature(poly);
-                                newF.DataRow["ID"] = id;
+                                newF.DataRow["polygonID"] = id;
                                 newF.DataRow["row"] = j + 1;
                                 newF.DataRow["col"] = i + 1;
 
@@ -304,7 +304,7 @@ namespace Cetecean
                     else
                     {
                         IFeature newF = _GridLayer.DataSet.AddFeature(poly);
-                        newF.DataRow["ID"] = id;
+                        newF.DataRow["polygonID"] = id;
                         newF.DataRow["row"] = j + 1;
                         newF.DataRow["col"] = i + 1;
                         id++;
@@ -354,7 +354,7 @@ namespace Cetecean
                     LinearRing shell = new LinearRing(array);
                     Polygon poly = new Polygon(shell);
                     IFeature newF = _GridLayer.DataSet.AddFeature(poly);
-                    newF.DataRow["ID"] = id;
+                    newF.DataRow["polygonID"] = id;
                     newF.DataRow["row"] = j + 1;
                     newF.DataRow["col"] = i + 1;
                     id++;
@@ -402,32 +402,6 @@ namespace Cetecean
         }
 
 
-        //public void Open(string file)
-        //{
-        //    rectangleFs = new FeatureSet(file);
-
-        //    if (!rectangleFs.FeatureType.Equals(FeatureType.Polygon))
-        //    {
-        //        MessageBox.Show("This is not point shapefile");
-        //        return;
-        //    }
-
-        //    _GridLayer = new MapPolygonLayer(rectangleFs);
-        //    _GridLayer.LegendText = Properties.Resources.VerctorGrid;
-
-        //    //_rectangleLayer.LegendItemVisible = false;
-        //    Color redColor = Color.Red.ToTransparent(0.8f);
-        //    _GridLayer.Symbolizer = new PolygonSymbolizer();
-        //    // 
-        //    _GridLayer.Symbolizer.SetOutline(Color.Red, 1.0);
-        //    _GridLayer.Symbolizer.SetFillColor(Color.Transparent);
-        //    _GridLayer.SelectionSymbolizer = _GridLayer.Symbolizer;
-        //    _GridLayer.Symbolizer.SetOutline(Color.Red, 1.0);
-        //    // Extent ext = this.GetExtent(0.15);
-        //    _mainMap.Layers.Add(_GridLayer);
-
-        //}
-
 
         public void AddLayer()
         {
@@ -438,7 +412,7 @@ namespace Cetecean
             else
             {
                 rectangleFs = new FeatureSet(FeatureType.Polygon);
-                rectangleFs.DataTable.Columns.Add("ID");
+                rectangleFs.DataTable.Columns.Add("polygonID");
                 rectangleFs.DataTable.Columns.Add("row");
                 rectangleFs.DataTable.Columns.Add("col");
 

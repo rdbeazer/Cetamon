@@ -384,7 +384,7 @@ namespace Cetecean
 
             IFeature B = (IFeature)C.Clone();
             return B;
-
+ /*
 
            // IFeature B = (IFeature)C.Clone();
 
@@ -416,7 +416,7 @@ namespace Cetecean
 
             //Assigning the new coordinates.
             B.Coordinates = c1;
-            return B;
+            return B; */
         }
 
         /// <summary>
