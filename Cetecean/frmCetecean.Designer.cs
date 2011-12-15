@@ -109,7 +109,7 @@
             // 
             // spatialToolStrip1
             // 
-            this.spatialToolStrip1.ApplicationManager = null;
+            this.spatialToolStrip1.ApplicationManager = this.appManager1;
             this.spatialToolStrip1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.spatialToolStrip1.Location = new System.Drawing.Point(0, 24);
             this.spatialToolStrip1.Map = this.map1;
@@ -582,16 +582,14 @@
             // 
             // appManager1
             // 
-            this.appManager1.DataManager.LoadInRam = true;
-            this.appManager1.DataManager.ProgressHandler = null;
+            this.appManager1.CompositionContainer = null;
             this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
             this.appManager1.DockManager = null;
             this.appManager1.HeaderControl = null;
             this.appManager1.Legend = null;
-            this.appManager1.Map = null;
+            this.appManager1.Map = this.map1;
             this.appManager1.ProgressHandler = null;
             this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
-            this.appManager1.ToolManager = null;
             // 
             // frmCetecean
             // 

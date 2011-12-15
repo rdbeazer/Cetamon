@@ -36,6 +36,9 @@ namespace Cetecean
             //double Azimuth = geo.GetAzimuth(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
 
             map1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+
+            appManager1.LoadExtensions();
+
             
             //Coordinate n = geo.AzimuthDist(new Coordinate(lon, lat), Azimuth, distance);
 
@@ -654,7 +657,7 @@ namespace Cetecean
         private void save()
         {
             tsslSave.Visible = true;
-            if (projSaveFile != null)
+            if (projSaveFile != string.Empty )
             {
                 appManager1.SerializationManager.SaveProject(projSaveFile);
             }
