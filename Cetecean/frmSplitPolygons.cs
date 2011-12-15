@@ -48,6 +48,7 @@ namespace Cetecean
                     {
                         cbxPolygon1.Items.Add(iLa.LegendText);
                         cbxPolygon2.Items.Add(iLa.LegendText);
+
                         i++;
                     }
 
@@ -86,7 +87,14 @@ namespace Cetecean
                 if (iLa.LegendText == cbxPolygon1.Text)
                     polyg1 = (IFeatureSet)iLa.DataSet;
                 if (iLa.LegendText == cbxPolygon2.Text)
+                {
                     polyg2 = (IFeatureSet)iLa.DataSet;
+                    if (!polyg2.DataTable.Columns.Contains("polygonID") && !polyg2.DataTable.Columns.Contains("POLYGONID"))
+                    {
+                        polyg2.AddFid();  //  Adds FID
+                        polyg2.DataTable.Columns["FID"].ColumnName = "polygonID"; //  Changes FID column name.
+                    }
+                }
 
             }
 
@@ -96,7 +104,9 @@ namespace Cetecean
             //It is assigned the same projection to the output layer
             tempOutput.Projection = polyg1.Projection;
             if (tempOutput == null) return;
-            
+            tempOutput.AddFid();
+            tempOutput.DataTable.Columns["FID"].ColumnName = "split_swatheID";
+
             //it is saved the intersection file
             Validator.SaveShapefile(" intersection between " + cbxPolygon1.Text + " and " + cbxPolygon2.Text, (FeatureSet)tempOutput);
 

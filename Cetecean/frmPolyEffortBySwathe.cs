@@ -119,7 +119,7 @@ namespace Cetecean
                 cmbSwatheArea.Items.Add(col.ColumnName);
 
             }
-            string idName = "PolygonID";
+            string idName = "polygonID";
             if (cmbSwatheID.Items.Contains(idName))
             {
                 cmbSwatheID.Text = "";
@@ -144,6 +144,11 @@ namespace Cetecean
         {
             gridSelectIndex = cmbInputGrid.SelectedIndex;
             inputGrid = (IFeatureSet)_map.Layers[gridSelectIndex].DataSet;
+            if (!inputGrid.DataTable.Columns.Contains("polygonID"))
+            {
+                inputGrid.AddFid();  //  Adds FID
+                inputGrid.DataTable.Columns["FID"].ColumnName = "polygonID"; //  Changes FID column name.
+            }
             Input2Selected = true;
             if (Input1Selected && Input2Selected)
             {
