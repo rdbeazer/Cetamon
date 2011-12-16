@@ -630,8 +630,13 @@ namespace Cetecean
                                         foreach (string field in formatDate.Keys)
                                         {
                                             string v = Convert.ToString(rowi[listDate[iD]]);
-                                            string v1 = DateTime.ParseExact(v, formatDate[field],null).ToString();
+                                            string f = formatDate[field];
+                                            if (newTable.Columns[field].DataType != typeof(DateTime))
+                                            {
+                                            string v1 = DateTime.ParseExact(v, f, System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat).ToString();
                                             rowi[listDate[iD]] = v1;
+                                            }
+                                            
                                             iD++;
                                         }
 
