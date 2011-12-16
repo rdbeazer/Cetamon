@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCetecean));
             this.panel1 = new System.Windows.Forms.Panel();
             this.spatialToolStrip1 = new DotSpatial.Controls.SpatialToolStrip();
-            this.appManager1 = new DotSpatial.Controls.AppManager();
             this.map1 = new DotSpatial.Controls.Map();
             this.legend1 = new DotSpatial.Controls.Legend();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -88,6 +87,7 @@
             this.tslXCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslYCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.appManager1 = new DotSpatial.Controls.AppManager();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -109,7 +109,7 @@
             // 
             // spatialToolStrip1
             // 
-            this.spatialToolStrip1.ApplicationManager = this.appManager1;
+            this.spatialToolStrip1.ApplicationManager = null;
             this.spatialToolStrip1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.spatialToolStrip1.Location = new System.Drawing.Point(0, 24);
             this.spatialToolStrip1.Map = this.map1;
@@ -117,17 +117,6 @@
             this.spatialToolStrip1.Size = new System.Drawing.Size(847, 25);
             this.spatialToolStrip1.TabIndex = 1;
             this.spatialToolStrip1.Text = "spatialToolStrip1";
-            // 
-            // appManager1
-            // 
-            this.appManager1.CompositionContainer = null;
-            this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
-            this.appManager1.DockManager = null;
-            this.appManager1.HeaderControl = null;
-            this.appManager1.Legend = this.legend1;
-            this.appManager1.Map = this.map1;
-            this.appManager1.ProgressHandler = null;
-            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             // 
             // map1
             // 
@@ -590,6 +579,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(847, 502);
             this.splitContainer1.SplitterDistance = 173;
             this.splitContainer1.TabIndex = 4;
+            // 
+            // appManager1
+            // 
+            this.appManager1.CompositionContainer = null;
+            this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
+            this.appManager1.DockManager = null;
+            this.appManager1.HeaderControl = null;
+            this.appManager1.Legend = null;
+            this.appManager1.Map = null;
+            this.appManager1.ProgressHandler = null;
+            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             // 
             // frmCetecean
             // 

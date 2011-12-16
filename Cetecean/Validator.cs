@@ -165,6 +165,33 @@ namespace Cetecean
             return false;
 
         }
+        public static string SaveShapefileString(string name, FeatureSet feaS)
+        {
+
+            DialogResult result = MessageBox.Show("Do you want to save " + name + " as shapefile?", "Save option", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.Filter = "Shapefile files (*.shp)|*.shp";
+                dialog.InitialDirectory = @"C:\";
+                dialog.Title = "Save shapefile";
+                string strFileName = "";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    strFileName = dialog.FileName;
+                    feaS.SaveAs(@strFileName, true);
+                    return @strFileName;
+                }
+
+
+
+            }
+            return string.Empty;
+
+        }
+
 
         public static bool IsInt32(TextBox textBox)
         {

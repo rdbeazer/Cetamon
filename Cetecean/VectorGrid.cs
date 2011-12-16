@@ -290,9 +290,20 @@ namespace Cetecean
                     {
                         foreach (IFeature fea in selected)
                         {
-                            if (!fea.Intersects((IGeometry)poly))
+                            if (!fea.Contains((IGeometry)poly)  )
                             {
-                                IFeature newF = _GridLayer.DataSet.AddFeature(poly);
+                                IFeature newF = null;
+                                if (fea.Intersects((IGeometry)poly))
+                                {
+                                    LinearRing shell1 = new LinearRing(fea.BasicGeometry.Coordinates);
+                                    Polygon poly1 = new Polygon(shell1);
+                                  IGeometry   newF1  =poly.Difference((IGeometry)poly1);
+                                  newF = _GridLayer.DataSet.AddFeature(newF1);
+                                }
+                                else { 
+                                newF = _GridLayer.DataSet.AddFeature(poly);
+                                }
+                                
                                 newF.DataRow["polygonID"] = id;
                                 newF.DataRow["row"] = j + 1;
                                 newF.DataRow["col"] = i + 1;

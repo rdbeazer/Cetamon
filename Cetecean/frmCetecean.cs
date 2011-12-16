@@ -37,7 +37,7 @@ namespace Cetecean
 
             map1.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-            appManager1.LoadExtensions();
+          //  appManager1.LoadExtensions();
 
             
             //Coordinate n = geo.AzimuthDist(new Coordinate(lon, lat), Azimuth, distance);

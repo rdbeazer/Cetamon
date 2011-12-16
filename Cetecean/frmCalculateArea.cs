@@ -81,15 +81,18 @@ namespace Cetecean
             {
                 fea.DataRow["Area"] = fea.Area();
             }
-            MessageBox.Show("The area was calculated sucessfully");
+            
             try
             {
-                polyg1.Save();
+                string dat = Validator.SaveShapefileString("layer", (FeatureSet)polyg1);
+                if (dat != string.Empty)
+                    _map.AddLayer(@dat);
+                
             }
             catch(Exception) {
-                Validator.SaveShapefile("layer", (FeatureSet)polyg1);
+                MessageBox.Show("Problem saving the shapefile");
             }
-            
+            MessageBox.Show("The area was calculated sucessfully");
             Close();
 
         }
