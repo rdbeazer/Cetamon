@@ -72,6 +72,7 @@ namespace Cetecean
 
         private void btnSplit_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             //verify if the layers selected are different
             if (cbxPolygon1.Text != "" && cbxPolygon2.Text == cbxPolygon1.Text)
             {
@@ -120,6 +121,7 @@ namespace Cetecean
             _map.Layers.Add(PolIntersectLayer);
             _map.ResetBuffer();
             MessageBox.Show("The intersection was executed sucessfully");
+            this.Cursor = Cursors.Default;
             Close();
         }
 

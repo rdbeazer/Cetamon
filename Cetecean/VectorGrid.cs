@@ -278,11 +278,19 @@ namespace Cetecean
                     }
                     Coordinate[] array = new Coordinate[5];
 
+                    //array[0] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    //array[1] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    //array[2] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    //array[3] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    //array[4] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+
                     array[0] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
-                    array[1] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    Coordinate start = array[0];
+                    array[1] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
                     array[2] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
-                    array[3] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
-                    array[4] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
+                    array[3] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
+                    array[4] = start;
+
                     LinearRing shell = new LinearRing(array);
                     Polygon poly = new Polygon(shell);
 
@@ -295,10 +303,20 @@ namespace Cetecean
                                 IFeature newF = null;
                                 if (fea.Intersects((IGeometry)poly))
                                 {
-                                    LinearRing shell1 = new LinearRing(fea.BasicGeometry.Coordinates);
-                                    Polygon poly1 = new Polygon(shell1);
-                                  IGeometry   newF1  =poly.Difference((IGeometry)poly1);
-                                  newF = _GridLayer.DataSet.AddFeature(newF1);
+                                    IGeometry newF1 = null;
+                                  //  LinearRing shell1 = null;
+                                    MultiPolygon poly1 = null;
+                                    try
+                                    {
+                                       // shell1 = new LinearRing(fea.BasicGeometry.Coordinates);
+                                        poly1 = new MultiPolygon(fea);
+                                        newF1 = poly.Difference((IGeometry)poly1);
+                                        newF = _GridLayer.DataSet.AddFeature(newF1);
+                                    }
+                                    catch
+                                    {
+                                        newF = _GridLayer.DataSet.AddFeature(poly);
+                                    }
                                 }
                                 else { 
                                 newF = _GridLayer.DataSet.AddFeature(poly);

@@ -34,10 +34,10 @@ namespace Cetecean
 
             //double distance =geo.Distance(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
             //double Azimuth = geo.GetAzimuth(new Coordinate(lon, lat), new Coordinate(lon1, lat1));
-
+             appManager1.LoadExtensions();
             map1.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-          //  appManager1.LoadExtensions();
+
 
             
             //Coordinate n = geo.AzimuthDist(new Coordinate(lon, lat), Azimuth, distance);
@@ -705,6 +705,12 @@ namespace Cetecean
                 MessageBox.Show("An file error has occured.  Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            frmDissolve dis = new frmDissolve(map1);
+            dis.Show();
         }
     }
 }

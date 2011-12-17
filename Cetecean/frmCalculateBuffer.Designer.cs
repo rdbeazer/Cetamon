@@ -161,6 +161,7 @@
             this.chkDissolve.TabIndex = 6;
             this.chkDissolve.Text = "Dissolve by a field";
             this.chkDissolve.UseVisualStyleBackColor = true;
+            this.chkDissolve.Visible = false;
             this.chkDissolve.CheckedChanged += new System.EventHandler(this.chkDissolve_CheckedChanged);
             // 
             // label3

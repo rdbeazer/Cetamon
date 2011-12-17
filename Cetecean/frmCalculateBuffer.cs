@@ -94,7 +94,7 @@ namespace Cetecean
             //Verify the number of layers
             if (_map.Layers.Count > 0)
             {
-                foreach (IMapLayer iLa in _map.Layers)
+                foreach (IMapLayer iLa in _map.GetFeatureLayers())
                 {
                     FeatureSet fT = (FeatureSet)iLa.DataSet;
                     //It is added only the line layers
@@ -121,7 +121,7 @@ namespace Cetecean
 
             //it is obtained the featureset of the layer selected
             IFeatureSet fT = null;
-            foreach (IMapLayer iLa in _map.Layers)
+            foreach (IMapLayer iLa in _map.GetFeatureLayers())
             {
                 fT = (IFeatureSet)iLa.DataSet;
                 if (fT.Name == layer)
@@ -149,6 +149,7 @@ namespace Cetecean
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             _geo=new GeoCal(_map.Projection);
 
 
@@ -228,6 +229,7 @@ namespace Cetecean
             //it is added in the map
             _map.Layers.Add(Ipo);
             fT = null;
+            this.Cursor = Cursors.Default;
             Close();
         }
 
@@ -641,8 +643,20 @@ namespace Cetecean
             list.Add(ini);
 
             //covert the list in an array
-            return list.ToArray();
+            List<Coordinate> list2 = Reverse(list);
+            return list2.ToArray();
 
+        }
+
+        private List<Coordinate> Reverse(List<Coordinate> list)
+        {
+            List<Coordinate> list2 = new List<Coordinate>();
+            for (int i = list.Count-1; i >= 0; i--)
+            {
+                list2.Add(list.ElementAt<Coordinate>(i));
+            
+            }
+            return list2;
         }
 
         /// <summary>
@@ -682,6 +696,9 @@ namespace Cetecean
 
             //the first point should be the same that the last point
             list.Add(initialPoint);
+
+            List<Coordinate> list2 = Reverse(list);
+            return list2.ToArray();
 
             //covert the list in an array
             return list.ToArray();

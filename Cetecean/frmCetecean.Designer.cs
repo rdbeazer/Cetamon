@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCetecean));
             this.panel1 = new System.Windows.Forms.Panel();
             this.spatialToolStrip1 = new DotSpatial.Controls.SpatialToolStrip();
+            this.appManager1 = new DotSpatial.Controls.AppManager();
             this.map1 = new DotSpatial.Controls.Map();
             this.legend1 = new DotSpatial.Controls.Legend();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -87,7 +88,7 @@
             this.tslXCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslYCoord = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.appManager1 = new DotSpatial.Controls.AppManager();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -109,7 +110,7 @@
             // 
             // spatialToolStrip1
             // 
-            this.spatialToolStrip1.ApplicationManager = null;
+            this.spatialToolStrip1.ApplicationManager = this.appManager1;
             this.spatialToolStrip1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.spatialToolStrip1.Location = new System.Drawing.Point(0, 24);
             this.spatialToolStrip1.Map = this.map1;
@@ -117,6 +118,17 @@
             this.spatialToolStrip1.Size = new System.Drawing.Size(847, 25);
             this.spatialToolStrip1.TabIndex = 1;
             this.spatialToolStrip1.Text = "spatialToolStrip1";
+            // 
+            // appManager1
+            // 
+            this.appManager1.CompositionContainer = null;
+            this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
+            this.appManager1.DockManager = null;
+            this.appManager1.HeaderControl = null;
+            this.appManager1.Legend = null;
+            this.appManager1.Map = null;
+            this.appManager1.ProgressHandler = null;
+            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             // 
             // map1
             // 
@@ -333,6 +345,7 @@
             this.spatialJoinToolStripMenuItem,
             this.toolStripSeparator7,
             this.toolStripMenuItem1,
+            this.toolStripMenuItem5,
             this.extractRasterValuesToolStripMenuItem,
             this.toolStripMenuItem2,
             this.toolStripSeparator4,
@@ -409,7 +422,7 @@
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(234, 22);
-            this.toolStripMenuItem1.Text = "Buffer";
+            this.toolStripMenuItem1.Text = "Buffer (Swathe area)";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // extractRasterValuesToolStripMenuItem
@@ -580,16 +593,12 @@
             this.splitContainer1.SplitterDistance = 173;
             this.splitContainer1.TabIndex = 4;
             // 
-            // appManager1
+            // toolStripMenuItem5
             // 
-            this.appManager1.CompositionContainer = null;
-            this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
-            this.appManager1.DockManager = null;
-            this.appManager1.HeaderControl = null;
-            this.appManager1.Legend = null;
-            this.appManager1.Map = null;
-            this.appManager1.ProgressHandler = null;
-            this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(234, 22);
+            this.toolStripMenuItem5.Text = "Dissolve Polygon Layer";
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
             // 
             // frmCetecean
             // 
@@ -679,6 +688,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private DotSpatial.Controls.AppManager appManager1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
 
     }
 }
