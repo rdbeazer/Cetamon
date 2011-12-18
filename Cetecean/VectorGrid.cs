@@ -278,11 +278,6 @@ namespace Cetecean
                     }
                     Coordinate[] array = new Coordinate[5];
 
-                    //array[0] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
-                    //array[1] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
-                    //array[2] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + ((j + 1) * _area.CellSizeY)));
-                    //array[3] = ProjectPointAzimut(new Coordinate(_area.MinX + ((i + 1) * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
-                    //array[4] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
 
                     array[0] = ProjectPointAzimut(new Coordinate(_area.MinX + (i * _area.CellSizeX), _area.MinY + (j * _area.CellSizeY)));
                     Coordinate start = array[0];
@@ -292,42 +287,43 @@ namespace Cetecean
                     array[4] = start;
 
                     LinearRing shell = new LinearRing(array);
-                    Polygon poly = new Polygon(shell);
-
+                    IGeometry poly = new Polygon(shell);
+                    bool contain = true;
                     if (selected != null && selected.Count > 0)
                     {
+                        IFeature newF = null;
                         foreach (IFeature fea in selected)
                         {
-                            if (!fea.Contains((IGeometry)poly)  )
+                            try
                             {
-                                IFeature newF = null;
-                                if (fea.Intersects((IGeometry)poly))
+                                if (!fea.Contains(poly))
                                 {
-                                    IGeometry newF1 = null;
-                                  //  LinearRing shell1 = null;
-                                    MultiPolygon poly1 = null;
-                                    try
+
+                                    if (fea.Intersects((IGeometry)poly))
                                     {
-                                       // shell1 = new LinearRing(fea.BasicGeometry.Coordinates);
+                                        IGeometry newF1 = null;
+                                        MultiPolygon poly1 = null;
                                         poly1 = new MultiPolygon(fea);
                                         newF1 = poly.Difference((IGeometry)poly1);
-                                        newF = _GridLayer.DataSet.AddFeature(newF1);
-                                    }
-                                    catch
-                                    {
-                                        newF = _GridLayer.DataSet.AddFeature(poly);
+                                        poly = newF1;
                                     }
                                 }
-                                else { 
-                                newF = _GridLayer.DataSet.AddFeature(poly);
-                                }
-                                
-                                newF.DataRow["polygonID"] = id;
-                                newF.DataRow["row"] = j + 1;
-                                newF.DataRow["col"] = i + 1;
-
+                                else
+                                    contain = false;
+                            }
+                            catch { 
+                            
                             }
                         }
+
+                        if (contain)
+                        {
+                            newF = _GridLayer.DataSet.AddFeature(poly);
+                            newF.DataRow["polygonID"] = id;
+                            newF.DataRow["row"] = j + 1;
+                            newF.DataRow["col"] = i + 1;
+                        }
+
                         id++;
                     }
                     else
@@ -532,8 +528,8 @@ namespace Cetecean
             _area.MaxY = p.MinY + (p.CellSizeY * nrow);
             _area.MaxX = p.MinX + (p.CellSizeX * ncol);
 
-            _area.NumColumns = Convert.ToInt16(ncol);
-            _area.NumRows = Convert.ToInt16(nrow);
+            _area.NumColumns = Convert.ToInt32(ncol);
+            _area.NumRows = Convert.ToInt32(nrow);
             _area.CellSizeX = p.CellSizeX;
             _area.CellSizeY = p.CellSizeY;
             _area.Azimut = p.Azimut;
