@@ -674,7 +674,12 @@ namespace Cetecean
         private void cbxDeleteCellss_CheckedChanged(object sender, EventArgs e)
         {
             int i = 0;
-            if (!cbxDeleteCellss.Checked) return;
+            if (!cbxDeleteCellss.Checked) {
+                cbxListLayers.Items.Clear();
+                cbxListLayers.Visible = false;
+                return;
+            
+            }
             if (_map.Layers.Count > 0)
             {
                 cbxListLayers.Items.Clear();
