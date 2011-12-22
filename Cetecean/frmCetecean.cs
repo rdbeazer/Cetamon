@@ -462,6 +462,7 @@ namespace Cetecean
         {
             frmCreatePolygonGrid f = new frmCreatePolygonGrid(map1);
             f.Show();
+     
         }
 
         private void splitTracksByGridToolStripMenuItem_Click(object sender, EventArgs e)

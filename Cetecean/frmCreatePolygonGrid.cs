@@ -165,6 +165,7 @@ namespace Cetecean
             removeLayer("Origin Point");
             //   removeLayer("Grid");
             _startPoint = null;
+            _map.FunctionMode = FunctionMode.None;
             this.Close();
 
         }
